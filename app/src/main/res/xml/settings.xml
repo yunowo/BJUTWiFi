@@ -1,0 +1,37 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="@string/pref_header_user">
+        <EditTextPreference
+            android:inputType="numberDecimal"
+            android:key="account"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:title="@string/pref_account" />
+        <EditTextPreference
+            android:inputType="textPassword"
+            android:key="password"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:title="@string/pref_password" />
+        <SwitchPreference
+            android:defaultValue="false"
+            android:enabled="false"
+            android:key="auto"
+            android:summary="@string/pref_description_auto_login"
+            android:title="@string/pref_title_auto_login" />
+        <ListPreference
+            android:defaultValue="-1"
+            android:entries="@array/pref_list_packages"
+            android:entryValues="@array/pref_list_packages_values"
+            android:key="package"
+            android:title="@string/pref_title_packages" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/pref_header_about">
+        <Preference
+            android:key="version"
+            android:title="@string/pref_version" />
+        <Preference
+            android:key="licenses"
+            android:title="@string/pref_licenses" />
+    </PreferenceCategory>
+
+</PreferenceScreen>

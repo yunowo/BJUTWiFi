@@ -1,0 +1,31 @@
+<resources>
+    <string name="app_name" translatable="false">BJUT Wi-Fi</string>
+    <string name="settings">Settings</string>
+    <string name="pref_header_user">User</string>
+    <string name="pref_account">Account</string>
+    <string name="pref_password">Password</string>
+    <string name="pref_header_about">About</string>
+    <string name="pref_version">Version</string>
+    <string name="pref_sources">Source code</string>
+    <string name="pref_licenses">Open source licenses</string>
+    <string name="pref_ok" translatable="false">@android:string/ok</string>
+    <string name="pref_cancel" translatable="false">@android:string/cancel</string>
+    <string name="pref_title_auto_login">Auto login (Not implemented)</string>
+    <string name="pref_description_auto_login">Login when connected to Wi-Fi</string>
+    <string name="pref_title_packages">Package</string>
+    <string-array name="pref_list_packages">
+        <item>1 GB</item>
+        <item>7 GB</item>
+        <item>15 GB</item>
+    </string-array>
+    <string-array name="pref_list_packages_values">
+        <item>1</item>
+        <item>7</item>
+        <item>15</item>
+    </string-array>
+    <string name="action_sign_in">Sign in</string>
+    <string name="action_sign_out">Sign out</string>
+    <string name="login_status">Not logged-in</string>
+    <string name="action_refresh">Refresh</string>
+    <string name="licenses">Android Support Library\nOkhttp3\nButter Knife</string>
+</resources>
