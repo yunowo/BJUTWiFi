@@ -1,7 +1,7 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <PreferenceCategory android:title="@string/pref_header_user">
         <EditTextPreference
-            android:inputType="numberDecimal"
+            android:inputType="text"
             android:key="account"
             android:selectAllOnFocus="true"
             android:singleLine="true"
