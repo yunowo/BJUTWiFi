@@ -76,17 +76,17 @@ public class LoginHelper {
             Pattern p = Pattern.compile("(?s)time='(.+?)'");
             Matcher m = p.matcher(html);
             while (m.find()) {
-                stats.setTime(Integer.parseInt(m.group(1).replace(" ", "".replace("\"", ""))));
+                stats.setTime(Integer.parseInt(m.group(1).replace(" ", "").replace("\"", "")));
             }
             p = Pattern.compile("(?s)flow='(.+?)'");
             m = p.matcher(html);
             while (m.find()) {
-                stats.setFlow(Integer.parseInt(m.group(1).replace(" ", "".replace("\"", ""))));
+                stats.setFlow(Integer.parseInt(m.group(1).replace(" ", "").replace("\"", "")));
             }
             p = Pattern.compile("(?s)fee='(.+?)'");
             m = p.matcher(html);
             while (m.find()) {
-                stats.setFee(Integer.parseInt(m.group(1).replace(" ", "".replace("\"", ""))));
+                stats.setFee(Integer.parseInt(m.group(1).replace(" ", "").replace("\"", "")));
             }
         } catch (IOException e) {
             return null;
