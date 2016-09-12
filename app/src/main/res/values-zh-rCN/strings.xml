@@ -18,4 +18,5 @@
     <string name="pref_licenses">开源</string>
     <string name="pref_version">版本</string>
     <string name="action_refresh">刷新</string>
+    <string name="tile_icon_label"></string>
 </resources>

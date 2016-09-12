@@ -1,96 +1,78 @@
 package me.liuyun.bjutlgn;
 
-import java.io.IOException;
-import java.util.concurrent.TimeUnit;
+import android.support.design.widget.Snackbar;
+import android.view.View;
+import android.widget.TextView;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import okhttp3.FormBody;
-import okhttp3.Headers;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
 
-public class LoginHelper {
-    private static Headers HEADERS = new Headers.Builder()
-            .add("Content-Type", "application/x-www-form-urlencoded")
-            .add("Origin", "https://wlgn.bjut.edu.cn")
-            .add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2660.3 Safari/537.36")
-            .add("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8")
-            .build();
+class LoginHelper {
+    private BjutApi api;
 
-    public static boolean DoLogin(String account, String password, Boolean outside) {
-        OkHttpClient client = new OkHttpClient.Builder()
-                .connectTimeout(10, TimeUnit.SECONDS)
-                .build();
-        RequestBody formBody = new FormBody.Builder()
-                .add("DDDDD", account)
-                .add("upass", password)
-                .add("R6", "1")
-                .add(outside ? "6MKKey" : "0MKKEY", "123")
-                .build();
-        Request request = new Request.Builder()
-                .url("https://wlgn.bjut.edu.cn/")
-                .headers(HEADERS)
-                .post(formBody)
-                .build();
+    LoginHelper() {
+        api = new BjutRetrofit().getBjutService();
+    }
 
-        try {
-            client.newCall(request).execute();
-        } catch (IOException e) {
-            return false;
-        }
+    Boolean Login(String account, String password, Boolean outside, View view) {
+        Call<ResponseBody> call = outside ? api.login(account, password, "1", "123") : api.loginLocal(account, password, "1", "123");
+        call.enqueue(okFailCallback(view));
         return true;
     }
 
-    public static Boolean DoLogout() {
-        OkHttpClient client = new OkHttpClient.Builder()
-                .connectTimeout(10, TimeUnit.SECONDS)
-                .build();
-        Request request = new Request.Builder()
-                .url("https://wlgn.bjut.edu.cn/F.htm")
-                .headers(HEADERS)
-                .build();
-        try {
-            client.newCall(request).execute();
-        } catch (IOException e) {
-            return false;
-        }
+    Boolean Logout(View view) {
+        Call<ResponseBody> call = api.logout();
+        call.enqueue(okFailCallback(view));
         return true;
     }
 
-    public static Stats GetStats() {
-        Stats stats = new Stats();
-        OkHttpClient client = new OkHttpClient.Builder()
-                .connectTimeout(10, TimeUnit.SECONDS)
-                .build();
-        Request request = new Request.Builder()
-                .url("https://wlgn.bjut.edu.cn/")
-                .headers(HEADERS)
-                .build();
-        Response response;
-        try {
-            response = client.newCall(request).execute();
-            String html = response.body().string();
-            Pattern p = Pattern.compile("(?s)time='(.+?)'");
-            Matcher m = p.matcher(html);
-            while (m.find()) {
-                stats.setTime(Integer.parseInt(m.group(1).replace(" ", "").replace("\"", "")));
+    Boolean GetStats(final View view, final TextView textView) {
+        Call<ResponseBody> call = api.stats();
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
+                try {
+                    int time = 0;
+                    float flow = 0, fee = 0f;
+                    String html = response.body().string().replace(" ", "");
+                    Pattern p = Pattern.compile("time='(.*?)';flow='(.*?)';fsele=1;fee='(.*?)'");
+                    Matcher m = p.matcher(html);
+                    while (m.find()) {
+                        time = Integer.parseInt(m.group(1));
+                        flow = Float.parseFloat(m.group(2)) / 1024;
+                        fee = Float.parseFloat(m.group(3)) / 100;
+                    }
+                    String text = flow + " MB\n" + time + " min\n" + fee + " RMB";
+                    textView.setText(text);
+                    Snackbar.make(view, "Refresh OK.", Snackbar.LENGTH_LONG).show();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
-            p = Pattern.compile("(?s)flow='(.+?)'");
-            m = p.matcher(html);
-            while (m.find()) {
-                stats.setFlow(Integer.parseInt(m.group(1).replace(" ", "").replace("\"", "")));
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Snackbar.make(view, "Refresh failed.", Snackbar.LENGTH_LONG).show();
             }
-            p = Pattern.compile("(?s)fee='(.+?)'");
-            m = p.matcher(html);
-            while (m.find()) {
-                stats.setFee(Integer.parseInt(m.group(1).replace(" ", "").replace("\"", "")));
+        });
+        return true;
+    }
+
+    private static Callback<ResponseBody> okFailCallback(final View view) {
+        return new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
+                Snackbar.make(view, "OK", Snackbar.LENGTH_LONG).show();
             }
-        } catch (IOException e) {
-            return null;
-        }
-        return stats;
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Snackbar.make(view, "Failed", Snackbar.LENGTH_LONG).show();
+            }
+        };
     }
 }

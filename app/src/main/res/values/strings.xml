@@ -28,4 +28,5 @@
     <string name="login_status">Not logged-in</string>
     <string name="action_refresh">Refresh</string>
     <string name="licenses">Android Support Library\nOkhttp3\nButter Knife</string>
+    <string name="tile_icon_label" translatable="false">BJUT WiFi</string>
 </resources>

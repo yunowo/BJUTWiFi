@@ -22,18 +22,6 @@
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
     </android.support.design.widget.AppBarLayout>
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        android:src="@drawable/ic_cloud"
-        app:borderWidth="0dp"
-        app:layout_anchor="@id/appbar"
-        app:layout_anchorGravity="bottom|end"
-        app:rippleColor="@color/fab_ripple" />
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -47,31 +35,42 @@
             android:layout_gravity="center_horizontal"
             android:text="@string/login_status"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:visibility="invisible" />
+            android:visibility="invisible"
+            android:id="@+id/textView"
+            android:textSize="30sp" />
 
-        <Button
-            android:id="@+id/sign_in_button"
+        <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:text="@string/action_sign_in" />
+            android:layout_height="match_parent">
 
-        <Button
-            android:id="@+id/sign_out_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:text="@string/action_sign_out" />
+            <Button
+                android:id="@+id/sign_in_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="0dp"
+                android:text="@string/action_sign_in"
+                android:layout_weight="1" />
 
-        <Button
-            android:id="@+id/refresh_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:text="@string/action_refresh" />
+            <Button
+                android:id="@+id/sign_out_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:text="@string/action_sign_out"
+                android:layout_weight="1" />
+
+            <Button
+                android:id="@+id/refresh_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="0dp"
+                android:layout_marginRight="20dp"
+                android:text="@string/action_refresh"
+                android:layout_weight="1" />
+        </LinearLayout>
 
         <TextView
             android:id="@+id/stats"
@@ -81,6 +80,18 @@
             android:text="" />
 
     </LinearLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        android:src="@drawable/ic_cloud"
+        app:borderWidth="0dp"
+        app:layout_anchor="@id/appbar"
+        app:layout_anchorGravity="bottom|end"
+        app:rippleColor="@color/fab_ripple" />
 
 
 </android.support.design.widget.CoordinatorLayout>

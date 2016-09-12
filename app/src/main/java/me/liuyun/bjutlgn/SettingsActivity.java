@@ -9,11 +9,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
-import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.BindView;
 
 public class SettingsActivity extends AppCompatActivity {
-    @Bind(R.id.settings_toolbar)
+    @BindView(R.id.settings_toolbar)
     Toolbar toolbar;
 
     @Override
