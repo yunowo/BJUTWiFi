@@ -14,14 +14,14 @@
     <string name="pref_description_auto_login">Login when connected to Wi-Fi</string>
     <string name="pref_title_packages">Package</string>
     <string-array name="pref_list_packages">
-        <item>1 GB</item>
-        <item>7 GB</item>
-        <item>15 GB</item>
+        <item>8 GB</item>
+        <item>25 GB</item>
+        <item>30 GB</item>
     </string-array>
     <string-array name="pref_list_packages_values">
-        <item>1</item>
-        <item>7</item>
-        <item>15</item>
+        <item>8</item>
+        <item>25</item>
+        <item>30</item>
     </string-array>
     <string name="action_sign_in">Sign in</string>
     <string name="action_sign_out">Sign out</string>
