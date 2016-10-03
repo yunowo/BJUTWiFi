@@ -1,62 +1,61 @@
 package me.liuyun.bjutlgn;
 
 import android.annotation.TargetApi;
+import android.content.SharedPreferences;
 import android.graphics.drawable.Icon;
 import android.os.Build;
+import android.preference.PreferenceManager;
 import android.service.quicksettings.Tile;
 import android.service.quicksettings.TileService;
 import android.util.Log;
 
 @TargetApi(Build.VERSION_CODES.N)
 public class WiFiTileService extends TileService {
-    private final int STATE_OFF = 0;
-    private final int STATE_ON = 1;
-    public static final String ACTION_QS_TILE_PREFERENCE = "me.liuyun.bjutlgn.SettingsActivity";
-    private final String LOG_TAG = "BJUTWiFiTileService";
-    private int toggleState = STATE_ON;
-
-    public WiFiTileService() {
-    }
+    private final String TAG = WiFiTileService.class.getSimpleName();
+    private Icon iconOff = Icon.createWithResource(getApplicationContext(), R.drawable.ic_cloud_off);
+    private Icon iconOn = Icon.createWithResource(getApplicationContext(), R.drawable.ic_cloud_done);
 
     @Override
     public void onTileAdded() {
-        Log.d(LOG_TAG, "onTileAdded");
+        Log.d(TAG, "onTileAdded");
     }
 
     @Override
     public void onTileRemoved() {
-        Log.d(LOG_TAG, "onTileRemoved");
+        Log.d(TAG, "onTileRemoved");
     }
 
     @Override
     public void onClick() {
+        LoginHelper helper = new LoginHelper();
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        String account = prefs.getString("account", null);
+        String password = prefs.getString("password", null);
+
         Tile tile = getQsTile();
-        Log.d(LOG_TAG, "onClick state = " + Integer.toString(getQsTile().getState()));
-        Icon icon;
-        if (toggleState == STATE_ON) {
-            toggleState = STATE_OFF;
-            //TODO do logout
-            icon = Icon.createWithResource(getApplicationContext(), R.drawable.ic_cloud_off);
+        if (tile.getState() == Tile.STATE_ACTIVE) {
+            helper.Logout(null);
+            tile.setIcon(iconOff);
             tile.setState(Tile.STATE_INACTIVE);
         } else {
-            toggleState = STATE_ON;
-            //TODO do login
-            icon = Icon.createWithResource(getApplicationContext(), R.drawable.ic_cloud_done);
+            helper.Login(account, password, true, null);
+            tile.setIcon(iconOn);
             tile.setState(Tile.STATE_ACTIVE);
         }
-
-        tile.setIcon(icon);
         tile.updateTile();
     }
 
     @Override
     public void onStartListening() {
-        Log.d(LOG_TAG, "onStartListening");
+        Log.d(TAG, "onStartListening");
+        Tile tile = getQsTile();
+        //TODO check network state
+        tile.setState(Tile.STATE_INACTIVE);
     }
 
     @Override
     public void onStopListening() {
-        Log.d(LOG_TAG, "onStopListening");
+        Log.d(TAG, "onStopListening");
     }
 
 

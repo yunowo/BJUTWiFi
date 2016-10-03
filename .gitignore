@@ -74,7 +74,5 @@ $RECYCLE.BIN/
 
 /.idea
 *.iml
-gradle-*
-gradlew*
 /signing.properties
 /local.properties

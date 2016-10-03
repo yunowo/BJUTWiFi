@@ -1,5 +1,8 @@
 package me.liuyun.bjutlgn;
 
+import com.google.android.agera.Result;
+import com.google.android.agera.Supplier;
+
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Field;
@@ -21,4 +24,7 @@ interface BjutApi {
 
     @GET("/1.htm")
     Call<ResponseBody> stats();
+
+    @GET("/1.htm")
+    Supplier<Result<ResponseBody>> stats2();
 }

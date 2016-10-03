@@ -5,4 +5,6 @@
     <color name="fab_ripple">#7891ff</color>
     <color name="fab_orange_dark">#f97910</color>
     <color name="fab_orange_bright">#ffb54c</color>
+    <color name="ring_blue">#2196F3</color>
+    <color name="ring_grey">#BBDEFB</color>
 </resources>

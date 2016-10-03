@@ -6,12 +6,7 @@
     <string name="pref_password">Password</string>
     <string name="pref_header_about">About</string>
     <string name="pref_version">Version</string>
-    <string name="pref_sources">Source code</string>
     <string name="pref_licenses">Open source licenses</string>
-    <string name="pref_ok" translatable="false">@android:string/ok</string>
-    <string name="pref_cancel" translatable="false">@android:string/cancel</string>
-    <string name="pref_title_auto_login">Auto login (Not implemented)</string>
-    <string name="pref_description_auto_login">Login when connected to Wi-Fi</string>
     <string name="pref_title_packages">Package</string>
     <string-array name="pref_list_packages">
         <item>8 GB</item>
@@ -23,10 +18,13 @@
         <item>25</item>
         <item>30</item>
     </string-array>
+    <string name="login_status">Not logged-in</string>
     <string name="action_sign_in">Sign in</string>
     <string name="action_sign_out">Sign out</string>
-    <string name="login_status">Not logged-in</string>
     <string name="action_refresh">Refresh</string>
-    <string name="licenses">Android Support Library\nOkhttp3\nButter Knife</string>
+    <string name="licenses" translatable="false">Android Support Library\nOkhttp3\nButter Knife</string>
     <string name="tile_icon_label" translatable="false">BJUT WiFi</string>
+    <string name="stats_flow" translatable="false">%.3f MB</string>
+    <string name="stats_time" translatable="false">%d min</string>
+    <string name="stats_fee" translatable="false">%.2f RMB</string>
 </resources>

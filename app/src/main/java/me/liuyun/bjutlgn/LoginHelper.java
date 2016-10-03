@@ -1,17 +1,20 @@
 package me.liuyun.bjutlgn;
 
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import io.netopen.hotbitmapgg.library.view.RingProgressBar;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 
 class LoginHelper {
+    private final String LOG_TAG = "LoginHelper";
     private BjutApi api;
 
     LoginHelper() {
@@ -20,17 +23,17 @@ class LoginHelper {
 
     Boolean Login(String account, String password, Boolean outside, View view) {
         Call<ResponseBody> call = outside ? api.login(account, password, "1", "123") : api.loginLocal(account, password, "1", "123");
-        call.enqueue(okFailCallback(view));
+        call.enqueue(BjutRetrofit.okFailCallback(view));
         return true;
     }
 
     Boolean Logout(View view) {
         Call<ResponseBody> call = api.logout();
-        call.enqueue(okFailCallback(view));
+        call.enqueue(BjutRetrofit.okFailCallback(view));
         return true;
     }
 
-    Boolean GetStats(final View view, final TextView textView) {
+    Stat GetStats(final View view, final TextView flowView, final TextView timeView, final TextView feeView, final RingProgressBar progress) {
         Call<ResponseBody> call = api.stats();
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -46,11 +49,15 @@ class LoginHelper {
                         flow = Float.parseFloat(m.group(2)) / 1024;
                         fee = Float.parseFloat(m.group(3)) / 100;
                     }
-                    String text = flow + " MB\n" + time + " min\n" + fee + " RMB";
-                    textView.setText(text);
+                    flowView.setText(flow + " MB");
+                    timeView.setText(time + " min");
+                    feeView.setText(fee + " RMB");
+                    int percent = Math.round(flow / 1024 / 8 * 100);
+                    progress.setProgress(percent);
                     Snackbar.make(view, "Refresh OK.", Snackbar.LENGTH_LONG).show();
                 } catch (Exception e) {
                     e.printStackTrace();
+                    Log.d(LOG_TAG, e.getMessage());
                 }
             }
 
@@ -59,20 +66,10 @@ class LoginHelper {
                 Snackbar.make(view, "Refresh failed.", Snackbar.LENGTH_LONG).show();
             }
         });
-        return true;
+        return null;
     }
 
-    private static Callback<ResponseBody> okFailCallback(final View view) {
-        return new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
-                Snackbar.make(view, "OK", Snackbar.LENGTH_LONG).show();
-            }
 
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Snackbar.make(view, "Failed", Snackbar.LENGTH_LONG).show();
-            }
-        };
-    }
+
+
 }
