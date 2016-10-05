@@ -44,12 +44,12 @@ class BjutRetrofit {
         return new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
-                Snackbar.make(view, "OK.", Snackbar.LENGTH_LONG).show();
+                if (view != null) Snackbar.make(view, "OK.", Snackbar.LENGTH_LONG).show();
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Snackbar.make(view, "Failed.", Snackbar.LENGTH_LONG).show();
+                if (view != null) Snackbar.make(view, "Failed.", Snackbar.LENGTH_LONG).show();
             }
         };
     }

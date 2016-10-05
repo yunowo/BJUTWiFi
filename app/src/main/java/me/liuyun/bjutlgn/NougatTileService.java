@@ -10,8 +10,8 @@ import android.service.quicksettings.TileService;
 import android.util.Log;
 
 @TargetApi(Build.VERSION_CODES.N)
-public class WiFiTileService extends TileService {
-    private final String TAG = WiFiTileService.class.getSimpleName();
+public class NougatTileService extends TileService {
+    private final String TAG = NougatTileService.class.getSimpleName();
     private Icon iconOff = Icon.createWithResource(getApplicationContext(), R.drawable.ic_cloud_off);
     private Icon iconOn = Icon.createWithResource(getApplicationContext(), R.drawable.ic_cloud_done);
 

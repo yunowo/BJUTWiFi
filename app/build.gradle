@@ -43,6 +43,7 @@ dependencies {
     compile 'com.google.android.agera:database:1.2.0-beta2'
     compile 'com.github.HotBitmapGG:RingProgressBar:V1.2.2'
     compile 'com.diogobernardino:williamchart:2.3.0'
+    compile 'org.cyanogenmod:platform.sdk:6.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
 }
 

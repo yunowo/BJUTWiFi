@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="cyanogenmod.permission.PUBLISH_CUSTOM_TILE" />
 
     <application
         android:allowBackup="true"
@@ -27,7 +28,7 @@
             android:label="@string/settings" />
 
         <service
-            android:name=".WiFiTileService"
+            android:name=".NougatTileService"
             android:icon="@drawable/ic_cloud"
             android:label="@string/tile_icon_label"
             android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
@@ -36,6 +37,11 @@
             </intent-filter>
         </service>
 
+        <receiver android:name="CMTileReceiver">
+            <intent-filter>
+                <action android:name="me.liuyun.bjutlgn.tiles.ACTION_TOGGLE_STATE" />
+            </intent-filter>
+        </receiver>
         <activity android:name=".UsersActivity"></activity>
     </application>
 

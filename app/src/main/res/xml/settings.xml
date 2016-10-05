@@ -13,7 +13,7 @@
             android:singleLine="true"
             android:title="@string/pref_password" />
         <ListPreference
-            android:defaultValue="-1"
+            android:defaultValue="8"
             android:entries="@array/pref_list_packages"
             android:entryValues="@array/pref_list_packages_values"
             android:key="package"

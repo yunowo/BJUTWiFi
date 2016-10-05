@@ -1,6 +1,7 @@
 package me.liuyun.bjutlgn;
 
 import android.animation.ObjectAnimator;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
@@ -20,11 +21,14 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cyanogenmod.app.CMStatusBarManager;
+import cyanogenmod.app.CustomTile;
 import io.netopen.hotbitmapgg.library.view.RingProgressBar;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
 
 public class LoginActivity extends AppCompatActivity {
     @BindView(R.id.progress_ring)
@@ -54,8 +58,22 @@ public class LoginActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         api = new BjutRetrofit().getBjutService();
-        fab.setOnClickListener(view -> Snackbar.make(view, "This is an FAB.", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show());
+        fab.setOnClickListener(v -> {
+            Intent intent = new Intent();
+            intent.setAction(CMTileReceiver.ACTION_TOGGLE_STATE);
+            intent.putExtra(CMTileReceiver.STATE, CMTileReceiver.STATE_OFF);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(LoginActivity.this, 0,
+                    intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            CustomTile customTile = new CustomTile.Builder(LoginActivity.this)
+                    .setOnClickIntent(pendingIntent)
+                    .setContentDescription("BJUT WiFi")
+                    .setLabel("BJUT WiFi Off")
+                    .shouldCollapsePanel(false)
+                    .setIcon(R.drawable.ic_cloud_off)
+                    .build();
+            CMStatusBarManager.getInstance(LoginActivity.this)
+                    .publishTile(CMTileReceiver.CUSTOM_TILE_ID, customTile);
+        });
         onRefresh();
     }
 
@@ -81,7 +99,7 @@ public class LoginActivity extends AppCompatActivity {
     public void onRefresh() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         String account = prefs.getString("account", null);
-        int pack = prefs.getInt("package", 8);
+        int pack = Integer.parseInt(prefs.getString("package", "8"));
         userView.setText(account);
         Call<ResponseBody> call = api.stats();
         call.enqueue(new Callback<ResponseBody>() {

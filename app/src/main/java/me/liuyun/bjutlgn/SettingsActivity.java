@@ -7,10 +7,9 @@ import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 
-import butterknife.ButterKnife;
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class SettingsActivity extends AppCompatActivity {
     @BindView(R.id.settings_toolbar)
@@ -23,32 +22,24 @@ public class SettingsActivity extends AppCompatActivity {
         getFragmentManager().beginTransaction().replace(R.id.content, new SettingsFragment()).commit();
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
+        toolbar.setNavigationOnClickListener(v -> onBackPressed());
     }
 
-    private static Preference.OnPreferenceChangeListener sBindPreferenceSummaryToValueListener = new Preference.OnPreferenceChangeListener() {
-        @Override
-        public boolean onPreferenceChange(Preference preference, Object value) {
-            String stringValue = value.toString();
-            if (preference instanceof ListPreference) {
-                ListPreference listPreference = (ListPreference) preference;
-                int index = listPreference.findIndexOfValue(stringValue);
-                preference.setSummary(
-                        index >= 0
-                                ? listPreference.getEntries()[index]
-                                : null);
-            } else if (preference.getKey().equals("password")) {
-                preference.setSummary("********");
-            } else {
-                preference.setSummary(stringValue);
-            }
-            return true;
+    private static Preference.OnPreferenceChangeListener sBindPreferenceSummaryToValueListener = (preference, value) -> {
+        String stringValue = value.toString();
+        if (preference instanceof ListPreference) {
+            ListPreference listPreference = (ListPreference) preference;
+            int index = listPreference.findIndexOfValue(stringValue);
+            preference.setSummary(
+                    index >= 0
+                            ? listPreference.getEntries()[index]
+                            : null);
+        } else if (preference.getKey().equals("password")) {
+            preference.setSummary("********");
+        } else {
+            preference.setSummary(stringValue);
         }
+        return true;
     };
 
     private static void bindPreferenceSummaryToValue(Preference preference) {
