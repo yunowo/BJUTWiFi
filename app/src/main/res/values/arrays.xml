@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="packages">
+        <item>8 GB</item>
+        <item>25 GB</item>
+        <item>30 GB</item>
+    </string-array>
+    <array name="packages_values">
+        <item>8</item>
+        <item>25</item>
+        <item>30</item>
+    </array>
+</resources>

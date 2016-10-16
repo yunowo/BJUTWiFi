@@ -1,4 +1,4 @@
-package me.liuyun.bjutlgn;
+package me.liuyun.bjutlgn.tile;
 
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
@@ -10,6 +10,8 @@ import android.util.Log;
 
 import cyanogenmod.app.CMStatusBarManager;
 import cyanogenmod.app.CustomTile;
+import me.liuyun.bjutlgn.util.LoginHelper;
+import me.liuyun.bjutlgn.R;
 
 
 public class CMTileReceiver extends BroadcastReceiver {
@@ -17,7 +19,7 @@ public class CMTileReceiver extends BroadcastReceiver {
     public final static int STATE_OFF = 0;
     public final static int STATE_ON = 1;
     public static final int CUSTOM_TILE_ID = 1;
-    public static final String ACTION_TOGGLE_STATE = "me.liuyun.bjutlgn.tiles.ACTION_TOGGLE_STATE";
+    public static final String ACTION_TOGGLE_STATE = "me.liuyun.bjutlgn.tile.ACTION_TOGGLE_STATE";
     public static final String STATE = "state";
 
     @Override

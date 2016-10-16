@@ -1,4 +1,4 @@
-package me.liuyun.bjutlgn;
+package me.liuyun.bjutlgn.entity;
 
 public class Stat {
     private float flow;

@@ -1,4 +1,4 @@
-package me.liuyun.bjutlgn;
+package me.liuyun.bjutlgn.util;
 
 import android.support.design.widget.Snackbar;
 import android.util.Log;
@@ -9,31 +9,34 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import io.netopen.hotbitmapgg.library.view.RingProgressBar;
+import me.liuyun.bjutlgn.BjutApi;
+import me.liuyun.bjutlgn.BjutRetrofit;
+import me.liuyun.bjutlgn.entity.Stat;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 
-class LoginHelper {
+public class LoginHelper {
     private final String LOG_TAG = "LoginHelper";
     private BjutApi api;
 
-    LoginHelper() {
+    public LoginHelper() {
         api = new BjutRetrofit().getBjutService();
     }
 
-    Boolean Login(String account, String password, Boolean outside, View view) {
+    public Boolean Login(String account, String password, Boolean outside, View view) {
         Call<ResponseBody> call = outside ? api.login(account, password, "1", "123") : api.loginLocal(account, password, "1", "123");
         call.enqueue(BjutRetrofit.okFailCallback(view));
         return true;
     }
 
-    Boolean Logout(View view) {
+    public Boolean Logout(View view) {
         Call<ResponseBody> call = api.logout();
         call.enqueue(BjutRetrofit.okFailCallback(view));
         return true;
     }
 
-    Stat GetStats(final View view, final TextView flowView, final TextView timeView, final TextView feeView, final RingProgressBar progress) {
+    public Stat GetStats(final View view, final TextView flowView, final TextView timeView, final TextView feeView, final RingProgressBar progress) {
         Call<ResponseBody> call = api.stats();
         call.enqueue(new Callback<ResponseBody>() {
             @Override

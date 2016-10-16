@@ -1,23 +1,8 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <PreferenceCategory android:title="@string/pref_header_user">
-        <EditTextPreference
-            android:inputType="text"
-            android:key="account"
-            android:selectAllOnFocus="true"
-            android:singleLine="true"
-            android:title="@string/pref_account" />
-        <EditTextPreference
-            android:inputType="textPassword"
-            android:key="password"
-            android:selectAllOnFocus="true"
-            android:singleLine="true"
-            android:title="@string/pref_password" />
-        <ListPreference
-            android:defaultValue="8"
-            android:entries="@array/pref_list_packages"
-            android:entryValues="@array/pref_list_packages_values"
-            android:key="package"
-            android:title="@string/pref_title_packages" />
+        <Preference
+            android:key="user"
+            android:title="@string/pref_user" />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/pref_header_about">
         <Preference

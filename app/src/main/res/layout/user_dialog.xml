@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/user_dialog"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="24dp">
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/account"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/pref_account"
+            android:maxLines="1"
+            android:imeOptions="actionNext"
+            android:inputType="textNoSuggestions|textVisiblePassword" />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/pref_password"
+            android:maxLines="1"
+            android:imeOptions="actionDone"
+            android:inputType="textNoSuggestions|textVisiblePassword" />
+
+    </android.support.design.widget.TextInputLayout>
+
+    <TextView
+        android:text="@string/pref_title_packages"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textSize="12sp"
+        android:layout_margin="4dp" />
+
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/spinner_pack"
+        android:layout_weight="1"
+        android:entries="@array/packages"
+        android:layout_marginTop="4dp" />
+
+</LinearLayout>

@@ -1,4 +1,4 @@
-package me.liuyun.bjutlgn;
+package me.liuyun.bjutlgn.tile;
 
 import android.annotation.TargetApi;
 import android.content.SharedPreferences;
@@ -8,6 +8,9 @@ import android.preference.PreferenceManager;
 import android.service.quicksettings.Tile;
 import android.service.quicksettings.TileService;
 import android.util.Log;
+
+import me.liuyun.bjutlgn.util.LoginHelper;
+import me.liuyun.bjutlgn.R;
 
 @TargetApi(Build.VERSION_CODES.N)
 public class NougatTileService extends TileService {

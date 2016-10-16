@@ -1,8 +1,5 @@
 package me.liuyun.bjutlgn;
 
-import com.google.android.agera.Result;
-import com.google.android.agera.Supplier;
-
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Field;
@@ -10,7 +7,7 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 
-interface BjutApi {
+public interface BjutApi {
     @FormUrlEncoded
     @POST("/")
     Call<ResponseBody> login(@Field("DDDDD") String user, @Field("upass") String pass, @Field("R6") String r6, @Field("6MKKey") String out);
@@ -24,7 +21,4 @@ interface BjutApi {
 
     @GET("/1.htm")
     Call<ResponseBody> stats();
-
-    @GET("/1.htm")
-    Supplier<Result<ResponseBody>> stats2();
 }

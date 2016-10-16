@@ -8,16 +8,6 @@
     <string name="pref_version">Version</string>
     <string name="pref_licenses">Open source licenses</string>
     <string name="pref_title_packages">Package</string>
-    <string-array name="pref_list_packages">
-        <item>8 GB</item>
-        <item>25 GB</item>
-        <item>30 GB</item>
-    </string-array>
-    <string-array name="pref_list_packages_values">
-        <item>8</item>
-        <item>25</item>
-        <item>30</item>
-    </string-array>
     <string name="login_status">Not logged-in</string>
     <string name="action_sign_in">Sign in</string>
     <string name="action_sign_out">Sign out</string>
@@ -27,4 +17,7 @@
     <string name="stats_flow" translatable="false">%.3f MB</string>
     <string name="stats_time" translatable="false">%d min</string>
     <string name="stats_fee" translatable="false">%.2f RMB</string>
+    <string name="pref_user">User</string>
+    <string name="button_ok">OK</string>
+    <string name="button_cancel">Cancel</string>
 </resources>

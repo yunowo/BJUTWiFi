@@ -1,7 +1,9 @@
-package me.liuyun.bjutlgn;
+package me.liuyun.bjutlgn.util;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import me.liuyun.bjutlgn.entity.Stat;
 
 
 public class Utils {
