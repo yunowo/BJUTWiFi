@@ -1,11 +1,11 @@
 package me.liuyun.bjutlgn.entity;
 
 public class Stat {
-    private float flow;
+    private int flow;
     private int time;
-    private float fee;
+    private int fee;
 
-    public Stat(float flow, int time, float fee) {
+    public Stat(int flow, int time, int fee) {
         this.flow = flow;
         this.time = time;
         this.fee = fee;
@@ -20,7 +20,7 @@ public class Stat {
                 '}';
     }
 
-    public float getFlow() {
+    public int getFlow() {
         return flow;
     }
 
@@ -28,12 +28,12 @@ public class Stat {
         return time;
     }
 
-    public float getFee() {
+    public int getFee() {
         return fee;
     }
 
 
-    public void setFlow(float flow) {
+    public void setFlow(int flow) {
         this.flow = flow;
     }
 
@@ -41,7 +41,7 @@ public class Stat {
         this.time = time;
     }
 
-    public void setFee(float fee) {
+    public void setFee(int fee) {
         this.fee = fee;
     }
 

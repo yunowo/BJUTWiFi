@@ -9,8 +9,7 @@ import butterknife.ButterKnife;
 import me.liuyun.bjutlgn.R;
 
 public class SettingsActivity extends AppCompatActivity {
-    @BindView(R.id.settings_toolbar)
-    Toolbar toolbar;
+    @BindView(R.id.settings_toolbar) Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

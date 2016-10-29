@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="fab_primary">#5869b2</color>
-    <color name="fab_primary_pressed">#3951b7</color>
-    <color name="fab_ripple">#7891ff</color>
-    <color name="fab_orange_dark">#f97910</color>
-    <color name="fab_orange_bright">#ffb54c</color>
     <color name="ring_blue">#2196F3</color>
     <color name="ring_grey">#BBDEFB</color>
+    <color name="usage_graph_dots">#58cbff</color>
 </resources>

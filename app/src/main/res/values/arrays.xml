@@ -10,4 +10,9 @@
         <item>25</item>
         <item>30</item>
     </array>
+    <string-array name="graph_side_labels">
+        <item>0%</item>
+        <item>50%</item>
+        <item>100%</item>
+    </string-array>
 </resources>

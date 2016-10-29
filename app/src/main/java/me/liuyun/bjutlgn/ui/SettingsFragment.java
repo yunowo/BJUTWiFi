@@ -1,6 +1,5 @@
 package me.liuyun.bjutlgn.ui;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
@@ -17,11 +16,6 @@ public class SettingsFragment extends PreferenceFragment {
         addPreferencesFromResource(R.xml.settings);
         findPreference("version").setSummary(BuildConfig.VERSION_NAME);
         findPreference("licenses").setSummary(R.string.licenses);
-        findPreference("user").setOnPreferenceClickListener(preference -> {
-            Intent intent = new Intent(getContext(), UserActivity.class);
-            getContext().startActivity(intent);
-            return true;
-        });
     }
 
     private static void bindPreferenceSummaryToValue(Preference preference) {

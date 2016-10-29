@@ -2,7 +2,10 @@ package me.liuyun.bjutlgn.ui;
 
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
@@ -15,22 +18,22 @@ import butterknife.ButterKnife;
 import cyanogenmod.app.CMStatusBarManager;
 import cyanogenmod.app.CustomTile;
 import me.liuyun.bjutlgn.R;
+import me.liuyun.bjutlgn.db.FlowDao;
 import me.liuyun.bjutlgn.tile.CMTileReceiver;
 import me.liuyun.bjutlgn.widget.GraphCard;
 import me.liuyun.bjutlgn.widget.StatusCard;
 
 
-public class LoginActivity extends AppCompatActivity {
-    @BindView(R.id.toolbar)
-    Toolbar toolbar;
-    @BindView(R.id.fab)
-    FloatingActionButton fab;
-    @BindView(R.id.status_card)
-    CardView statusCardView;
-    StatusCard statusCard;
-    @BindView(R.id.graph_card)
-    CardView graphCardView;
-    GraphCard graphCard;
+public class MainActivity extends AppCompatActivity {
+    @BindView(R.id.toolbar) Toolbar toolbar;
+    @BindView(R.id.fab) FloatingActionButton fab;
+    @BindView(R.id.status_card) CardView statusCardView;
+    @BindView(R.id.graph_card) CardView graphCardView;
+    public StatusCard statusCard;
+    public GraphCard graphCard;
+    public FlowDao dao;
+    public Resources resources;
+    public SharedPreferences prefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,29 +41,38 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
-        statusCard = new StatusCard(statusCardView);
-        graphCard = new GraphCard(graphCardView);
+
+        dao = new FlowDao(this);
+        resources = getResources();
+        prefs = PreferenceManager.getDefaultSharedPreferences(this);
+
+        statusCard = new StatusCard(statusCardView, this);
+        graphCard = new GraphCard(graphCardView, this);
 
         fab.setOnClickListener(v -> {
             Intent intent = new Intent();
             intent.setAction(CMTileReceiver.ACTION_TOGGLE_STATE);
             intent.putExtra(CMTileReceiver.STATE, CMTileReceiver.STATE_OFF);
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(LoginActivity.this, 0,
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(MainActivity.this, 0,
                     intent, PendingIntent.FLAG_UPDATE_CURRENT);
-            CustomTile customTile = new CustomTile.Builder(LoginActivity.this)
+            CustomTile customTile = new CustomTile.Builder(MainActivity.this)
                     .setOnClickIntent(pendingIntent)
                     .setContentDescription("BJUT WiFi")
                     .setLabel("BJUT WiFi Off")
                     .shouldCollapsePanel(false)
                     .setIcon(R.drawable.ic_cloud_off)
                     .build();
-            CMStatusBarManager.getInstance(LoginActivity.this)
+            CMStatusBarManager.getInstance(MainActivity.this)
                     .publishTile(CMTileReceiver.CUSTOM_TILE_ID, customTile);
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         statusCard.onRefresh();
         graphCard.show();
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -73,6 +85,11 @@ public class LoginActivity extends AppCompatActivity {
         int id = item.getItemId();
         if (id == R.id.action_settings) {
             Intent intent = new Intent(this, SettingsActivity.class);
+            this.startActivity(intent);
+            return true;
+        }
+        else if(id==R.id.action_users){
+            Intent intent = new Intent(this, UserActivity.class);
             this.startActivity(intent);
             return true;
         }

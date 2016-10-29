@@ -12,11 +12,11 @@
     <string name="action_sign_in">Sign in</string>
     <string name="action_sign_out">Sign out</string>
     <string name="action_refresh">Refresh</string>
-    <string name="licenses" translatable="false">Android Support Library\nOkhttp3\nButter Knife</string>
+    <string name="licenses" translatable="false">Android Support Library\nOkhttp3\nRetrofit\nButter Knife</string>
     <string name="tile_icon_label" translatable="false">BJUT WiFi</string>
-    <string name="stats_flow" translatable="false">%.3f MB</string>
-    <string name="stats_time" translatable="false">%d min</string>
-    <string name="stats_fee" translatable="false">%.2f RMB</string>
+    <string name="stats_flow">Used flux: %.3f MB</string>
+    <string name="stats_time">Used time: %d min</string>
+    <string name="stats_fee">Balance: %.2f RMB</string>
     <string name="pref_user">User</string>
     <string name="button_ok">OK</string>
     <string name="button_cancel">Cancel</string>

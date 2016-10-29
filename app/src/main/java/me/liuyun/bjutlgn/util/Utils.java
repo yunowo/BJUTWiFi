@@ -8,15 +8,14 @@ import me.liuyun.bjutlgn.entity.Stat;
 
 public class Utils {
     public static Stat parseStat(String text) {
-        int time = 0;
-        float flow = 0f, fee = 0f;
+        int time = 0,flow = 0, fee = 0;
         try {
             Pattern p = Pattern.compile("time='(.*?)';flow='(.*?)';fsele=1;fee='(.*?)'");
             Matcher m = p.matcher(text.replace(" ", ""));
             while (m.find()) {
                 time = Integer.parseInt(m.group(1));
-                flow = Float.parseFloat(m.group(2)) / 1024;
-                fee = Float.parseFloat(m.group(3)) / 100;
+                flow = Integer.parseInt(m.group(2));
+                fee = Integer.parseInt(m.group(3));
             }
         } catch (Exception e) {
             e.printStackTrace();

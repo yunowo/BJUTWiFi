@@ -15,4 +15,7 @@
     <string name="button_cancel">取消</string>
     <string name="button_ok">确定</string>
     <string name="pref_user">用户</string>
+    <string name="stats_fee">余额: %.2f RMB</string>
+    <string name="stats_flow">已使用流量: %.3f MB</string>
+    <string name="stats_time">已使用时间: %d min</string>
 </resources>

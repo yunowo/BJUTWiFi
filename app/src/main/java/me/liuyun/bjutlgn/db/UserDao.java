@@ -15,10 +15,10 @@ public class UserDao {
 
     private static final String TAG = "UserDao";
     private final String[] USER_COLUMNS = new String[]{"id", "account", "password", "package"};
-    private UserDBHelper dbHelper;
+    private DBHelper dbHelper;
 
     public UserDao(Context context) {
-        dbHelper = new UserDBHelper(context);
+        dbHelper = new DBHelper(context);
     }
 
     public boolean insertUser(String account, String password, int pack) {
@@ -31,7 +31,7 @@ public class UserDao {
             contentValues.put("password", password);
             contentValues.put("package", pack);
             db.beginTransaction();
-            db.insertOrThrow(UserDBHelper.TABLE, null, contentValues);
+            db.insertOrThrow(DBHelper.TABLE_USERS, null, contentValues);
             db.setTransactionSuccessful();
             return true;
         } catch (Exception e) {
@@ -55,7 +55,7 @@ public class UserDao {
             contentValues.put("account", account);
             contentValues.put("password", password);
             contentValues.put("package", pack);
-            db.update(UserDBHelper.TABLE, contentValues, "id = ?",
+            db.update(DBHelper.TABLE_USERS, contentValues, "id = ?",
                     new String[]{String.valueOf(id)});
             db.setTransactionSuccessful();
             return true;
@@ -76,7 +76,7 @@ public class UserDao {
         try {
             db = dbHelper.getWritableDatabase();
             db.beginTransaction();
-            db.delete(UserDBHelper.TABLE, "id = ?", new String[]{String.valueOf(id)});
+            db.delete(DBHelper.TABLE_USERS, "id = ?", new String[]{String.valueOf(id)});
             db.setTransactionSuccessful();
             return true;
         } catch (Exception e) {
@@ -96,7 +96,7 @@ public class UserDao {
 
         try {
             db = dbHelper.getReadableDatabase();
-            cursor = db.query(UserDBHelper.TABLE, USER_COLUMNS, null, null, null, null, null);
+            cursor = db.query(DBHelper.TABLE_USERS, USER_COLUMNS, null, null, null, null, null);
 
             if (cursor.getCount() > 0) {
                 List<User> UserList = new ArrayList<>(cursor.getCount());

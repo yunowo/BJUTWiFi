@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -22,8 +23,6 @@ import android.widget.CheckedTextView;
 import android.widget.EditText;
 import android.widget.Spinner;
 
-import com.android.annotations.Nullable;
-
 import java.util.List;
 
 import butterknife.BindView;
@@ -33,12 +32,9 @@ import me.liuyun.bjutlgn.db.UserDao;
 import me.liuyun.bjutlgn.entity.User;
 
 public class UserActivity extends AppCompatActivity {
-    @BindView(R.id.rec_list)
-    RecyclerView recyclerView;
-    @BindView(R.id.toolbar)
-    Toolbar toolbar;
-    @BindView(R.id.fab)
-    FloatingActionButton fab;
+    @BindView(R.id.rec_list) RecyclerView recyclerView;
+    @BindView(R.id.toolbar) Toolbar toolbar;
+    @BindView(R.id.fab) FloatingActionButton fab;
     UserAdapter adapter;
     private UserDao dao;
     private SharedPreferences prefs;
@@ -52,6 +48,7 @@ public class UserActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
         toolbar.setNavigationOnClickListener(v -> onBackPressed());
+        fab.setOnClickListener(v -> openUserDialog(true, null));
 
         LinearLayoutManager llm = new LinearLayoutManager(this);
         llm.setOrientation(LinearLayoutManager.VERTICAL);
@@ -62,8 +59,11 @@ public class UserActivity extends AppCompatActivity {
 
         prefs = PreferenceManager.getDefaultSharedPreferences(UserActivity.this);
         currentId = prefs.getInt("current_user", 0);
+    }
 
-        fab.setOnClickListener(v -> openUserDialog(true, null));
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 
     void openUserDialog(boolean newUser, @Nullable User currentUser) {
@@ -122,6 +122,9 @@ public class UserActivity extends AppCompatActivity {
 
         @Override
         public int getItemCount() {
+            if (usersList == null) {
+                return 0;
+            }
             return usersList.size();
         }
 
@@ -156,7 +159,8 @@ public class UserActivity extends AppCompatActivity {
                 updateData();
             });
         }
-        void updateData(){
+
+        void updateData() {
             adapter.usersList.clear();
             adapter.usersList.addAll(dao.getAllUsers());
             notifyDataSetChanged();
@@ -166,12 +170,9 @@ public class UserActivity extends AppCompatActivity {
         }
 
         class UserViewHolder extends RecyclerView.ViewHolder {
-            @BindView(R.id.user)
-            CheckedTextView userView;
-            @BindView(R.id.button_edit)
-            Button buttonEdit;
-            @BindView(R.id.button_delete)
-            Button buttonDelete;
+            @BindView(R.id.user) CheckedTextView userView;
+            @BindView(R.id.button_edit) Button buttonEdit;
+            @BindView(R.id.button_delete) Button buttonDelete;
 
             UserViewHolder(View view) {
                 super(view);
