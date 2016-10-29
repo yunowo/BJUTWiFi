@@ -1,17 +1,16 @@
 package me.liuyun.bjutlgn.db;
 
-
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-public class DBHelper extends SQLiteOpenHelper {
-    public static final int DB_VERSION = 4;
-    public static final String DB_NAME = "bjutwifi.db";
-    public static final String TABLE_FLOW = "flow";
-    public static final String TABLE_USERS = "users";
+class DBHelper extends SQLiteOpenHelper {
+    private static final int DB_VERSION = 4;
+    private static final String DB_NAME = "bjutwifi.db";
+    static final String TABLE_FLOW = "flow";
+    static final String TABLE_USERS = "users";
 
-    public DBHelper(Context context) {
+    DBHelper(Context context) {
         super(context, DBHelper.DB_NAME, null, DBHelper.DB_VERSION);
     }
 

@@ -57,7 +57,7 @@ public class UserActivity extends AppCompatActivity {
         adapter = new UserAdapter(dao.getAllUsers());
         recyclerView.setAdapter(adapter);
 
-        prefs = PreferenceManager.getDefaultSharedPreferences(UserActivity.this);
+        prefs = PreferenceManager.getDefaultSharedPreferences(this);
         currentId = prefs.getInt("current_user", 0);
     }
 
@@ -161,8 +161,13 @@ public class UserActivity extends AppCompatActivity {
         }
 
         void updateData() {
-            adapter.usersList.clear();
-            adapter.usersList.addAll(dao.getAllUsers());
+            List<User> list = dao.getAllUsers();
+            if (adapter.usersList != null && list != null) {
+                adapter.usersList.clear();
+                adapter.usersList.addAll(list);
+            } else {
+                adapter.usersList = list;
+            }
             notifyDataSetChanged();
 
             prefs = PreferenceManager.getDefaultSharedPreferences(UserActivity.this);

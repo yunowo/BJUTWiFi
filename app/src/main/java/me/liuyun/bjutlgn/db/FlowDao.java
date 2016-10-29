@@ -73,6 +73,26 @@ public class FlowDao {
         return null;
     }
 
+    public boolean clearFlow() {
+        SQLiteDatabase db = null;
+
+        try {
+            db = dbHelper.getWritableDatabase();
+            db.beginTransaction();
+            db.delete(DBHelper.TABLE_FLOW, null, null);
+            db.setTransactionSuccessful();
+            return true;
+        } catch (Exception e) {
+            Log.e(TAG, "", e);
+        } finally {
+            if (db != null) {
+                db.endTransaction();
+                db.close();
+            }
+        }
+        return false;
+    }
+
     private Flow parseStats(Cursor cursor) {
         return new Flow(cursor.getInt(cursor.getColumnIndex("id")),
                 cursor.getLong(cursor.getColumnIndex("timestamp")),

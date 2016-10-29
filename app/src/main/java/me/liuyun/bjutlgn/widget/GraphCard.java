@@ -21,7 +21,6 @@ public class GraphCard {
     private CardView cardView;
     private List<Flow> flowList;
 
-
     public GraphCard(CardView cardView, MainActivity activity) {
         this.cardView = cardView;
         this.activity = activity;
@@ -29,6 +28,12 @@ public class GraphCard {
     }
 
     public void show() {
+        int month = Calendar.getInstance().get(Calendar.MONTH);
+        if (activity.prefs.getInt("current_month", -1) != month) {
+            activity.prefs.edit().putInt("current_month", month).apply();
+            activity.dao.clearFlow();
+        }
+
         int pack = activity.resources.getIntArray(R.array.packages_values)[activity.prefs.getInt("current_package", 0)];
         flowList = activity.dao.getAllFlow();
         chart.clearPaths();
@@ -44,10 +49,10 @@ public class GraphCard {
         int startOfMonth = (int) (getStartOfCurrentMonth().getTimeInMillis() / 1000L) / 60;
         SparseIntArray points = new SparseIntArray();
         points.put(0, 0);
-        for (Flow flow : flowList) {
-            points.put((int) (flow.getTimestamp() / 60 - startOfMonth), flow.getFlow() / 1024);
-        }
-        if (points.size() > 1) {
+        if (flowList != null) {
+            for (Flow flow : flowList) {
+                points.put((int) (flow.getTimestamp() / 60 - startOfMonth), flow.getFlow() / 1024);
+            }
             chart.addPath(points);
         }
     }
