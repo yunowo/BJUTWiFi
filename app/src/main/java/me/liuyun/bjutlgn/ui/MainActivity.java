@@ -1,9 +1,13 @@
 package me.liuyun.bjutlgn.ui;
 
 import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
@@ -34,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
     public FlowDao dao;
     public Resources resources;
     public SharedPreferences prefs;
+    private BroadcastReceiver receiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +53,13 @@ public class MainActivity extends AppCompatActivity {
 
         statusCard = new StatusCard(statusCardView, this);
         graphCard = new GraphCard(graphCardView, this);
+
+        receiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                statusCard.onRefresh();
+            }
+        };
 
         fab.setOnClickListener(v -> {
             Intent intent = new Intent();
@@ -72,6 +84,13 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         statusCard.onRefresh();
         graphCard.show();
+        registerReceiver(receiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+    }
+
+    @Override
+    protected void onPause() {
+        unregisterReceiver(receiver);
+        super.onPause();
     }
 
     @Override
@@ -87,8 +106,7 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(this, SettingsActivity.class);
             this.startActivity(intent);
             return true;
-        }
-        else if(id==R.id.action_users){
+        } else if (id == R.id.action_users) {
             Intent intent = new Intent(this, UserActivity.class);
             this.startActivity(intent);
             return true;
@@ -96,4 +114,7 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    public int getPack() {
+        return resources.getIntArray(R.array.packages_values)[prefs.getInt("current_package", 0)];
+    }
 }

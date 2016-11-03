@@ -34,7 +34,7 @@ public class GraphCard {
             activity.dao.clearFlow();
         }
 
-        int pack = activity.resources.getIntArray(R.array.packages_values)[activity.prefs.getInt("current_package", 0)];
+        int pack = activity.getPack();
         flowList = activity.dao.getAllFlow();
         chart.clearPaths();
         chart.configureGraph(60 * 24 * getEndOfCurrentMonth().get(Calendar.DATE), pack * 1024, true, true);

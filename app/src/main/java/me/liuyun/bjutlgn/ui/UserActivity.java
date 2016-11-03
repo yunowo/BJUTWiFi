@@ -169,8 +169,6 @@ public class UserActivity extends AppCompatActivity {
                 adapter.usersList = list;
             }
             notifyDataSetChanged();
-
-            prefs = PreferenceManager.getDefaultSharedPreferences(UserActivity.this);
             currentId = prefs.getInt("current_user", 0);
         }
 
