@@ -1,10 +1,16 @@
 package me.liuyun.bjutlgn.entity;
 
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
 
+@DatabaseTable(tableName = "flow")
 public class Flow {
-    int id;
-    long timestamp;
-    int flow;
+    @DatabaseField(generatedId = true) int id;
+    @DatabaseField long timestamp;
+    @DatabaseField int flow;
+
+    public Flow() {
+    }
 
     public Flow(int id, long timestamp, int flow) {
         this.id = id;

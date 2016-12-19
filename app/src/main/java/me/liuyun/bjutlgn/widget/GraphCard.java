@@ -31,11 +31,11 @@ public class GraphCard {
         int month = Calendar.getInstance().get(Calendar.MONTH);
         if (activity.prefs.getInt("current_month", -1) != month) {
             activity.prefs.edit().putInt("current_month", month).apply();
-            activity.dao.clearFlow();
+            activity.flowManager.clearFlow();
         }
 
         int pack = activity.getPack();
-        flowList = activity.dao.getAllFlow();
+        flowList = activity.flowManager.getAllFlow();
         chart.clearPaths();
         chart.configureGraph(60 * 24 * getEndOfCurrentMonth().get(Calendar.DATE), pack * 1024, true, true);
         calcPoints();

@@ -60,7 +60,7 @@ public class StatusCard {
             statusLayout.setVisibility(View.VISIBLE);
             buttonsLayout.setVisibility(View.VISIBLE);
         } else {
-            progressRing.setVisibility(View.INVISIBLE);
+            progressRing.setVisibility(View.GONE);
             statusLayout.setVisibility(View.INVISIBLE);
             buttonsLayout.setVisibility(View.INVISIBLE);
         }
@@ -80,7 +80,7 @@ public class StatusCard {
         }
     }
 
-    public void refreshStatus() {
+    private void refreshStatus() {
         String account = activity.prefs.getString("account", null);
         userView.setText(account);
         Call<ResponseBody> call = api.stats();
@@ -93,7 +93,7 @@ public class StatusCard {
                     feeView.setText(String.format(activity.resources.getString(R.string.stats_fee), currentStat.getFee() / 1000f));
                     timeView.setText(String.format(activity.resources.getString(R.string.stats_time), currentStat.getTime()));
 
-                    int percent = Math.round(currentStat.getFlow() / 1024 / 1024 / activity.getPack() * 100);
+                    int percent = Math.round((float) currentStat.getFlow() / 1024 / 1024 / activity.getPack() * 100);
                     ObjectAnimator animator = ObjectAnimator.ofInt(progressRing, "progress", percent);
                     animator.setInterpolator(new AccelerateDecelerateInterpolator());
                     animator.setDuration(500);
@@ -102,7 +102,7 @@ public class StatusCard {
                     Snackbar.make(cardView, "Refresh OK.", Snackbar.LENGTH_LONG).show();
 
                     if (currentStat.getFlow() != 0) {
-                        activity.dao.insertFlow(System.currentTimeMillis() / 1000L, currentStat.getFlow());
+                        activity.flowManager.insertFlow(System.currentTimeMillis() / 1000L, currentStat.getFlow());
                         activity.graphCard.show();
                     }
                 } catch (Exception e) {
@@ -118,7 +118,7 @@ public class StatusCard {
     }
 
     @OnClick(R.id.sign_in_button)
-    public void onLogin() {
+    void onLogin() {
         String account = activity.prefs.getString("account", null);
         String password = activity.prefs.getString("password", null);
 
@@ -138,7 +138,7 @@ public class StatusCard {
     }
 
     @OnClick(R.id.sign_out_button)
-    public void onLogout() {
+    void onLogout() {
         Call<ResponseBody> call = api.logout();
         call.enqueue(BjutRetrofit.okFailCallback(cardView));
     }
@@ -162,7 +162,7 @@ public class StatusCard {
     }
 
     private String getWifiSSID() {
-        WifiManager wifiManager = (WifiManager) activity.getSystemService(Context.WIFI_SERVICE);
+        WifiManager wifiManager = (WifiManager) activity.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         return wifiManager.getConnectionInfo().getSSID();
     }
 }

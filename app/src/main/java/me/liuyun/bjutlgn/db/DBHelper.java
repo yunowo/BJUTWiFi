@@ -2,32 +2,70 @@ package me.liuyun.bjutlgn.db;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
-class DBHelper extends SQLiteOpenHelper {
-    private static final int DB_VERSION = 4;
-    private static final String DB_NAME = "bjutwifi.db";
-    static final String TABLE_FLOW = "flow";
-    static final String TABLE_USERS = "users";
+import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
+import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.support.ConnectionSource;
+import com.j256.ormlite.table.TableUtils;
 
-    DBHelper(Context context) {
-        super(context, DBHelper.DB_NAME, null, DBHelper.DB_VERSION);
+import java.sql.SQLException;
+
+import me.liuyun.bjutlgn.entity.Flow;
+import me.liuyun.bjutlgn.entity.User;
+
+public class DBHelper extends OrmLiteSqliteOpenHelper {
+    private static final String DATABASE_NAME = "bjutwifi.db";
+    private static final int DATABASE_VERSION = 5;
+
+    private Dao<Flow, Integer> flowDao = null;
+    private Dao<User, Integer> userDao = null;
+
+    public DBHelper(Context context) {
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
     @Override
-    public void onCreate(SQLiteDatabase db) {
-        String sql = "CREATE TABLE IF NOT EXISTS " + DBHelper.TABLE_FLOW + " (id INTEGER PRIMARY KEY, timestamp INTEGER, flow INTEGER)";
-        db.execSQL(sql);
-        sql = "CREATE TABLE IF NOT EXISTS " + DBHelper.TABLE_USERS + " (id INTEGER PRIMARY KEY, account TEXT, password TEXT, package INTEGER)";
-        db.execSQL(sql);
+    public void onCreate(SQLiteDatabase db, ConnectionSource connectionSource) {
+        try {
+            TableUtils.createTable(connectionSource, Flow.class);
+            TableUtils.createTable(connectionSource, User.class);
+        } catch (SQLException e) {
+            Log.e(DBHelper.class.getName(), "onCreate", e);
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        String sql = "DROP TABLE IF EXISTS " + DBHelper.TABLE_FLOW;
-        db.execSQL(sql);
-        sql = "DROP TABLE IF EXISTS " + DBHelper.TABLE_USERS;
-        db.execSQL(sql);
-        onCreate(db);
+    public void onUpgrade(SQLiteDatabase db, ConnectionSource connectionSource, int oldVersion, int newVersion) {
+        try {
+            TableUtils.dropTable(connectionSource, Flow.class, true);
+            TableUtils.dropTable(connectionSource, User.class, true);
+            onCreate(db, connectionSource);
+        } catch (SQLException e) {
+            Log.e(DBHelper.class.getName(), "onUpgrade", e);
+            throw new RuntimeException(e);
+        }
+    }
+
+    public Dao<User, Integer> getUserDao() throws SQLException {
+        if (userDao == null) {
+            userDao = getDao(User.class);
+        }
+        return userDao;
+    }
+
+    public Dao<Flow, Integer> getFlowDao() throws SQLException {
+        if (flowDao == null) {
+            flowDao = getDao(Flow.class);
+        }
+        return flowDao;
+    }
+
+    @Override
+    public void close() {
+        super.close();
+        flowDao = null;
+        userDao = null;
     }
 }

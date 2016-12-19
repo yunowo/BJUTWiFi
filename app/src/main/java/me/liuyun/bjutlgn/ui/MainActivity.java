@@ -22,7 +22,7 @@ import butterknife.ButterKnife;
 import cyanogenmod.app.CMStatusBarManager;
 import cyanogenmod.app.CustomTile;
 import me.liuyun.bjutlgn.R;
-import me.liuyun.bjutlgn.db.FlowDao;
+import me.liuyun.bjutlgn.db.FlowManager;
 import me.liuyun.bjutlgn.tile.CMTileReceiver;
 import me.liuyun.bjutlgn.widget.GraphCard;
 import me.liuyun.bjutlgn.widget.StatusCard;
@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.graph_card) CardView graphCardView;
     public StatusCard statusCard;
     public GraphCard graphCard;
-    public FlowDao dao;
+    public FlowManager flowManager;
     public Resources resources;
     public SharedPreferences prefs;
     private BroadcastReceiver receiver;
@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
 
-        dao = new FlowDao(this);
+        flowManager=new FlowManager(this);
         resources = getResources();
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
