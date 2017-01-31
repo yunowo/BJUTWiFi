@@ -1,6 +1,5 @@
 package me.liuyun.bjutlgn.ui;
 
-import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -19,11 +18,8 @@ import android.view.MenuItem;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import cyanogenmod.app.CMStatusBarManager;
-import cyanogenmod.app.CustomTile;
 import me.liuyun.bjutlgn.R;
 import me.liuyun.bjutlgn.db.FlowManager;
-import me.liuyun.bjutlgn.tile.CMTileReceiver;
 import me.liuyun.bjutlgn.widget.GraphCard;
 import me.liuyun.bjutlgn.widget.StatusCard;
 
@@ -62,20 +58,6 @@ public class MainActivity extends AppCompatActivity {
         };
 
         fab.setOnClickListener(v -> {
-            Intent intent = new Intent();
-            intent.setAction(CMTileReceiver.ACTION_TOGGLE_STATE);
-            intent.putExtra(CMTileReceiver.STATE, CMTileReceiver.STATE_OFF);
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(MainActivity.this, 0,
-                    intent, PendingIntent.FLAG_UPDATE_CURRENT);
-            CustomTile customTile = new CustomTile.Builder(MainActivity.this)
-                    .setOnClickIntent(pendingIntent)
-                    .setContentDescription("BJUT WiFi")
-                    .setLabel("BJUT WiFi Off")
-                    .shouldCollapsePanel(false)
-                    .setIcon(R.drawable.ic_cloud_off)
-                    .build();
-            CMStatusBarManager.getInstance(MainActivity.this)
-                    .publishTile(CMTileReceiver.CUSTOM_TILE_ID, customTile);
         });
     }
 
