@@ -10,7 +10,7 @@ import me.liuyun.bjutlgn.R;
 import me.liuyun.bjutlgn.entity.Stat;
 
 
-public class Utils {
+public class StatUtils {
     public static Stat parseStat(String text) {
         int time = 0, flow = 0, fee = 0;
         try {

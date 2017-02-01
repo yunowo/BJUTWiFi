@@ -13,13 +13,13 @@ import android.util.Log;
 import me.liuyun.bjutlgn.entity.Stat;
 import me.liuyun.bjutlgn.util.LoginUtils;
 import me.liuyun.bjutlgn.R;
-import me.liuyun.bjutlgn.util.Utils;
+import me.liuyun.bjutlgn.util.StatUtils;
 
 import static me.liuyun.bjutlgn.util.NetworkUtils.*;
 
 @TargetApi(Build.VERSION_CODES.N)
-public class NougatTileService extends TileService {
-    private final String TAG = NougatTileService.class.getSimpleName();
+public class BjutTileService extends TileService {
+    private final String TAG = BjutTileService.class.getSimpleName();
     private Icon iconOff;
     private Icon iconOn;
     private SharedPreferences prefs;
@@ -89,7 +89,7 @@ public class NougatTileService extends TileService {
 
     void setOnlineState(Tile tile, Stat stat) {
         tile.setIcon(iconOn);
-        tile.setLabel(resources.getString(R.string.status_logged_in, stat.getFlow(), Utils.getPercent(stat, Utils.getPack(resources, prefs))));
+        tile.setLabel(resources.getString(R.string.status_logged_in, stat.getFlow(), StatUtils.getPercent(stat, StatUtils.getPack(resources, prefs))));
         tile.setState(Tile.STATE_ACTIVE);
     }
 

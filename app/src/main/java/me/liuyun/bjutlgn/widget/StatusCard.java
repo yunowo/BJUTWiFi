@@ -18,7 +18,7 @@ import me.liuyun.bjutlgn.BjutRetrofit;
 import me.liuyun.bjutlgn.R;
 import me.liuyun.bjutlgn.entity.Stat;
 import me.liuyun.bjutlgn.ui.MainActivity;
-import me.liuyun.bjutlgn.util.Utils;
+import me.liuyun.bjutlgn.util.StatUtils;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -81,7 +81,7 @@ public class StatusCard {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    Stat currentStat = Utils.parseStat(response.body().string());
+                    Stat currentStat = StatUtils.parseStat(response.body().string());
                     flowView.setText(String.format(activity.resources.getString(R.string.stats_flow), currentStat.getFlow() / 1024f));
                     feeView.setText(String.format(activity.resources.getString(R.string.stats_fee), currentStat.getFee() / 1000f));
                     timeView.setText(String.format(activity.resources.getString(R.string.stats_time), currentStat.getTime()));

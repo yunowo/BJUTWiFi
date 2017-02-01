@@ -29,7 +29,7 @@
             android:label="@string/settings"/>
 
         <service
-            android:name=".tile.NougatTileService"
+            android:name=".tile.BjutTileService"
             android:icon="@drawable/ic_cloud"
             android:label="@string/tile_icon_label"
             android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">

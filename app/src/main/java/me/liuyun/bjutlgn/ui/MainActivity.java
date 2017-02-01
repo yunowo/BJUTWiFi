@@ -21,7 +21,7 @@ import butterknife.ButterKnife;
 import me.liuyun.bjutlgn.R;
 import me.liuyun.bjutlgn.db.FlowManager;
 import me.liuyun.bjutlgn.entity.Stat;
-import me.liuyun.bjutlgn.util.Utils;
+import me.liuyun.bjutlgn.util.StatUtils;
 import me.liuyun.bjutlgn.widget.GraphCard;
 import me.liuyun.bjutlgn.widget.StatusCard;
 
@@ -99,11 +99,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public int getPack() {
-        return Utils.getPack(resources, prefs);
+        return StatUtils.getPack(resources, prefs);
     }
 
     public int getPercent(Stat stat) {
-        return Utils.getPercent(stat, getPack());
+        return StatUtils.getPercent(stat, getPack());
     }
 
 }

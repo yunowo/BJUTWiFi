@@ -37,7 +37,7 @@ public class LoginUtils {
     public Stat stat() {
         try {
             Call<ResponseBody> call = api.stats();
-            return Utils.parseStat(call.execute().body().string());
+            return StatUtils.parseStat(call.execute().body().string());
         } catch (Exception e) {
             Log.d(TAG, "Get stat error");
         }
