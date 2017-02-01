@@ -1,10 +1,6 @@
 package me.liuyun.bjutlgn.widget;
 
 import android.animation.ObjectAnimator;
-import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.net.wifi.WifiManager;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.CardView;
 import android.text.TextUtils;
@@ -28,12 +24,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class StatusCard {
-    private final static int STATE_NO_NETWORK = 0;
-    private final static int STATE_MOBILE = 1;
-    private final static int STATE_BJUT_WIFI = 2;
-    private final static int STATE_OTHER_WIFI = 3;
+import static me.liuyun.bjutlgn.util.NetworkUtils.*;
 
+public class StatusCard {
     @BindView(R.id.progress_ring) RingProgressBar progressRing;
     @BindView(R.id.user) TextView userView;
     @BindView(R.id.fee) TextView feeView;
@@ -54,7 +47,7 @@ public class StatusCard {
 
     @OnClick(R.id.refresh_button)
     public void onRefresh() {
-        int state = getNetworkState();
+        int state = getNetworkState(activity);
         if (state == STATE_BJUT_WIFI) {
             progressRing.setVisibility(View.VISIBLE);
             statusLayout.setVisibility(View.VISIBLE);
@@ -75,7 +68,7 @@ public class StatusCard {
                 refreshStatus();
                 break;
             case STATE_OTHER_WIFI:
-                userView.setText(String.format(activity.resources.getString(R.string.status_other_wifi), getWifiSSID()));
+                userView.setText(String.format(activity.resources.getString(R.string.status_other_wifi), getWifiSSID(activity)));
                 break;
         }
     }
@@ -93,8 +86,7 @@ public class StatusCard {
                     feeView.setText(String.format(activity.resources.getString(R.string.stats_fee), currentStat.getFee() / 1000f));
                     timeView.setText(String.format(activity.resources.getString(R.string.stats_time), currentStat.getTime()));
 
-                    int percent = Math.round((float) currentStat.getFlow() / 1024 / 1024 / activity.getPack() * 100);
-                    ObjectAnimator animator = ObjectAnimator.ofInt(progressRing, "progress", percent);
+                    ObjectAnimator animator = ObjectAnimator.ofInt(progressRing, "progress",  activity.getPercent(currentStat));
                     animator.setInterpolator(new AccelerateDecelerateInterpolator());
                     animator.setDuration(500);
                     animator.start();
@@ -141,28 +133,5 @@ public class StatusCard {
     void onLogout() {
         Call<ResponseBody> call = api.logout();
         call.enqueue(BjutRetrofit.okFailCallback(cardView));
-    }
-
-    private int getNetworkState() {
-        ConnectivityManager connManager = (ConnectivityManager) activity.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo info = connManager.getActiveNetworkInfo();
-        if (info != null && info.isConnectedOrConnecting()) {
-            switch (info.getType()) {
-                case ConnectivityManager.TYPE_MOBILE:
-                    return STATE_MOBILE;
-                case ConnectivityManager.TYPE_WIFI: {
-                    if (getWifiSSID().replace("\"", "").equals("bjut_wifi"))
-                        return STATE_BJUT_WIFI;
-                    else return STATE_OTHER_WIFI;
-                }
-                default:
-                    return STATE_NO_NETWORK;
-            }
-        } else return STATE_NO_NETWORK;
-    }
-
-    private String getWifiSSID() {
-        WifiManager wifiManager = (WifiManager) activity.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-        return wifiManager.getConnectionInfo().getSSID();
     }
 }

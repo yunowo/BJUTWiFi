@@ -2,6 +2,7 @@ package me.liuyun.bjutlgn.tile;
 
 import android.annotation.TargetApi;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.graphics.drawable.Icon;
 import android.os.Build;
 import android.preference.PreferenceManager;
@@ -9,14 +10,30 @@ import android.service.quicksettings.Tile;
 import android.service.quicksettings.TileService;
 import android.util.Log;
 
-import me.liuyun.bjutlgn.util.LoginHelper;
+import me.liuyun.bjutlgn.entity.Stat;
+import me.liuyun.bjutlgn.util.LoginUtils;
 import me.liuyun.bjutlgn.R;
+import me.liuyun.bjutlgn.util.Utils;
+
+import static me.liuyun.bjutlgn.util.NetworkUtils.*;
 
 @TargetApi(Build.VERSION_CODES.N)
 public class NougatTileService extends TileService {
     private final String TAG = NougatTileService.class.getSimpleName();
-    private Icon iconOff = Icon.createWithResource(getApplicationContext(), R.drawable.ic_cloud_off);
-    private Icon iconOn = Icon.createWithResource(getApplicationContext(), R.drawable.ic_cloud_done);
+    private Icon iconOff;
+    private Icon iconOn;
+    private SharedPreferences prefs;
+    private Resources resources;
+    private LoginUtils helper = new LoginUtils();
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        iconOff = Icon.createWithResource(this, R.drawable.ic_cloud_off);
+        iconOn = Icon.createWithResource(this, R.drawable.ic_cloud_done);
+        prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        resources = this.getResources();
+    }
 
     @Override
     public void onTileAdded() {
@@ -30,20 +47,16 @@ public class NougatTileService extends TileService {
 
     @Override
     public void onClick() {
-        LoginHelper helper = new LoginHelper();
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        String account = prefs.getString("account", null);
-        String password = prefs.getString("password", null);
-
+        Log.d(TAG, "onClick");
         Tile tile = getQsTile();
         if (tile.getState() == Tile.STATE_ACTIVE) {
-            helper.Logout(null);
-            tile.setIcon(iconOff);
-            tile.setState(Tile.STATE_INACTIVE);
-        } else {
-            helper.Login(account, password, true, null);
-            tile.setIcon(iconOn);
-            tile.setState(Tile.STATE_ACTIVE);
+            helper.logout();
+            setOfflineState(tile);
+        } else if (tile.getState() == Tile.STATE_INACTIVE) {
+            String account = prefs.getString("account", null);
+            String password = prefs.getString("password", null);
+            helper.login(account, password, true);
+            setAvailableState(tile);
         }
         tile.updateTile();
     }
@@ -52,8 +65,12 @@ public class NougatTileService extends TileService {
     public void onStartListening() {
         Log.d(TAG, "onStartListening");
         Tile tile = getQsTile();
-        //TODO check network state
-        tile.setState(Tile.STATE_INACTIVE);
+        if (getNetworkState(this) != STATE_BJUT_WIFI) {
+            setUnavailableState(tile);
+        } else {
+            setAvailableState(tile);
+        }
+        tile.updateTile();
     }
 
     @Override
@@ -61,5 +78,30 @@ public class NougatTileService extends TileService {
         Log.d(TAG, "onStopListening");
     }
 
+    void setAvailableState(Tile tile) {
+        Stat stat = helper.stat();
+        if (stat.isOnline()) {
+            setOnlineState(tile, stat);
+        } else {
+            setOfflineState(tile);
+        }
+    }
 
+    void setOnlineState(Tile tile, Stat stat) {
+        tile.setIcon(iconOn);
+        tile.setLabel(resources.getString(R.string.status_logged_in, stat.getFlow(), Utils.getPercent(stat, Utils.getPack(resources, prefs))));
+        tile.setState(Tile.STATE_ACTIVE);
+    }
+
+    void setOfflineState(Tile tile) {
+        tile.setIcon(iconOff);
+        tile.setLabel(resources.getString(R.string.status_not_logged_in));
+        tile.setState(Tile.STATE_INACTIVE);
+    }
+
+    void setUnavailableState(Tile tile) {
+        tile.setIcon(iconOff);
+        tile.setLabel(resources.getString(R.string.status_unavailable));
+        tile.setState(Tile.STATE_UNAVAILABLE);
+    }
 }

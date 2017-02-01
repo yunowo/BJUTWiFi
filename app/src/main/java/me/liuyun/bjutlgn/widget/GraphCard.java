@@ -34,10 +34,9 @@ public class GraphCard {
             activity.flowManager.clearFlow();
         }
 
-        int pack = activity.getPack();
         flowList = activity.flowManager.getAllFlow();
         chart.clearPaths();
-        chart.configureGraph(60 * 24 * getEndOfCurrentMonth().get(Calendar.DATE), pack * 1024, true, true);
+        chart.configureGraph(60 * 24 * getEndOfCurrentMonth().get(Calendar.DATE),  activity.getPack() * 1024, true, true);
         calcPoints();
 
         DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.SHORT);

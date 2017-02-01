@@ -38,11 +38,6 @@
             </intent-filter>
         </service>
 
-        <receiver android:name=".tile.CMTileReceiver">
-            <intent-filter>
-                <action android:name="me.liuyun.bjutlgn.tiles.ACTION_TOGGLE_STATE"/>
-            </intent-filter>
-        </receiver>
         <activity android:name=".ui.UserActivity"/>
     </application>
 

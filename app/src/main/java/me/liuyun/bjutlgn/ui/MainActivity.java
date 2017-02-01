@@ -20,6 +20,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import me.liuyun.bjutlgn.R;
 import me.liuyun.bjutlgn.db.FlowManager;
+import me.liuyun.bjutlgn.entity.Stat;
+import me.liuyun.bjutlgn.util.Utils;
 import me.liuyun.bjutlgn.widget.GraphCard;
 import me.liuyun.bjutlgn.widget.StatusCard;
 
@@ -43,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
 
-        flowManager=new FlowManager(this);
+        flowManager = new FlowManager(this);
         resources = getResources();
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
@@ -97,6 +99,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public int getPack() {
-        return resources.getIntArray(R.array.packages_values)[prefs.getInt("current_package", 0)];
+        return Utils.getPack(resources, prefs);
     }
+
+    public int getPercent(Stat stat) {
+        return Utils.getPercent(stat, getPack());
+    }
+
 }
