@@ -8,6 +8,7 @@ import android.preference.PreferenceManager;
 
 import java.util.ArrayList;
 
+import java8.util.stream.StreamSupport;
 import me.liuyun.bjutlgn.R;
 
 public class ThemeHelper implements Application.ActivityLifecycleCallbacks {
@@ -37,7 +38,7 @@ public class ThemeHelper implements Application.ActivityLifecycleCallbacks {
     public void setTheme(Activity activity, int styleRes) {
         currentTheme = styleRes;
         PreferenceManager.getDefaultSharedPreferences(activity).edit().putInt("theme", currentTheme).apply();
-        activityList.stream().filter(a -> a != activity).forEach(Activity::recreate);
+        StreamSupport.stream(activityList).filter(a -> a != activity).forEach(Activity::recreate);
         Intent intent = new Intent(activity, activity.getClass());
         activity.startActivity(intent);
         activity.overridePendingTransition(R.anim.alpha_in, R.anim.alpha_out);

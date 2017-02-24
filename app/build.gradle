@@ -9,7 +9,7 @@ android {
     }
     defaultConfig {
         applicationId "me.liuyun.bjutlgn"
-        minSdkVersion 25
+        minSdkVersion 23
         targetSdkVersion 25
         versionCode 3
         versionName "0.3"
@@ -42,6 +42,7 @@ dependencies {
     compile 'com.jakewharton:butterknife:8.5.1'
     compile 'com.github.HotBitmapGG:RingProgressBar:V1.2.2'
     compile 'com.j256.ormlite:ormlite-android:5.0'
+    compile 'net.sourceforge.streamsupport:streamsupport:1.5.3'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
 }
 
