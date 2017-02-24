@@ -26,10 +26,10 @@
             android:layout_rowSpan="3"
             app:max="100"
             app:ringColor="@color/ring_grey"
-            app:ringProgressColor="@color/ring_blue"
+            app:ringProgressColor="@color/colorAccent"
             app:ringWidth="3dp"
             app:style="STROKE"
-            app:textColor="@color/ring_blue"
+            app:textColor="@color/colorAccent"
             app:textIsShow="true"
             app:textSize="18sp"
             android:layout_gravity="center">

@@ -2,18 +2,18 @@ package me.liuyun.bjutlgn.util;
 
 import android.util.Log;
 
-import me.liuyun.bjutlgn.BjutApi;
-import me.liuyun.bjutlgn.BjutRetrofit;
+import me.liuyun.bjutlgn.api.BjutService;
+import me.liuyun.bjutlgn.api.BjutRetrofit;
 import me.liuyun.bjutlgn.entity.Stat;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 
 public class LoginUtils {
     private final String TAG = "LoginUtils";
-    private BjutApi api;
+    private BjutService api;
 
     public LoginUtils() {
-        api = new BjutRetrofit().getBjutService();
+        api = BjutRetrofit.getBjutService();
     }
 
     public void login(String account, String password, Boolean outside) {

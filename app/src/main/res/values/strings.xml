@@ -11,7 +11,7 @@
     <string name="action_sign_in">Sign in</string>
     <string name="action_sign_out">Sign out</string>
     <string name="action_refresh">Refresh</string>
-    <string name="licenses" translatable="false">Android Support Library\nOkhttp3\nRetrofit\nButter Knife\nOrmlite</string>
+    <string name="licenses" translatable="false">Android Support Library\nRxJava\nRxAndroid\nOkhttp3\nRetrofit\nButter Knife\nOrmlite</string>
     <string name="tile_icon_label">WiFi Status</string>
     <string name="stats_flow">Used flux: %.3f MB</string>
     <string name="stats_time">Used time: %d min</string>
@@ -25,4 +25,24 @@
     <string name="status_not_logged_in">Not logged in</string>
     <string name="status_logged_in" translatable="false">%.3f MB / %d%%</string>
     <string name="status_unavailable">Unavailable</string>
+    <string name="pref_header_theme">Theme</string>
+    <string name="pref_theme">Theme</string>
+    <string name="pref_source">Source code</string>
+    <string name="source_code_url" translatable="false">https://github.com/liu-yun/BJUTWiFi</string>
+    <string name="pref_theme_hint">Setup theme</string>
+    <string name="theme_tick" translatable="false">✓</string>
+    <string name="theme_title">Theme</string>
+    <string name="theme_using">Using</string>
+    <string name="theme_use">Use</string>
+    <string name="theme_purple_zero">ZeroGo Purple</string>
+    <string name="theme_blue">Blue</string>
+    <string name="theme_red">Red</string>
+    <string name="theme_purple">Purple</string>
+    <string name="theme_orange">Orange</string>
+    <string name="theme_pink">Pink</string>
+    <string name="theme_green">Green</string>
+    <string name="theme_teal">Teal</string>
+    <string name="theme_indigo">Indigo</string>
+    <string name="theme_black">Black</string>
+    <string name="theme_green_yun">Yun Green</string>
 </resources>

@@ -1,5 +1,16 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="@string/pref_header_theme">
+        <Preference
+            android:key="theme"
+            android:title="@string/pref_theme"
+            android:summary="@string/pref_theme_hint"/>
+    </PreferenceCategory>
+
     <PreferenceCategory android:title="@string/pref_header_about">
+        <Preference
+            android:key="source"
+            android:title="@string/pref_source"
+            android:summary="@string/source_code_url"/>
         <Preference
             android:key="version"
             android:title="@string/pref_version" />

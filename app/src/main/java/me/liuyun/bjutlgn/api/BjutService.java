@@ -1,4 +1,4 @@
-package me.liuyun.bjutlgn;
+package me.liuyun.bjutlgn.api;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -7,7 +7,7 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 
-public interface BjutApi {
+public interface BjutService {
     @FormUrlEncoded
     @POST("/")
     Call<ResponseBody> login(@Field("DDDDD") String user, @Field("upass") String pass, @Field("R6") String r6, @Field("6MKKey") String out);

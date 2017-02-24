@@ -1,6 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="ring_blue">#2196F3</color>
     <color name="ring_grey">#BBDEFB</color>
     <color name="usage_graph_dots">#58cbff</color>
+
+    <color name="colorAccent">#2196F3</color>
+    <color name="secondary_text">#757575</color>
+    <color name="greenYun">#00cc69</color>
+    <color name="greenYunDark">#00ad48</color>
+    <color name="blue">#2196f3</color>
+    <color name="blueDark">#1E88E5</color>
+    <color name="red">#e66565</color>
+    <color name="redDark">#d24f4f</color>
+    <color name="purple">#9c27b0</color>
+    <color name="purpleDark">#7b1fa2</color>
+    <color name="orange">#ff9800</color>
+    <color name="orangeDark">#f57c00</color>
+    <color name="pink">#fb7299</color>
+    <color name="pinkDark">#d66182</color>
+    <color name="indigo">#3F51B5</color>
+    <color name="indigoDark">#303F9F</color>
+    <color name="green">#4caf50</color>
+    <color name="greenDark">#388e3c</color>
+    <color name="teal">#009688</color>
+    <color name="tealDark">#00796b</color>
+    <color name="black">#212121</color>
+    <color name="blackDark">#000000</color>
 </resources>

@@ -13,8 +13,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.netopen.hotbitmapgg.library.view.RingProgressBar;
-import me.liuyun.bjutlgn.BjutApi;
-import me.liuyun.bjutlgn.BjutRetrofit;
+import me.liuyun.bjutlgn.api.BjutService;
+import me.liuyun.bjutlgn.api.BjutRetrofit;
 import me.liuyun.bjutlgn.R;
 import me.liuyun.bjutlgn.entity.Stat;
 import me.liuyun.bjutlgn.ui.MainActivity;
@@ -36,13 +36,13 @@ public class StatusCard {
     @BindView(R.id.buttons_layout) LinearLayout buttonsLayout;
     private CardView cardView;
     private MainActivity activity;
-    private BjutApi api;
+    private BjutService api;
 
     public StatusCard(CardView cardView, MainActivity activity) {
         this.cardView = cardView;
         this.activity = activity;
         ButterKnife.bind(this, cardView);
-        api = new BjutRetrofit().getBjutService();
+        api = BjutRetrofit.getBjutService();
     }
 
     @OnClick(R.id.refresh_button)
