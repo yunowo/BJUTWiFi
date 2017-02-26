@@ -4,11 +4,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
-import android.content.res.Resources;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
@@ -19,9 +16,7 @@ import android.view.MenuItem;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import me.liuyun.bjutlgn.R;
-import me.liuyun.bjutlgn.db.FlowManager;
-import me.liuyun.bjutlgn.entity.Stat;
-import me.liuyun.bjutlgn.util.StatUtils;
+import me.liuyun.bjutlgn.WiFiApplication;
 import me.liuyun.bjutlgn.widget.GraphCard;
 import me.liuyun.bjutlgn.widget.StatusCard;
 
@@ -33,9 +28,6 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.graph_card) CardView graphCardView;
     public StatusCard statusCard;
     public GraphCard graphCard;
-    public FlowManager flowManager;
-    public Resources resources;
-    public SharedPreferences prefs;
     private BroadcastReceiver receiver;
 
     @Override
@@ -45,12 +37,8 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
 
-        flowManager = new FlowManager(this);
-        resources = getResources();
-        prefs = PreferenceManager.getDefaultSharedPreferences(this);
-
-        statusCard = new StatusCard(statusCardView, this);
-        graphCard = new GraphCard(graphCardView, this);
+        graphCard = new GraphCard(graphCardView, (WiFiApplication) getApplication());
+        statusCard = new StatusCard(statusCardView, graphCard, (WiFiApplication) getApplication());
 
         receiver = new BroadcastReceiver() {
             @Override
@@ -59,8 +47,7 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
-        fab.setOnClickListener(v -> {
-        });
+        fab.setOnClickListener(v -> statusCard.onRefresh());
     }
 
     @Override
@@ -97,13 +84,4 @@ public class MainActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
-    public int getPack() {
-        return StatUtils.getPack(resources, prefs);
-    }
-
-    public int getPercent(Stat stat) {
-        return StatUtils.getPercent(stat, getPack());
-    }
-
 }

@@ -1,8 +1,5 @@
 package me.liuyun.bjutlgn.api;
 
-import android.support.design.widget.Snackbar;
-import android.view.View;
-
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
 import java.util.ArrayList;
@@ -15,9 +12,6 @@ import okhttp3.CookieJar;
 import okhttp3.Headers;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.Retrofit;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
 
@@ -32,8 +26,8 @@ public class BjutRetrofit {
             .add("X-Requested-With", "XMLHttpRequest")
             .build();
     private static OkHttpClient client = new OkHttpClient.Builder()
-            .connectTimeout(10, TimeUnit.SECONDS)
-            .readTimeout(10, TimeUnit.SECONDS)
+            .connectTimeout(5, TimeUnit.SECONDS)
+            .readTimeout(5, TimeUnit.SECONDS)
             .addInterceptor(chain -> chain.proceed(chain.request().newBuilder().headers(headers).build()))
             .cookieJar(new CookieJar() {
                 private final HashMap<String, List<Cookie>> cookieStore = new HashMap<>();
@@ -61,20 +55,5 @@ public class BjutRetrofit {
     }
 
     private BjutRetrofit() {
-
-    }
-
-    public static Callback<ResponseBody> okFailCallback(final View view) {
-        return new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
-                if (view != null) Snackbar.make(view, "OK.", Snackbar.LENGTH_LONG).show();
-            }
-
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                if (view != null) Snackbar.make(view, "Failed.", Snackbar.LENGTH_LONG).show();
-            }
-        };
     }
 }

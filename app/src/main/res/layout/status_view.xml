@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="8dp"
+        android:columnCount="2"
+        android:rowCount="3">
+
+        <io.netopen.hotbitmapgg.library.view.RingProgressBar
+            android:id="@+id/progress_ring"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_column="0"
+            android:layout_gravity="center"
+            android:layout_margin="5dp"
+            android:layout_row="0"
+            android:layout_rowSpan="3"
+            app:max="100"
+            app:ringColor="@color/ring_grey"
+            app:ringProgressColor="@color/colorAccent"
+            app:ringWidth="3dp"
+            app:style="STROKE"
+            app:textColor="@color/colorAccent"
+            app:textIsShow="true"
+            app:textSize="18sp">
+
+        </io.netopen.hotbitmapgg.library.view.RingProgressBar>
+
+        <TextView
+            android:id="@+id/user"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_column="1"
+            android:layout_marginBottom="5dp"
+            android:layout_marginStart="10dp"
+            android:layout_row="0"
+            android:gravity="center_horizontal"
+            android:textSize="18sp"/>
+
+        <LinearLayout
+            android:id="@+id/info_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_column="1"
+            android:layout_gravity="fill"
+            android:layout_marginStart="10dp"
+            android:layout_row="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/flow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:gravity="center_horizontal"/>
+
+            <TextView
+                android:id="@+id/time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:gravity="center_horizontal"/>
+
+            <TextView
+                android:id="@+id/fee"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/buttons_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_column="1"
+            android:layout_gravity="fill_horizontal"
+            android:layout_row="2"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+
+            <Button
+                android:id="@+id/sign_in_button"
+                style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="0dp"
+                android:layout_marginStart="0dp"
+                android:minWidth="60dp"
+                android:text="@string/action_sign_in"/>
+
+            <Button
+                android:id="@+id/sign_out_button"
+                style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:layout_marginStart="5dp"
+                android:minWidth="60dp"
+                android:text="@string/action_sign_out"/>
+
+            <Button
+                android:id="@+id/refresh_button"
+                style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="0dp"
+                android:layout_marginStart="0dp"
+                android:minWidth="60dp"
+                android:text="@string/action_refresh"/>
+        </LinearLayout>
+
+    </GridLayout>
+</FrameLayout>

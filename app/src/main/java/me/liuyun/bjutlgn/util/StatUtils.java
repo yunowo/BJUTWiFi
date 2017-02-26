@@ -1,7 +1,9 @@
 package me.liuyun.bjutlgn.util;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.preference.PreferenceManager;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -28,11 +30,13 @@ public class StatUtils {
         //TODO if flow=0 then check real connection
     }
 
-    public static int getPack(Resources resources, SharedPreferences prefs) {
+    public static int getPack(Context context) {
+        Resources resources=context.getResources();
+        SharedPreferences prefs= PreferenceManager.getDefaultSharedPreferences(context);
         return resources.getIntArray(R.array.packages_values)[prefs.getInt("current_package", 0)];
     }
 
-    public static int getPercent(Stat stat, int pack) {
-        return Math.round((float) stat.getFlow() / 1024 / 1024 / pack * 100);
+    public static int getPercent(Stat stat, Context context ) {
+        return Math.round((float) stat.getFlow() / 1024 / 1024 / getPack(context) * 100);
     }
 }

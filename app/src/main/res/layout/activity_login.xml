@@ -21,18 +21,6 @@
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
     </android.support.design.widget.AppBarLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:orientation="vertical"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-        <include layout="@layout/status_card" />
-        <include layout="@layout/graph_card"/>
-
-    </LinearLayout>
-
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
@@ -42,6 +30,19 @@
         android:clickable="true"
         app:fabSize="normal"
         app:srcCompat="@drawable/ic_cloud" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <include layout="@layout/status_card"/>
+
+        <include layout="@layout/graph_card"/>
+
+    </LinearLayout>
 
 
 </android.support.design.widget.CoordinatorLayout>

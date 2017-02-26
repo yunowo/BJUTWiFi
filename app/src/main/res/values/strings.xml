@@ -1,13 +1,17 @@
 <resources>
     <string name="app_name" translatable="false">BJUT Wi-Fi</string>
     <string name="settings">Settings</string>
-    <string name="pref_header_user">User</string>
     <string name="pref_account">Account</string>
     <string name="pref_password">Password</string>
     <string name="pref_header_about">About</string>
     <string name="pref_version">Version</string>
+    <string name="pref_source">Source code</string>
     <string name="pref_licenses">Open source licenses</string>
-    <string name="pref_title_packages">Package</string>
+    <string name="pref_packages">Package</string>
+    <string name="pref_user">User</string>
+    <string name="pref_header_theme">Theme</string>
+    <string name="pref_theme">Theme</string>
+    <string name="pref_theme_hint">Setup theme</string>
     <string name="action_sign_in">Sign in</string>
     <string name="action_sign_out">Sign out</string>
     <string name="action_refresh">Refresh</string>
@@ -16,20 +20,21 @@
     <string name="stats_flow">Used flux: %.3f MB</string>
     <string name="stats_time">Used time: %d min</string>
     <string name="stats_fee">Balance: %.2f RMB</string>
-    <string name="pref_user">User</string>
+    <string name="stats_login_failed">Login Failed.</string>
+    <string name="stats_logout_failed">Logout Failed.</string>
+    <string name="stats_logout_ok">Logout OK.</string>
+    <string name="stats_refresh_ok">Refresh OK.</string>
+    <string name="stats_refresh_failed">Refresh Failed.</string>
     <string name="button_ok">OK</string>
     <string name="button_cancel">Cancel</string>
+    <string name="button_open_app">Open app</string>
     <string name="status_no_network">No network available</string>
     <string name="status_mobile_network">Connected to mobile network</string>
     <string name="status_other_wifi">Connected to %s</string>
     <string name="status_not_logged_in">Not logged in</string>
     <string name="status_logged_in" translatable="false">%.3f MB / %d%%</string>
     <string name="status_unavailable">Unavailable</string>
-    <string name="pref_header_theme">Theme</string>
-    <string name="pref_theme">Theme</string>
-    <string name="pref_source">Source code</string>
     <string name="source_code_url" translatable="false">https://github.com/liu-yun/BJUTWiFi</string>
-    <string name="pref_theme_hint">Setup theme</string>
     <string name="theme_tick" translatable="false">✓</string>
     <string name="theme_title">Theme</string>
     <string name="theme_using">Using</string>

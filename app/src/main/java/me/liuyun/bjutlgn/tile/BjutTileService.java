@@ -1,38 +1,42 @@
 package me.liuyun.bjutlgn.tile;
 
 import android.annotation.TargetApi;
-import android.content.SharedPreferences;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.drawable.Icon;
 import android.os.Build;
-import android.preference.PreferenceManager;
 import android.service.quicksettings.Tile;
 import android.service.quicksettings.TileService;
 import android.util.Log;
 
-import me.liuyun.bjutlgn.entity.Stat;
-import me.liuyun.bjutlgn.util.LoginUtils;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import me.liuyun.bjutlgn.R;
+import me.liuyun.bjutlgn.api.BjutRetrofit;
+import me.liuyun.bjutlgn.api.BjutService;
+import me.liuyun.bjutlgn.entity.Stat;
+import me.liuyun.bjutlgn.ui.StatusDialog;
+import me.liuyun.bjutlgn.ui.StatusLockedActivity;
 import me.liuyun.bjutlgn.util.StatUtils;
 
-import static me.liuyun.bjutlgn.util.NetworkUtils.*;
+import static me.liuyun.bjutlgn.util.NetworkUtils.STATE_BJUT_WIFI;
+import static me.liuyun.bjutlgn.util.NetworkUtils.getNetworkState;
 
 @TargetApi(Build.VERSION_CODES.N)
 public class BjutTileService extends TileService {
     private final String TAG = BjutTileService.class.getSimpleName();
     private Icon iconOff;
     private Icon iconOn;
-    private SharedPreferences prefs;
-    private Resources resources;
-    private LoginUtils helper = new LoginUtils();
+    private Resources res;
+    private BjutService service;
 
     @Override
     public void onCreate() {
         super.onCreate();
         iconOff = Icon.createWithResource(this, R.drawable.ic_cloud_off);
         iconOn = Icon.createWithResource(this, R.drawable.ic_cloud_done);
-        prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        resources = this.getResources();
+        res = getResources();
+        service = BjutRetrofit.getBjutService();
     }
 
     @Override
@@ -48,17 +52,17 @@ public class BjutTileService extends TileService {
     @Override
     public void onClick() {
         Log.d(TAG, "onClick");
-        Tile tile = getQsTile();
-        if (tile.getState() == Tile.STATE_ACTIVE) {
-            helper.logout();
-            setOfflineState(tile);
-        } else if (tile.getState() == Tile.STATE_INACTIVE) {
-            String account = prefs.getString("account", null);
-            String password = prefs.getString("password", null);
-            helper.login(account, password, true);
-            setAvailableState(tile);
+        if (isLocked()) {
+            if (isSecure()) {
+                Intent intent = new Intent(this, StatusLockedActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivityAndCollapse(intent);
+            } else {
+                unlockAndRun(() -> showDialog(StatusDialog.statusDialog(getApplicationContext())));
+            }
+        } else {
+            showDialog(StatusDialog.statusDialog(getApplicationContext()));
         }
-        tile.updateTile();
     }
 
     @Override
@@ -79,29 +83,36 @@ public class BjutTileService extends TileService {
     }
 
     void setAvailableState(Tile tile) {
-        Stat stat = helper.stat();
-        if (stat.isOnline()) {
-            setOnlineState(tile, stat);
-        } else {
-            setOfflineState(tile);
-        }
+        service.stats()
+                .map(StatUtils::parseStat)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(stat -> {
+                            if (stat.isOnline()) {
+                                setOnlineState(tile, stat);
+                            } else {
+                                setOfflineState(tile);
+                            }
+                        },
+                        throwable -> setOfflineState(tile));
     }
 
     void setOnlineState(Tile tile, Stat stat) {
         tile.setIcon(iconOn);
-        tile.setLabel(resources.getString(R.string.status_logged_in, stat.getFlow(), StatUtils.getPercent(stat, StatUtils.getPack(resources, prefs))));
+        tile.setLabel(res.getString(R.string.status_logged_in, stat.getFlow(), StatUtils.getPercent(stat, this)));
         tile.setState(Tile.STATE_ACTIVE);
     }
 
     void setOfflineState(Tile tile) {
         tile.setIcon(iconOff);
-        tile.setLabel(resources.getString(R.string.status_not_logged_in));
+        tile.setLabel(res.getString(R.string.status_not_logged_in));
         tile.setState(Tile.STATE_INACTIVE);
     }
 
     void setUnavailableState(Tile tile) {
         tile.setIcon(iconOff);
-        tile.setLabel(resources.getString(R.string.status_unavailable));
-        tile.setState(Tile.STATE_UNAVAILABLE);
+        tile.setLabel(res.getString(R.string.status_unavailable));
+        tile.setState(Tile.STATE_INACTIVE);
+        //tile.setState(Tile.STATE_UNAVAILABLE);
     }
 }

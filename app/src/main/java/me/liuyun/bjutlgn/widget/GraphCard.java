@@ -12,31 +12,30 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import me.liuyun.bjutlgn.R;
+import me.liuyun.bjutlgn.WiFiApplication;
 import me.liuyun.bjutlgn.entity.Flow;
-import me.liuyun.bjutlgn.ui.MainActivity;
+import me.liuyun.bjutlgn.util.StatUtils;
 
 public class GraphCard {
     @BindView(R.id.chart) UsageView chart;
-    private MainActivity activity;
-    private CardView cardView;
+    private WiFiApplication context;
     private List<Flow> flowList;
 
-    public GraphCard(CardView cardView, MainActivity activity) {
-        this.cardView = cardView;
-        this.activity = activity;
+    public GraphCard(CardView cardView, WiFiApplication context) {
+        this.context = context;
         ButterKnife.bind(this, cardView);
     }
 
     public void show() {
         int month = Calendar.getInstance().get(Calendar.MONTH);
-        if (activity.prefs.getInt("current_month", -1) != month) {
-            activity.prefs.edit().putInt("current_month", month).apply();
-            activity.flowManager.clearFlow();
+        if (context.getPrefs().getInt("current_month", -1) != month) {
+            context.getPrefs().edit().putInt("current_month", month).apply();
+            context.getFlowManager().clearFlow();
         }
 
-        flowList = activity.flowManager.getAllFlow();
+        flowList = context.getFlowManager().getAllFlow();
         chart.clearPaths();
-        chart.configureGraph(60 * 24 * getEndOfCurrentMonth().get(Calendar.DATE),  activity.getPack() * 1024, true, true);
+        chart.configureGraph(60 * 24 * getEndOfCurrentMonth().get(Calendar.DATE),  StatUtils.getPack(context) * 1024, true, true);
         calcPoints();
 
         DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.SHORT);

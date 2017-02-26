@@ -5,15 +5,17 @@ import android.app.Application;
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.StyleRes;
 
 import java.util.ArrayList;
 
 import java8.util.stream.StreamSupport;
 import me.liuyun.bjutlgn.R;
+import me.liuyun.bjutlgn.ui.StatusLockedActivity;
 
 public class ThemeHelper implements Application.ActivityLifecycleCallbacks {
     private ArrayList<Activity> activityList = new ArrayList<>();
-    private int currentTheme = 0;
+    @StyleRes private int currentStyle = 0;
     private static ThemeHelper instance = null;
 
     private ThemeHelper() {
@@ -26,18 +28,18 @@ public class ThemeHelper implements Application.ActivityLifecycleCallbacks {
         return instance;
     }
 
-    public int getCurrentTheme() {
-        return currentTheme;
+    public int getCurrentStyle() {
+        return currentStyle;
     }
 
-    public void init(Application application, int theme) {
+    public void init(Application application, @StyleRes int styleRes) {
         application.registerActivityLifecycleCallbacks(this);
-        this.currentTheme = theme;
+        this.currentStyle = styleRes;
     }
 
-    public void setTheme(Activity activity, int styleRes) {
-        currentTheme = styleRes;
-        PreferenceManager.getDefaultSharedPreferences(activity).edit().putInt("theme", currentTheme).apply();
+    public void setTheme(Activity activity, @StyleRes int styleRes) {
+        currentStyle = styleRes;
+        PreferenceManager.getDefaultSharedPreferences(activity).edit().putInt("theme", currentStyle).apply();
         StreamSupport.stream(activityList).filter(a -> a != activity).forEach(Activity::recreate);
         Intent intent = new Intent(activity, activity.getClass());
         activity.startActivity(intent);
@@ -48,7 +50,10 @@ public class ThemeHelper implements Application.ActivityLifecycleCallbacks {
     @Override
     public void onActivityCreated(Activity activity, Bundle bundle) {
         activityList.add(activity);
-        activity.setTheme(currentTheme);
+        if (activity.getClass().getSimpleName().equals(StatusLockedActivity.class.getSimpleName()))
+            activity.setTheme(R.style.AppTheme_Dialog);
+        else
+            activity.setTheme(currentStyle);
     }
 
     @Override

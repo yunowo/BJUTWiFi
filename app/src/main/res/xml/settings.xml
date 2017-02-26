@@ -2,21 +2,21 @@
     <PreferenceCategory android:title="@string/pref_header_theme">
         <Preference
             android:key="theme"
-            android:title="@string/pref_theme"
-            android:summary="@string/pref_theme_hint"/>
+            android:summary="@string/pref_theme_hint"
+            android:title="@string/pref_theme"/>
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/pref_header_about">
         <Preference
-            android:key="source"
-            android:title="@string/pref_source"
-            android:summary="@string/source_code_url"/>
-        <Preference
             android:key="version"
-            android:title="@string/pref_version" />
+            android:title="@string/pref_version"/>
+        <Preference
+            android:key="source"
+            android:summary="@string/source_code_url"
+            android:title="@string/pref_source"/>
         <Preference
             android:key="licenses"
-            android:title="@string/pref_licenses" />
+            android:title="@string/pref_licenses"/>
     </PreferenceCategory>
 
 </PreferenceScreen>

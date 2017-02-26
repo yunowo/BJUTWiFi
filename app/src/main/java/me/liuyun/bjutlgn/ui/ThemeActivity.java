@@ -39,7 +39,7 @@ public class ThemeActivity extends AppCompatActivity {
         Resources resources = getResources();
         Resources.Theme theme = getTheme();
         int white = resources.getColor(android.R.color.white, theme);
-        int grey = resources.getColor(R.color.secondary_text, theme);
+        int grey = resources.getColor(android.R.color.darker_gray, theme);
 
         @Override
         public ThemeItemHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -54,7 +54,7 @@ public class ThemeActivity extends AppCompatActivity {
             holder.themeId = res.getStyle();
             holder.tvTheme.setText(res.getName());
             holder.tvTheme.setTextColor(themeColor);
-            if (ThemeHelper.getInstance().getCurrentTheme() == res.getStyle()) {
+            if (ThemeHelper.getInstance().getCurrentStyle() == res.getStyle()) {
                 holder.btnChoose.setChecked(true);
                 holder.btnChoose.setTextColor(themeColor);
                 holder.btnChoose.setText(R.string.theme_using);
