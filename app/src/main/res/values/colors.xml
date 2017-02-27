@@ -2,6 +2,7 @@
 <resources>
     <color name="ring_grey">#BBDEFB</color>
     <color name="usage_graph_dots">#58cbff</color>
+    <color name="background_grey">#FFF5F5F5</color>
 
     <color name="colorAccent">#2196F3</color>
     <color name="greenYun">#00cc69</color>

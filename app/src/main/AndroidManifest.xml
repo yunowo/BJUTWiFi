@@ -23,12 +23,10 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity
-            android:name=".ui.SettingsActivity"/>
-        <activity
-            android:name=".ui.ThemeActivity"/>
-        <activity
-            android:name=".ui.UserActivity"/>
+        <activity android:name=".ui.SettingsActivity"/>
+        <activity android:name=".ui.ThemeActivity"/>
+        <activity android:name=".ui.LicenseActivity"/>
+        <activity android:name=".ui.UserActivity"/>
         <activity
             android:name=".ui.StatusLockedActivity"
             android:excludeFromRecents="true"
@@ -44,7 +42,6 @@
                 <action android:name="android.service.quicksettings.action.QS_TILE"/>
             </intent-filter>
         </service>
-
     </application>
 
 </manifest>

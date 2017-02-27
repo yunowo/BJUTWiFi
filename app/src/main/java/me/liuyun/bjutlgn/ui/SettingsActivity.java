@@ -38,7 +38,10 @@ public class SettingsActivity extends AppCompatActivity {
                 return true;
             });
             findPreference("version").setSummary(BuildConfig.VERSION_NAME);
-            findPreference("licenses").setSummary(R.string.licenses);
+            findPreference("licenses").setOnPreferenceClickListener(preference -> {
+                startActivity(new Intent(getContext(), LicenseActivity.class));
+                return true;
+            });
             findPreference("source").setOnPreferenceClickListener(preference -> {
                 startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getResources().getString(R.string.source_code_url))));
                 return true;
