@@ -11,11 +11,10 @@
     <string name="pref_user">User</string>
     <string name="pref_header_theme">Theme</string>
     <string name="pref_theme">Theme</string>
-    <string name="pref_theme_hint">Setup theme</string>
     <string name="action_sign_in">Sign in</string>
     <string name="action_sign_out">Sign out</string>
     <string name="action_refresh">Refresh</string>
-    <string name="tile_icon_label">WiFi Status</string>
+    <string name="tile_icon_label">Wi-Fi Status</string>
     <string name="stats_flow">Used flux: %.3f MB</string>
     <string name="stats_time">Used time: %d min</string>
     <string name="stats_fee">Balance: %.2f RMB</string>

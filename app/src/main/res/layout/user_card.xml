@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/graph_card"
     android:layout_width="match_parent"
@@ -27,7 +28,8 @@
             android:layout_toStartOf="@+id/buttons"
             android:drawablePadding="20dp"
             android:drawableStart="?android:attr/listChoiceIndicatorSingle"
-            android:textSize="18sp" />
+            android:drawableTint="?attr/colorPrimary"
+            android:textSize="18sp"/>
 
         <LinearLayout
             android:id="@id/buttons"
@@ -46,7 +48,7 @@
                 android:foregroundGravity="center"
                 android:foregroundTint="?attr/colorPrimary"
                 android:gravity="center_vertical"
-                android:minWidth="48dip" />
+                android:minWidth="48dip"/>
 
             <Button
                 android:id="@+id/button_delete"
@@ -57,7 +59,7 @@
                 android:foreground="@drawable/ic_delete"
                 android:foregroundGravity="center"
                 android:foregroundTint="?attr/colorPrimary"
-                android:minWidth="48dip" />
+                android:minWidth="48dip"/>
         </LinearLayout>
 
     </RelativeLayout>

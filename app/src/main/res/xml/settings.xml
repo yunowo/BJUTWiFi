@@ -2,7 +2,6 @@
     <PreferenceCategory android:title="@string/pref_header_theme">
         <Preference
             android:key="theme"
-            android:summary="@string/pref_theme_hint"
             android:title="@string/pref_theme"/>
     </PreferenceCategory>
 

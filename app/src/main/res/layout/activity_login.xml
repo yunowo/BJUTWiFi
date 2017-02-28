@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/coordinator_layout"
@@ -18,7 +19,7 @@
             android:layout_height="wrap_content"
             android:minHeight="?attr/actionBarSize"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
     </android.support.design.widget.AppBarLayout>
 
     <android.support.design.widget.FloatingActionButton
@@ -28,8 +29,9 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
         android:clickable="true"
+        app:backgroundTint="?attr/colorPrimary"
         app:fabSize="normal"
-        app:srcCompat="@drawable/ic_cloud" />
+        app:srcCompat="@drawable/ic_cloud"/>
 
     <LinearLayout
         android:layout_width="match_parent"

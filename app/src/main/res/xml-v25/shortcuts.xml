@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut
+        android:shortcutId="main"
+        android:enabled="true"
+        android:icon="@drawable/ic_shortcut_wifi"
+        android:shortcutShortLabel="@string/button_open_app"
+        android:shortcutLongLabel="@string/button_open_app"
+        android:shortcutDisabledMessage="@string/button_open_app">
+        <intent
+            android:action="android.intent.action.MAIN"
+            android:targetPackage="me.liuyun.bjutlgn"
+            android:targetClass="me.liuyun.bjutlgn.ui.MainActivity" />
+    </shortcut>
+    <shortcut
+        android:shortcutId="dialog"
+        android:enabled="true"
+        android:icon="@drawable/ic_shortcut_wifi_status"
+        android:shortcutShortLabel="@string/tile_icon_label"
+        android:shortcutLongLabel="@string/tile_icon_label"
+        android:shortcutDisabledMessage="@string/tile_icon_label">
+        <intent
+            android:action="android.intent.action.MAIN"
+            android:targetPackage="me.liuyun.bjutlgn"
+            android:targetClass="me.liuyun.bjutlgn.ui.StatusLockedActivity" />
+    </shortcut>
+</shortcuts>

@@ -17,8 +17,7 @@ public class StatusDialog {
     public static Dialog statusDialog(@NonNull Context context) {
         context.setTheme(R.style.AppTheme_Dialog);
         FrameLayout cardView = (FrameLayout) LayoutInflater.from(context).inflate(R.layout.status_view, null);
-        new StatusCard(cardView, null, (WiFiApplication) context.getApplicationContext());
-        //statusCard.onRefresh();
+        new StatusCard(cardView, null, (WiFiApplication) context.getApplicationContext()).onRefresh();
         return new AlertDialog.Builder(context, R.style.AppTheme_Dialog)
                 .setTitle(R.string.app_name)
                 .setView(cardView)

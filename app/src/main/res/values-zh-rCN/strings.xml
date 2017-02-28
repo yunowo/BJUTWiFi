@@ -20,12 +20,11 @@
     <string name="status_no_network">无可用网络</string>
     <string name="status_mobile_network">已连接到移动网络</string>
     <string name="status_other_wifi">已连接到 %s</string>
-    <string name="tile_icon_label">WiFi 状态</string>
+    <string name="tile_icon_label">Wi-Fi 状态</string>
     <string name="status_unavailable">不可用</string>
     <string name="pref_header_theme">主题</string>
     <string name="pref_theme">主题</string>
     <string name="pref_source">源代码</string>
-    <string name="pref_theme_hint">设置主题</string>
     <string name="theme_use">使用</string>
     <string name="theme_using">使用中</string>
     <string name="theme_black">黑</string>

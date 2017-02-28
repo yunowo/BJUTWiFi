@@ -13,13 +13,16 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.facebook.rebound.SimpleSpringListener;
+import com.facebook.rebound.Spring;
+import com.facebook.rebound.SpringSystem;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import me.liuyun.bjutlgn.R;
 import me.liuyun.bjutlgn.WiFiApplication;
 import me.liuyun.bjutlgn.widget.GraphCard;
 import me.liuyun.bjutlgn.widget.StatusCard;
-
 
 public class MainActivity extends AppCompatActivity {
     @BindView(R.id.toolbar) Toolbar toolbar;
@@ -29,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     public StatusCard statusCard;
     public GraphCard graphCard;
     private BroadcastReceiver receiver;
+    private Spring spring;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +43,19 @@ public class MainActivity extends AppCompatActivity {
 
         graphCard = new GraphCard(graphCardView, (WiFiApplication) getApplication());
         statusCard = new StatusCard(statusCardView, graphCard, (WiFiApplication) getApplication());
+
+        spring = SpringSystem.create().createSpring();
+        spring.addListener(new SimpleSpringListener() {
+            @Override
+            public void onSpringUpdate(Spring spring) {
+                float value = (float) spring.getCurrentValue();
+                graphCardView.setScaleX(value);
+                graphCardView.setScaleY(value);
+                statusCardView.setScaleX(value);
+                statusCardView.setScaleY(value);
+            }
+        });
+
 
         receiver = new BroadcastReceiver() {
             @Override
@@ -56,6 +73,8 @@ public class MainActivity extends AppCompatActivity {
         statusCard.onRefresh();
         graphCard.show();
         registerReceiver(receiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        spring.setCurrentValue(0);
+        spring.setEndValue(1);
     }
 
     @Override
