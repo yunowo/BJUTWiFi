@@ -59,6 +59,7 @@ AndroidGithubRelease {
         owner "liu-yun"
         repo "BJUTWiFi"
         assets "build/outputs/apk"
+        overwrite true
     }
 
     androidConfigs {
