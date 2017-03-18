@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'me.tatarka.retrolambda'
+apply plugin: 'com.trevjonez.AndroidGithubReleasePlugin'
 
 android {
     compileSdkVersion 25
@@ -15,6 +16,9 @@ android {
         versionName "0.4"
     }
     buildTypes {
+        debug {
+            signingConfig signingConfigs.release
+        }
         release {
             minifyEnabled true
             shrinkResources true
@@ -49,9 +53,33 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
 }
 
+AndroidGithubRelease {
+    defaultConfig {
+        tagName android.defaultConfig.versionName
+        owner "liu-yun"
+        repo "BJUTWiFi"
+        assets "build/outputs/apk"
+    }
+
+    androidConfigs {
+        debug {
+            preRelease true
+            tagModifier { it + "-debug" }
+        }
+        release {
+            draft true
+            releaseName android.defaultConfig.versionName
+        }
+    }
+}
+
+def gitCommitCount = "git rev-list HEAD --count".execute().text.trim()
+android.buildTypes.release.versionNameSuffix = " (${gitCommitCount})"
+android.buildTypes.debug.versionNameSuffix = " (${gitCommitCount})"
+
 def propFile = file('../signing.properties')
 if (propFile.canRead()) {
-    def Properties p = new Properties()
+    Properties p = new Properties()
     p.load(new FileInputStream(propFile))
 
     if (p != null
@@ -59,20 +87,22 @@ if (propFile.canRead()) {
             && p.containsKey('STORE_PASSWORD')
             && p.containsKey('KEY_ALIAS')
             && p.containsKey('KEY_PASSWORD')
+            && p.containsKey('GITHUB_API_TOKEN')
     ) {
-        println "RELEASE_BUILD: Signing..."
+        println "Signing..."
 
         android.signingConfigs.release.storeFile = file(p['STORE_FILE'])
         android.signingConfigs.release.storePassword = p['STORE_PASSWORD']
         android.signingConfigs.release.keyAlias = p['KEY_ALIAS']
         android.signingConfigs.release.keyPassword = p['KEY_PASSWORD']
+        AndroidGithubRelease.defaultConfig.accessToken = p['GITHUB_API_TOKEN']
 
     } else {
-        println "RELEASE_BUILD: Required properties in signing.properties are missing"
+        println "Required properties in signing.properties are missing"
         android.buildTypes.release.signingConfig = null
     }
 
 } else {
-    println "RELEASE_BUILD: signing.properties not found"
+    println "signing.properties not found"
     android.buildTypes.release.signingConfig = null
 }
