@@ -2,6 +2,8 @@ apply plugin: 'com.android.application'
 apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'com.trevjonez.AndroidGithubReleasePlugin'
 
+def gitCommitCount = "git rev-list HEAD --count".execute().text.trim()
+
 android {
     compileSdkVersion 25
     buildToolsVersion '25.0.2'
@@ -17,9 +19,11 @@ android {
     }
     buildTypes {
         debug {
+            versionNameSuffix = " (${gitCommitCount})"
             signingConfig signingConfigs.release
         }
         release {
+            versionNameSuffix = " (${gitCommitCount})"
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
@@ -55,7 +59,7 @@ dependencies {
 
 AndroidGithubRelease {
     defaultConfig {
-        tagName android.defaultConfig.versionName
+        tagName android.defaultConfig.versionName + "-${gitCommitCount}"
         owner "liu-yun"
         repo "BJUTWiFi"
         assets "build/outputs/apk"
@@ -73,10 +77,6 @@ AndroidGithubRelease {
         }
     }
 }
-
-def gitCommitCount = "git rev-list HEAD --count".execute().text.trim()
-android.buildTypes.release.versionNameSuffix = " (${gitCommitCount})"
-android.buildTypes.debug.versionNameSuffix = " (${gitCommitCount})"
 
 def propFile = file('../signing.properties')
 if (propFile.canRead()) {
