@@ -14,10 +14,10 @@ import io.reactivex.schedulers.Schedulers;
 import me.liuyun.bjutlgn.R;
 import me.liuyun.bjutlgn.api.BjutRetrofit;
 import me.liuyun.bjutlgn.api.BjutService;
-import me.liuyun.bjutlgn.entity.Stat;
+import me.liuyun.bjutlgn.entity.Stats;
 import me.liuyun.bjutlgn.ui.StatusDialog;
 import me.liuyun.bjutlgn.ui.StatusLockedActivity;
-import me.liuyun.bjutlgn.util.StatUtils;
+import me.liuyun.bjutlgn.util.StatsUtils;
 
 import static me.liuyun.bjutlgn.util.NetworkUtils.STATE_BJUT_WIFI;
 import static me.liuyun.bjutlgn.util.NetworkUtils.getNetworkState;
@@ -84,12 +84,12 @@ public class BjutTileService extends TileService {
 
     void setAvailableState(Tile tile) {
         service.stats()
-                .map(StatUtils::parseStat)
+                .map(StatsUtils::parseStats)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(stat -> {
-                            if (stat.isOnline()) {
-                                setOnlineState(tile, stat);
+                .subscribe(stats -> {
+                            if (stats.isOnline()) {
+                                setOnlineState(tile, stats);
                             } else {
                                 setOfflineState(tile);
                             }
@@ -97,9 +97,9 @@ public class BjutTileService extends TileService {
                         throwable -> setOfflineState(tile));
     }
 
-    void setOnlineState(Tile tile, Stat stat) {
+    void setOnlineState(Tile tile, Stats stats) {
         tile.setIcon(iconOn);
-        tile.setLabel(res.getString(R.string.status_logged_in, stat.getFlow(), StatUtils.getPercent(stat, this)));
+        tile.setLabel(res.getString(R.string.status_logged_in, stats.getFlow(), StatsUtils.getPercent(stats, this)));
         tile.setState(Tile.STATE_ACTIVE);
     }
 

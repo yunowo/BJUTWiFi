@@ -1,12 +1,12 @@
 package me.liuyun.bjutlgn.entity;
 
-public class Stat {
+public class Stats {
     private int flow;
     private int time;
     private int fee;
     private boolean online;
 
-    public Stat(int flow, int time, int fee, boolean online) {
+    public Stats(int flow, int time, int fee, boolean online) {
         this.flow = flow;
         this.time = time;
         this.fee = fee;
@@ -47,7 +47,7 @@ public class Stat {
 
     @Override
     public String toString() {
-        return "Stat{" +
+        return "Stats{" +
                 "flow=" + flow +
                 ", time=" + time +
                 ", fee=" + fee +

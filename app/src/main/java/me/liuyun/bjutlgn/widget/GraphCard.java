@@ -14,7 +14,7 @@ import butterknife.ButterKnife;
 import me.liuyun.bjutlgn.R;
 import me.liuyun.bjutlgn.WiFiApplication;
 import me.liuyun.bjutlgn.entity.Flow;
-import me.liuyun.bjutlgn.util.StatUtils;
+import me.liuyun.bjutlgn.util.StatsUtils;
 
 public class GraphCard {
     @BindView(R.id.chart) UsageView chart;
@@ -35,7 +35,7 @@ public class GraphCard {
 
         flowList = context.getFlowManager().getAllFlow();
         chart.clearPaths();
-        chart.configureGraph(60 * 24 * getEndOfCurrentMonth().get(Calendar.DATE),  StatUtils.getPack(context) * 1024, true, true);
+        chart.configureGraph(60 * 24 * getEndOfCurrentMonth().get(Calendar.DATE),  StatsUtils.getPack(context) * 1024, true, true);
         calcPoints();
 
         DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.SHORT);

@@ -20,7 +20,7 @@ import me.liuyun.bjutlgn.R;
 import me.liuyun.bjutlgn.WiFiApplication;
 import me.liuyun.bjutlgn.api.BjutRetrofit;
 import me.liuyun.bjutlgn.api.BjutService;
-import me.liuyun.bjutlgn.util.StatUtils;
+import me.liuyun.bjutlgn.util.StatsUtils;
 
 import static me.liuyun.bjutlgn.util.NetworkUtils.STATE_BJUT_WIFI;
 import static me.liuyun.bjutlgn.util.NetworkUtils.STATE_MOBILE;
@@ -82,16 +82,16 @@ public class StatusCard {
         String account = context.getPrefs().getString("account", "");
         userView.setText(account);
         service.stats()
-                .map(StatUtils::parseStat)
+                .map(StatsUtils::parseStats)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(stat -> {
-                            Snackbar.make(cardView, R.string.stats_refresh_ok, Snackbar.LENGTH_LONG).show();
+                            Snackbar.make(cardView, R.string.stats_refresh_ok, Snackbar.LENGTH_SHORT).show();
                             flowView.setText(String.format(context.getRes().getString(R.string.stats_flow), stat.getFlow() / 1024f));
-                            feeView.setText(String.format(context.getRes().getString(R.string.stats_fee), stat.getFee() / 1000f));
+                            feeView.setText(String.format(context.getRes().getString(R.string.stats_fee), stat.getFee() / 10000f));
                             timeView.setText(String.format(context.getRes().getString(R.string.stats_time), stat.getTime()));
 
-                            ObjectAnimator animator = ObjectAnimator.ofInt(progressRing, "progress", StatUtils.getPercent(stat, context));
+                            ObjectAnimator animator = ObjectAnimator.ofInt(progressRing, "progress", StatsUtils.getPercent(stat, context));
                             animator.setInterpolator(new AccelerateDecelerateInterpolator());
                             animator.setDuration(500);
                             animator.start();
@@ -102,7 +102,7 @@ public class StatusCard {
                                     graphCard.show();
                             }
                         },
-                        throwable -> Snackbar.make(cardView, R.string.stats_refresh_failed, Snackbar.LENGTH_LONG).show());
+                        throwable -> Snackbar.make(cardView, R.string.stats_refresh_failed, Snackbar.LENGTH_SHORT).show());
     }
 
     @OnClick(R.id.sign_in_button)
@@ -115,7 +115,7 @@ public class StatusCard {
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(string -> refreshStatus(),
-                            throwable -> Snackbar.make(cardView, R.string.stats_login_failed, Snackbar.LENGTH_LONG).show());
+                            throwable -> Snackbar.make(cardView, R.string.stats_login_failed, Snackbar.LENGTH_SHORT).show());
         }
     }
 
@@ -124,7 +124,7 @@ public class StatusCard {
         service.logout()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(string -> Snackbar.make(cardView, R.string.stats_logout_ok, Snackbar.LENGTH_LONG).show(),
-                        throwable -> Snackbar.make(cardView, R.string.stats_logout_failed, Snackbar.LENGTH_LONG).show());
+                .subscribe(string -> Snackbar.make(cardView, R.string.stats_logout_ok, Snackbar.LENGTH_SHORT).show(),
+                        throwable -> Snackbar.make(cardView, R.string.stats_logout_failed, Snackbar.LENGTH_SHORT).show());
     }
 }

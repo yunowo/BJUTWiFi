@@ -9,11 +9,11 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import me.liuyun.bjutlgn.R;
-import me.liuyun.bjutlgn.entity.Stat;
+import me.liuyun.bjutlgn.entity.Stats;
 
 
-public class StatUtils {
-    public static Stat parseStat(String text) {
+public class StatsUtils {
+    public static Stats parseStats(String text) {
         int time = 0, flow = 0, fee = 0;
         try {
             Pattern p = Pattern.compile("time='(.*?)';flow='(.*?)';fsele=1;fee='(.*?)'");
@@ -26,7 +26,7 @@ public class StatUtils {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return new Stat(flow, time, fee, true);
+        return new Stats(flow, time, fee, true);
         //TODO if flow=0 then check real connection
     }
 
@@ -36,7 +36,7 @@ public class StatUtils {
         return resources.getIntArray(R.array.packages_values)[prefs.getInt("current_package", 0)];
     }
 
-    public static int getPercent(Stat stat, Context context ) {
-        return Math.round((float) stat.getFlow() / 1024 / 1024 / getPack(context) * 100);
+    public static int getPercent(Stats stats, Context context ) {
+        return Math.round((float) stats.getFlow() / 1024 / 1024 / getPack(context) * 100);
     }
 }
