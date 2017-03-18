@@ -2,8 +2,10 @@ package me.liuyun.bjutlgn.util;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
+import android.net.Network;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
+import android.util.Log;
 
 public class NetworkUtils {
     public final static int STATE_NO_NETWORK = 0;
@@ -11,7 +13,7 @@ public class NetworkUtils {
     public final static int STATE_BJUT_WIFI = 2;
     public final static int STATE_OTHER_WIFI = 3;
 
-    public static int getNetworkState(Context context) {
+    public static int getNetworkStateLegacy(Context context) {
         ConnectivityManager connManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo info = connManager.getActiveNetworkInfo();
         if (info != null && info.isConnectedOrConnecting()) {
@@ -27,6 +29,31 @@ public class NetworkUtils {
                     return STATE_NO_NETWORK;
             }
         } else return STATE_NO_NETWORK;
+    }
+
+    public static int getNetworkState(Context context) {
+        ConnectivityManager manager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = manager.getActiveNetworkInfo();
+        Log.d("networkInfo", activeNetworkInfo.toString());
+        for (Network network : manager.getAllNetworks()) {
+            NetworkInfo info = manager.getNetworkInfo(network);
+            Log.d("networkInfo", info.toString());
+            switch (info.getType()) {
+                case ConnectivityManager.TYPE_MOBILE: {
+                    if (info.getType() == activeNetworkInfo.getType())
+                        return STATE_MOBILE;
+                    break;
+                }
+                case ConnectivityManager.TYPE_WIFI: {
+                    if (info.getExtraInfo().replace("\"", "").equals("bjut_wifi")) {
+                        if (!info.getExtraInfo().equals(activeNetworkInfo.getExtraInfo()))
+                            manager.bindProcessToNetwork(network);
+                        return STATE_BJUT_WIFI;
+                    } else return STATE_OTHER_WIFI;
+                }
+            }
+        }
+        return STATE_NO_NETWORK;
     }
 
     public static String getWifiSSID(Context context) {
