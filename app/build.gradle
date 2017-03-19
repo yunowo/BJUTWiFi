@@ -16,6 +16,7 @@ android {
         targetSdkVersion 25
         versionCode 4
         versionName "0.4"
+        resConfigs "en", "zh-rCN"
     }
     buildTypes {
         debug {
