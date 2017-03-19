@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="packages">
+    <string-array name="packages" translatable="false">
         <item>8 GB</item>
         <item>25 GB</item>
         <item>30 GB</item>
@@ -10,7 +10,7 @@
         <item>25</item>
         <item>30</item>
     </array>
-    <string-array name="graph_side_labels">
+    <string-array name="graph_side_labels" translatable="false">
         <item>0%</item>
         <item>50%</item>
         <item>100%</item>

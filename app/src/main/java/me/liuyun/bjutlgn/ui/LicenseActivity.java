@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 
 import com.artitk.licensefragment.model.CustomUI;
 import com.artitk.licensefragment.model.License;
@@ -13,6 +14,7 @@ import com.artitk.licensefragment.support.v4.RecyclerViewLicenseFragment;
 
 import java.util.ArrayList;
 
+import butterknife.ButterKnife;
 import me.liuyun.bjutlgn.R;
 
 public class LicenseActivity extends AppCompatActivity {
@@ -21,6 +23,10 @@ public class LicenseActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_license);
+
+        Toolbar toolbar = ButterKnife.findById(this, R.id.license_toolbar);
+        setSupportActionBar(toolbar);
+        toolbar.setNavigationOnClickListener(view -> onBackPressed());
 
         ArrayList<License> licenses = new ArrayList<>();
         licenses.add(new License(this, "Android Support Library", LicenseType.APACHE_LICENSE_20, "2005-2013", "The Android Open Source Project"));
