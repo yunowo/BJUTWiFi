@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 import java8.util.stream.StreamSupport;
 import me.liuyun.bjutlgn.R;
+import me.liuyun.bjutlgn.ui.EasterEggActivity;
 import me.liuyun.bjutlgn.ui.StatusLockedActivity;
 
 public class ThemeHelper implements Application.ActivityLifecycleCallbacks {
@@ -52,6 +53,8 @@ public class ThemeHelper implements Application.ActivityLifecycleCallbacks {
         activityList.add(activity);
         if (activity.getClass().getSimpleName().equals(StatusLockedActivity.class.getSimpleName()))
             activity.setTheme(R.style.AppTheme_Dialog);
+        else if(activity.getClass().getSimpleName().equals(EasterEggActivity.class.getSimpleName()))
+            activity.setTheme(android.R.style.Theme_Wallpaper_NoTitleBar);
         else
             activity.setTheme(currentStyle);
     }

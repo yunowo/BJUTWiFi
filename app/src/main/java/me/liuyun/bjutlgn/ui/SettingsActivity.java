@@ -29,6 +29,8 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     public static class SettingsFragment extends PreferenceFragment {
+        private int tapCount;
+
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
@@ -38,6 +40,13 @@ public class SettingsActivity extends AppCompatActivity {
                 return true;
             });
             findPreference("version").setSummary(BuildConfig.VERSION_NAME);
+            findPreference("version").setOnPreferenceClickListener(preference -> {
+                tapCount++;
+                if (tapCount < 5) return false;
+                startActivity(new Intent(getContext(), EasterEggActivity.class));
+                tapCount = 0;
+                return true;
+            });
             findPreference("licenses").setOnPreferenceClickListener(preference -> {
                 startActivity(new Intent(getContext(), LicenseActivity.class));
                 return true;
