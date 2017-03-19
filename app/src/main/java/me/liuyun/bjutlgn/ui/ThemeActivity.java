@@ -26,7 +26,7 @@ public class ThemeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_theme);
 
-        Toolbar toolbar = ButterKnife.findById(this, R.id.theme_toolBar);
+        Toolbar toolbar = ButterKnife.findById(this, R.id.theme_toolbar);
         setSupportActionBar(toolbar);
         toolbar.setNavigationOnClickListener(view -> onBackPressed());
 
