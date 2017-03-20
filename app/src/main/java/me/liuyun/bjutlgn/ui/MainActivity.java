@@ -7,6 +7,7 @@ import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
@@ -27,6 +28,7 @@ import me.liuyun.bjutlgn.widget.StatusCard;
 public class MainActivity extends AppCompatActivity {
     @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.fab) FloatingActionButton fab;
+    @BindView(R.id.swipe_refresh) SwipeRefreshLayout swipeRefresh;
     @BindView(R.id.status_card) CardView statusCardView;
     @BindView(R.id.graph_card) CardView graphCardView;
     public StatusCard statusCard;
@@ -65,6 +67,12 @@ public class MainActivity extends AppCompatActivity {
         };
 
         fab.setOnClickListener(v -> statusCard.onRefresh());
+
+        swipeRefresh.setColorSchemeColors(getResources().getColor(R.color.colorAccent, getTheme()));
+        swipeRefresh.setOnRefreshListener(() -> {
+            statusCard.onRefresh();
+            swipeRefresh.setRefreshing(false);
+        });
     }
 
     @Override
