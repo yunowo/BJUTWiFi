@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         graphCard = new GraphCard(graphCardView, (WiFiApplication) getApplication());
-        statusCard = new StatusCard(statusCardView, graphCard, (WiFiApplication) getApplication());
+        statusCard = new StatusCard(statusCardView, graphCard, (WiFiApplication) getApplication(), null);
 
         spring = SpringSystem.create().createSpring();
         spring.addListener(new SimpleSpringListener() {

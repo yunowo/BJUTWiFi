@@ -32,27 +32,34 @@ public class NetworkUtils {
     }
 
     public static int getNetworkState(Context context) {
+        boolean isMobile = false;
+        boolean isBjut = false;
+        boolean isOther = false;
         ConnectivityManager manager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = manager.getActiveNetworkInfo();
-        Log.d("networkInfo", activeNetworkInfo.toString());
+        Log.d("activeNetworkInfo", activeNetworkInfo.toString());
         for (Network network : manager.getAllNetworks()) {
             NetworkInfo info = manager.getNetworkInfo(network);
             Log.d("networkInfo", info.toString());
             switch (info.getType()) {
                 case ConnectivityManager.TYPE_MOBILE: {
-                    if (info.getType() == activeNetworkInfo.getType())
-                        return STATE_MOBILE;
+                    isMobile = true;
                     break;
                 }
                 case ConnectivityManager.TYPE_WIFI: {
                     if (info.getExtraInfo().replace("\"", "").equals("bjut_wifi")) {
-                        if (!info.getExtraInfo().equals(activeNetworkInfo.getExtraInfo()))
+                        if (!info.getExtraInfo().equals(activeNetworkInfo.getExtraInfo())) {
                             manager.bindProcessToNetwork(network);
-                        return STATE_BJUT_WIFI;
-                    } else return STATE_OTHER_WIFI;
+                            Log.d("bind", network.toString());
+                        }
+                        isBjut = true;
+                    } else isOther = true;
                 }
             }
         }
+        if (isBjut) return STATE_BJUT_WIFI;
+        if (isMobile) return STATE_MOBILE;
+        if (isOther) return STATE_OTHER_WIFI;
         return STATE_NO_NETWORK;
     }
 

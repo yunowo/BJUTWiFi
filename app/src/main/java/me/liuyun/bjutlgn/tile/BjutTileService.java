@@ -58,10 +58,10 @@ public class BjutTileService extends TileService {
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivityAndCollapse(intent);
             } else {
-                unlockAndRun(() -> showDialog(StatusDialog.statusDialog(getApplicationContext())));
+                unlockAndRun(() -> showDialog(StatusDialog.statusDialog(getApplicationContext(), null)));
             }
         } else {
-            showDialog(StatusDialog.statusDialog(getApplicationContext()));
+            showDialog(StatusDialog.statusDialog(getApplicationContext(), null));
         }
     }
 

@@ -35,7 +35,12 @@
             android:name=".ui.StatusLockedActivity"
             android:excludeFromRecents="true"
             android:showOnLockScreen="true"
-            android:theme="@style/AppTheme.Dialog"/>
+            android:theme="@style/AppTheme.Dialog">
+            <intent-filter>
+                <action android:name="android.net.conn.CAPTIVE_PORTAL"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
         <activity
             android:name=".ui.EasterEggActivity"
             android:excludeFromRecents="true"

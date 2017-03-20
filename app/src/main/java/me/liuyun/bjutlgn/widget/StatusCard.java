@@ -1,6 +1,7 @@
 package me.liuyun.bjutlgn.widget;
 
 import android.animation.ObjectAnimator;
+import android.net.CaptivePortal;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.text.TextUtils;
@@ -41,11 +42,13 @@ public class StatusCard {
     @Nullable private GraphCard graphCard;
     private WiFiApplication context;
     private BjutService service;
+    @Nullable private CaptivePortal captivePortal;
 
-    public StatusCard(FrameLayout cardView, @Nullable GraphCard graphCard, WiFiApplication context) {
+    public StatusCard(FrameLayout cardView, @Nullable GraphCard graphCard, WiFiApplication context, @Nullable CaptivePortal captivePortal) {
         this.cardView = cardView;
         this.graphCard = graphCard;
         this.context = context;
+        this.captivePortal = captivePortal;
         ButterKnife.bind(this, cardView);
         service = BjutRetrofit.getBjutService();
     }
@@ -100,6 +103,8 @@ public class StatusCard {
                                 context.getFlowManager().insertFlow(System.currentTimeMillis() / 1000L, stat.getFlow());
                                 if (graphCard != null)
                                     graphCard.show();
+
+                                if (captivePortal != null) captivePortal.reportCaptivePortalDismissed();
                             }
                         },
                         throwable -> Snackbar.make(cardView, R.string.stats_refresh_failed, Snackbar.LENGTH_SHORT).show());
