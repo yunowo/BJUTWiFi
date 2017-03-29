@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
+import android.support.animation.SpringAnimation;
+import android.support.animation.SpringForce;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -13,10 +15,7 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-
-import com.facebook.rebound.SimpleSpringListener;
-import com.facebook.rebound.Spring;
-import com.facebook.rebound.SpringSystem;
+import android.view.View;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -34,7 +33,6 @@ public class MainActivity extends AppCompatActivity {
     public StatusCard statusCard;
     public GraphCard graphCard;
     private BroadcastReceiver receiver;
-    private Spring spring;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,19 +43,6 @@ public class MainActivity extends AppCompatActivity {
 
         graphCard = new GraphCard(graphCardView, (WiFiApplication) getApplication());
         statusCard = new StatusCard(statusCardView, graphCard, (WiFiApplication) getApplication(), null);
-
-        spring = SpringSystem.create().createSpring();
-        spring.addListener(new SimpleSpringListener() {
-            @Override
-            public void onSpringUpdate(Spring spring) {
-                float value = (float) spring.getCurrentValue();
-                graphCardView.setScaleX(value);
-                graphCardView.setScaleY(value);
-                statusCardView.setScaleX(value);
-                statusCardView.setScaleY(value);
-            }
-        });
-
 
         receiver = new BroadcastReceiver() {
             @Override
@@ -81,8 +66,11 @@ public class MainActivity extends AppCompatActivity {
         statusCard.onRefresh();
         graphCard.show();
         registerReceiver(receiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
-        spring.setCurrentValue(0);
-        spring.setEndValue(1);
+
+        startSpringAnimation(statusCardView);
+        startSpringAnimation(graphCardView);
+        startSpringAnimation(fab);
+        startSpringAnimation(toolbar);
     }
 
     @Override
@@ -110,5 +98,21 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void startSpringAnimation(View view) {
+        view.setScaleX(0.1f);
+        view.setScaleY(0.1f);
+        SpringForce spring = new SpringForce(1)
+                .setDampingRatio(SpringForce.DAMPING_RATIO_MEDIUM_BOUNCY)
+                .setStiffness(SpringForce.STIFFNESS_LOW);
+        new SpringAnimation(view, SpringAnimation.SCALE_X)
+                .setSpring(spring)
+                .setStartVelocity(0.7f)
+                .start();
+        new SpringAnimation(view, SpringAnimation.SCALE_Y)
+                .setSpring(spring)
+                .setStartVelocity(0.7f)
+                .start();
     }
 }
