@@ -1,54 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/user_dialog"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="24dp">
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <android.support.design.widget.TextInputEditText
-            android:id="@+id/account"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/pref_account"
-            android:maxLines="1"
-            android:imeOptions="actionNext"
-            android:inputType="textNoSuggestions|textVisiblePassword" />
-    </android.support.design.widget.TextInputLayout>
-
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <android.support.design.widget.TextInputEditText
-            android:id="@+id/password"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/pref_password"
-            android:maxLines="1"
-            android:imeOptions="actionDone"
-            android:inputType="textNoSuggestions|textVisiblePassword" />
-
-    </android.support.design.widget.TextInputLayout>
-
-    <TextView
-        android:text="@string/pref_packages"
+    <LinearLayout
+        android:id="@+id/user_dialog"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:textSize="12sp"
-        android:layout_margin="4dp" />
+        android:orientation="vertical"
+        android:padding="24dp">
 
-    <Spinner
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/spinner_pack"
-        android:layout_weight="1"
-        android:entries="@array/packages"
-        android:layout_marginTop="4dp" />
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-</LinearLayout>
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/account"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/pref_account"
+                android:imeOptions="actionNext"
+                android:inputType="textNoSuggestions|textVisiblePassword"
+                android:maxLines="1"/>
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/pref_password"
+                android:imeOptions="actionDone"
+                android:inputType="textNoSuggestions|textVisiblePassword"
+                android:maxLines="1"/>
+
+        </android.support.design.widget.TextInputLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:layout_weight="1"
+            android:text="@string/pref_packages"
+            android:textSize="12sp"/>
+
+        <Spinner
+            android:id="@+id/spinner_pack"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_weight="1"
+            android:entries="@array/packages"/>
+
+    </LinearLayout>
+</layout>

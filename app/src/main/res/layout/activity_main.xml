@@ -4,7 +4,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <android.support.design.widget.CoordinatorLayout
-        android:id="@+id/activity_accounts"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -18,9 +17,7 @@
                 android:layout_height="wrap_content"
                 android:minHeight="?attr/actionBarSize"
                 android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-                app:navigationIcon="?attr/homeAsUpIndicator"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-                app:title="@string/pref_user"/>
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
         </android.support.design.widget.AppBarLayout>
 
         <android.support.design.widget.FloatingActionButton
@@ -32,14 +29,28 @@
             android:clickable="true"
             app:backgroundTint="?attr/colorPrimary"
             app:fabSize="normal"
-            app:srcCompat="@drawable/ic_add"/>
+            app:srcCompat="@drawable/ic_cloud"/>
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recycler"
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/swipe_refresh"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+            android:layout_height="wrap_content"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+                <include android:id="@+id/status_card_view"
+                         layout="@layout/status_card"/>
+
+                <include android:id="@+id/graph_card_view"
+                    layout="@layout/graph_card"/>
+
+            </LinearLayout>
+        </android.support.v4.widget.SwipeRefreshLayout>
 
     </android.support.design.widget.CoordinatorLayout>
-
 </layout>

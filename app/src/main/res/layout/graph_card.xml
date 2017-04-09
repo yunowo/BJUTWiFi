@@ -1,25 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView
+<layout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:settings="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/graph_card"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginBottom="8dp"
-    android:layout_marginEnd="8dp"
-    android:layout_marginStart="8dp"
-    android:clickable="true"
-    android:focusable="true"
-    android:foreground="?android:attr/selectableItemBackground">
+    xmlns:settings="http://schemas.android.com/apk/res-auto">
 
-    <com.android.settingslib.graph.UsageView
-        android:id="@+id/chart"
+    <android.support.v7.widget.CardView
+        android:id="@+id/graph_card_view"
         android:layout_width="match_parent"
-        android:layout_height="250dp"
-        android:layout_margin="8dp"
-        android:colorAccent="?android:attr/colorAccent"
-        android:gravity="end"
-        settings:sideLabels="@array/graph_side_labels"
-        settings:textColor="?android:attr/textColorSecondary">
-    </com.android.settingslib.graph.UsageView>
-</android.support.v7.widget.CardView>
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?android:attr/selectableItemBackground">
+
+        <com.android.settingslib.graph.UsageView
+            android:id="@+id/chart"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:layout_margin="8dp"
+            android:colorAccent="?android:attr/colorAccent"
+            android:gravity="end"
+            settings:sideLabels="@array/graph_side_labels"
+            settings:textColor="?android:attr/textColorSecondary">
+        </com.android.settingslib.graph.UsageView>
+    </android.support.v7.widget.CardView>
+</layout>
