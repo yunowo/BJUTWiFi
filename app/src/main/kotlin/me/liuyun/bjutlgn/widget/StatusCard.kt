@@ -14,14 +14,13 @@ import me.liuyun.bjutlgn.R
 import me.liuyun.bjutlgn.WiFiApplication
 import me.liuyun.bjutlgn.api.BjutRetrofit
 import me.liuyun.bjutlgn.api.BjutService
-import me.liuyun.bjutlgn.databinding.StatusCardBinding
 import me.liuyun.bjutlgn.databinding.StatusViewBinding
 import me.liuyun.bjutlgn.entity.Stats
 import me.liuyun.bjutlgn.util.NetworkUtils
 import me.liuyun.bjutlgn.util.StatsUtils
 
 class StatusCard(private val cardView: FrameLayout, private val graphCard: GraphCard?, private val context: WiFiApplication, private val captivePortal: CaptivePortal?) {
-    val binding: StatusViewBinding = DataBindingUtil.findBinding<StatusCardBinding>(cardView).statusView
+    val binding: StatusViewBinding = DataBindingUtil.findBinding(cardView)
     internal var progressRing = binding.progressRing
     internal var userView = binding.user
     internal var feeView = binding.fee

@@ -9,8 +9,8 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:2.3.0'
-        classpath 'com.github.trevjonez:AndroidGithubReleasePlugin:1.0.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath 'com.github.trevjonez:AndroidGithubReleasePlugin:1.0.1'
     }
 }
 

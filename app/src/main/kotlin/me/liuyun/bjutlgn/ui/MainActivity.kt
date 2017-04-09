@@ -14,6 +14,7 @@ import android.support.v7.widget.CardView
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.FrameLayout
 import me.liuyun.bjutlgn.R
 import me.liuyun.bjutlgn.WiFiApplication
 import me.liuyun.bjutlgn.databinding.ActivityMainBinding
@@ -31,7 +32,7 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(binding.toolbar)
 
         graphCard = GraphCard(binding.graphCardView.root as CardView, application as WiFiApplication)
-        statusCard = StatusCard(binding.statusCardView.root as CardView, graphCard, application as WiFiApplication, null)
+        statusCard = StatusCard(binding.statusCardView.statusView.root as FrameLayout, graphCard, application as WiFiApplication, null)
 
         receiver = object : BroadcastReceiver() {
             override fun onReceive(context: Context, intent: Intent) {

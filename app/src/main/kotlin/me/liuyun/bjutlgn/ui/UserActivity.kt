@@ -91,7 +91,7 @@ class UserActivity : AppCompatActivity() {
 
     internal fun openUserDialog(newUser: Boolean, currentUser: User?) {
         val context = this@UserActivity
-        val binding: UserDialogBinding = DataBindingUtil.inflate(layoutInflater, R.layout.user_dialog, findViewById(R.id.user_dialog) as ViewGroup, false)
+        val binding: UserDialogBinding = DataBindingUtil.inflate(layoutInflater, R.layout.user_dialog, null, false)
         val account = binding.account
         val password = binding.password
         val spinner = binding.spinnerPack
