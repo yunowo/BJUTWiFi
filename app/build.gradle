@@ -1,6 +1,5 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
-apply plugin: 'com.trevjonez.AndroidGithubReleasePlugin'
 
 def gitCommitCount = "git rev-list HEAD --count".execute().text.trim()
 
@@ -9,6 +8,12 @@ android {
     buildToolsVersion '25.0.2'
     signingConfigs {
         release
+        github {
+            storeFile file("yun.jks")
+            storePassword System.getenv("STORE_PASSWORD")
+            keyAlias System.getenv("KEY_ALIAS")
+            keyPassword System.getenv("KEY_PASSWORD")
+        }
     }
     defaultConfig {
         applicationId "me.liuyun.bjutlgn"
@@ -16,19 +21,24 @@ android {
         targetSdkVersion 25
         versionCode 5
         versionName "5.0"
+        versionNameSuffix = " (${gitCommitCount})"
         resConfigs "en", "zh-rCN"
     }
     buildTypes {
         debug {
-            versionNameSuffix = " (${gitCommitCount})"
             signingConfig signingConfigs.release
         }
         release {
-            versionNameSuffix = " (${gitCommitCount})"
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
+        }
+        releaseGitHub {
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.github
         }
     }
     dataBinding {
@@ -58,26 +68,6 @@ dependencies {
 kapt {
     generateStubs = true
 }
-AndroidGithubRelease {
-    defaultConfig {
-        tagName android.defaultConfig.versionName + "-${gitCommitCount}"
-        owner "liu-yun"
-        repo "BJUTWiFi"
-        assets "build/outputs/apk"
-        overwrite true
-    }
-
-    androidConfigs {
-        debug {
-            preRelease true
-            tagModifier { it + "-debug" }
-        }
-        release {
-            draft true
-            releaseName android.defaultConfig.versionName
-        }
-    }
-}
 
 def propFile = file('../signing.properties')
 if (propFile.canRead()) {
@@ -89,7 +79,6 @@ if (propFile.canRead()) {
             && p.containsKey('STORE_PASSWORD')
             && p.containsKey('KEY_ALIAS')
             && p.containsKey('KEY_PASSWORD')
-            && p.containsKey('GITHUB_API_TOKEN')
     ) {
         println "Signing..."
 
@@ -97,7 +86,6 @@ if (propFile.canRead()) {
         android.signingConfigs.release.storePassword = p['STORE_PASSWORD']
         android.signingConfigs.release.keyAlias = p['KEY_ALIAS']
         android.signingConfigs.release.keyPassword = p['KEY_PASSWORD']
-        AndroidGithubRelease.defaultConfig.accessToken = p['GITHUB_API_TOKEN']
 
     } else {
         println "Required properties in signing.properties are missing"

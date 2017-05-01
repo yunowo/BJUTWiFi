@@ -1,21 +1,32 @@
 language: android
 
 android:
-    components:
-        - tools
-        - tools
-        - platform-tools
-        - build-tools-25.0.2
-        - android-25
-        - extra-android-support
-        - extra-google-m2repository
-        - extra-android-m2repository
+  components:
+  - tools
+  - platform-tools
+  - build-tools-25.0.2
+  - android-25
+  - extra-android-support
+  - extra-google-m2repository
+  - extra-android-m2repository
 
 jdk:
-  - oraclejdk8
+- oraclejdk8
 
 before_install:
-  - chmod +x gradlew
- 
-script: 
-  - ./gradlew clean assembleRelease
+- openssl aes-256-cbc -K $encrypted_971b0c85956e_key -iv $encrypted_971b0c85956e_iv
+  -in yun.jks.enc -out yun.jks -d
+- chmod +x gradlew
+
+script:
+- "./gradlew assembleReleaseGitHub"
+
+deploy:
+  provider: releases
+  api_key:
+    secure: bR1eHJJuKT1MD0eYqTMzExpKZatY44D2zRQ7IbD/puIajeiTku4MAfYIMjEI0fywYus93YjIu2d3La2srHumhbna5wgqODnfi8NF5vOXzrAFQLDLJ45FnHK19l7mGVH/3RXg2msILRKV02rE3EqW3al5NWrKa22hlT3O+b0yApGmItl3OVpuM8OW7CcyyJWGZGyZM8RE3eziKVPfYfxiDY18PDd2Yo9B8RvRNc0Iu7EZgZJYTxcdB+oAXEtTUP9CwWhT0Nzp7AXR2tf8TX9pNxpVo0ZIj1039pcQNrJPr4hxEKptsId+fWSqQqwHEvJYuBO3r70dk2Rsqv7dOazfUYoBIcsQI8dkOMQti+dSG3jm9chEfHw1m7zagiM0BNpQ1T0xWWRvpouWI5CJkYJ3z0a8K1URG9qXW3Zxio86CyDxFsbgFCU3ocMSCa7Qrq2UHvN7FVe+DnI8htccjeyGCtAA4clkpKEzK+1jSNE8tAWQHTuS1vA1XTrUjm6I3bHRDgR1mZeeHx8BVIoHnep+m8kscJrN0h3zOMS+4VghcB6xQD93GCeJhfbroaF4phJzSFf2MoKOH4A3QZq21Dih/8lkITTdIrjW2mvuS4XChXqHSvR8PL2gi1XRY1zLc9bODhTgkfBiSk8iqAWVZq5djUj7BSV/Vc0zrV/fDWbm2Es=
+  file: app/build/outputs/apk/app-release.apk
+  overwrite: true
+  skip_cleanup: true
+  on:
+    tag: true
