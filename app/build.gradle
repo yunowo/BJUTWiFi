@@ -9,7 +9,7 @@ android {
     signingConfigs {
         release
         github {
-            storeFile file("yun.jks")
+            storeFile file("../yun.jks")
             storePassword System.getenv("STORE_PASSWORD")
             keyAlias System.getenv("KEY_ALIAS")
             keyPassword System.getenv("KEY_PASSWORD")
