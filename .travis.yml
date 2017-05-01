@@ -14,7 +14,7 @@ jdk:
 - oraclejdk8
 
 before_install:
-- openssl aes-256-cbc -K $encrypted_971b0c85956e_key -iv $encrypted_971b0c85956e_iv
+- openssl aes-256-cbc -K $encrypted_fe6e969707e0_key -iv $encrypted_fe6e969707e0_iv
   -in yun.jks.enc -out yun.jks -d
 - chmod +x gradlew
 
