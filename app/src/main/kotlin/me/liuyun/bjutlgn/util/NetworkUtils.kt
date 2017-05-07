@@ -16,7 +16,7 @@ object NetworkUtils {
         var isBjut = false
         var isOther = false
         val manager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val activeNetworkInfo = manager.activeNetworkInfo
+        val activeNetworkInfo = manager.activeNetworkInfo ?: return STATE_NO_NETWORK
         Log.d("activeNetworkInfo", activeNetworkInfo.toString())
         for (network in manager.allNetworks) {
             val info = manager.getNetworkInfo(network)
