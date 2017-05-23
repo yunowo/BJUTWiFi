@@ -13,7 +13,6 @@ import java.util.*
 class GraphCard(cardView: CardView, private val context: WiFiApplication) {
     val binding: GraphCardBinding = DataBindingUtil.findBinding(cardView)
     var chart = binding.chart
-    private var flowList: List<Flow>? = null
 
     fun show() {
         val month = Calendar.getInstance().get(Calendar.MONTH)
@@ -22,25 +21,24 @@ class GraphCard(cardView: CardView, private val context: WiFiApplication) {
             context.flowManager.clearFlow()
         }
 
-        flowList = context.flowManager.allFlow
+        val flowList = context.flowManager.allFlow ?: emptyList()
         chart.clearPaths()
         chart.configureGraph(60 * 24 * endOfCurrentMonth.get(Calendar.DATE), StatsUtils.getPack(context) * 1024, true, true)
-        calcPoints()
+        calcPoints(flowList)
 
         val dateFormat = DateFormat.getDateInstance(DateFormat.SHORT)
         chart.setBottomLabels(arrayOf(dateFormat.format(startOfCurrentMonth.time), dateFormat.format(endOfCurrentMonth.time)))
     }
 
-    private fun calcPoints() {
+    private fun calcPoints(flowList: List<Flow>) {
         val startOfMonth = (startOfCurrentMonth.timeInMillis / 1000L).toInt() / 60
         val points = SparseIntArray()
         points.put(0, 0)
-        if (flowList != null) {
-            for (flow in flowList!!) {
-                points.put((flow.timestamp / 60 - startOfMonth).toInt(), flow.flow / 1024)
-            }
-            chart.addPath(points)
+
+        for (flow in flowList) {
+            points.put((flow.timestamp / 60 - startOfMonth).toInt(), flow.flow / 1024)
         }
+        chart.addPath(points)
     }
 
     private val startOfCurrentMonth: Calendar
