@@ -11,7 +11,6 @@ import android.widget.FrameLayout
 import me.liuyun.bjutlgn.R
 import me.liuyun.bjutlgn.WiFiApplication
 import me.liuyun.bjutlgn.databinding.StatusViewBinding
-import me.liuyun.bjutlgn.widget.StatusCard
 
 object StatusDialog {
 

@@ -1,4 +1,4 @@
-package me.liuyun.bjutlgn.widget
+package me.liuyun.bjutlgn.ui
 
 import android.animation.ObjectAnimator
 import android.databinding.DataBindingUtil
@@ -20,55 +20,49 @@ import me.liuyun.bjutlgn.util.NetworkUtils
 import me.liuyun.bjutlgn.util.StatsUtils
 
 class StatusCard(private val cardView: FrameLayout, private val graphCard: GraphCard?, private val context: WiFiApplication, private val captivePortal: CaptivePortal?) {
-    val binding: StatusViewBinding = DataBindingUtil.findBinding(cardView)
-    internal var progressRing = binding.progressRing
-    internal var userView = binding.user
-    internal var feeView = binding.fee
-    internal var timeView = binding.time
-    internal var flowView = binding.flow
-    internal var infoLayout = binding.infoLayout
-    internal var buttonsLayout = binding.buttonsLayout
+    val b: StatusViewBinding = DataBindingUtil.findBinding(cardView)
     private val service: BjutService = BjutRetrofit.bjutService
 
     init {
-        binding.refreshButton.setOnClickListener { onRefresh() }
-        binding.signInButton.setOnClickListener { onLogin() }
-        binding.signOutButton.setOnClickListener { onLogout() }
+        b.refreshButton.setOnClickListener { onRefresh() }
+        b.signInButton.setOnClickListener { onLogin() }
+        b.signOutButton.setOnClickListener { onLogout() }
     }
 
     fun onRefresh() {
+        //BjutRetrofit.evictAll()
         val state = NetworkUtils.getNetworkState(context)
         if (state == NetworkUtils.STATE_BJUT_WIFI) {
-            progressRing.visibility = View.VISIBLE
-            infoLayout.visibility = View.VISIBLE
-            buttonsLayout.visibility = View.VISIBLE
+            b.progressRing.visibility = View.VISIBLE
+            b.infoLayout.visibility = View.VISIBLE
+            b.buttonsLayout.visibility = View.VISIBLE
         } else {
-            progressRing.visibility = View.GONE
-            infoLayout.visibility = View.INVISIBLE
-            buttonsLayout.visibility = View.INVISIBLE
+            b.progressRing.visibility = View.GONE
+            b.infoLayout.visibility = View.INVISIBLE
+            b.buttonsLayout.visibility = View.INVISIBLE
         }
         when (state) {
-            NetworkUtils.STATE_NO_NETWORK -> userView.text = context.res.getString(R.string.status_no_network)
-            NetworkUtils.STATE_MOBILE -> userView.text = context.res.getString(R.string.status_mobile_network)
+            NetworkUtils.STATE_NO_NETWORK -> b.user.text = context.res.getString(R.string.status_no_network)
+            NetworkUtils.STATE_MOBILE -> b.user.text = context.res.getString(R.string.status_mobile_network)
             NetworkUtils.STATE_BJUT_WIFI -> refreshStatus()
-            NetworkUtils.STATE_OTHER_WIFI -> userView.text = String.format(context.res.getString(R.string.status_other_wifi), NetworkUtils.getWifiSSID(context))
+            NetworkUtils.STATE_OTHER_WIFI -> b.user.text = String.format(context.res.getString(R.string.status_other_wifi), NetworkUtils.getWifiSSID(context))
         }
     }
 
     private fun refreshStatus() {
         val account = context.prefs.getString("account", "")
-        userView.text = account
+        b.user.text = account
         service.stats()
                 .map<Stats>({ StatsUtils.parseStats(it) })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ stat ->
                     Snackbar.make(cardView, R.string.stats_refresh_ok, Snackbar.LENGTH_SHORT).show()
-                    flowView.text = String.format(context.res.getString(R.string.stats_flow), stat.flow / 1024f)
-                    feeView.text = String.format(context.res.getString(R.string.stats_fee), stat.fee / 10000f)
-                    timeView.text = String.format(context.res.getString(R.string.stats_time), stat.time)
+                    b.flow.text = String.format(context.res.getString(R.string.stats_flow), stat.flow / 1024f)
+                    b.fee.text = String.format(context.res.getString(R.string.stats_fee), stat.fee / 10000f)
+                    b.time.text = String.format(context.res.getString(R.string.stats_time), stat.time)
 
-                    val animator = ObjectAnimator.ofInt(progressRing, "progress", StatsUtils.getPercent(stat, context))
+                    val animator = ObjectAnimator.ofInt(b.progressRing, "progress", StatsUtils.getPercent(stat, context))
                     animator.interpolator = AccelerateDecelerateInterpolator()
                     animator.duration = 500
                     animator.start()
@@ -88,7 +82,7 @@ class StatusCard(private val cardView: FrameLayout, private val graphCard: Graph
         val password = context.prefs.getString("password", "")
 
         if (!TextUtils.isEmpty(account) && !TextUtils.isEmpty(password)) {
-            service.login(account!!, password!!, "1", "123")
+            service.login(account, password, "1", "123")
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe({ refreshStatus() },

@@ -18,21 +18,19 @@ import android.widget.FrameLayout
 import me.liuyun.bjutlgn.R
 import me.liuyun.bjutlgn.WiFiApplication
 import me.liuyun.bjutlgn.databinding.ActivityMainBinding
-import me.liuyun.bjutlgn.widget.GraphCard
-import me.liuyun.bjutlgn.widget.StatusCard
 
 class MainActivity : AppCompatActivity() {
     val binding: ActivityMainBinding by lazy { DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main) }
     lateinit var statusCard: StatusCard
     lateinit var graphCard: GraphCard
-    private var receiver: BroadcastReceiver? = null
+    lateinit var receiver: BroadcastReceiver
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setSupportActionBar(binding.toolbar)
 
-        graphCard = GraphCard(binding.graphCardView.root as CardView, application as WiFiApplication)
-        statusCard = StatusCard(binding.statusCardView.statusView.root as FrameLayout, graphCard, application as WiFiApplication, null)
+        graphCard = GraphCard(binding.graphCardView?.root as CardView, application as WiFiApplication)
+        statusCard = StatusCard(binding.statusCardView?.statusView?.root as FrameLayout, graphCard, application as WiFiApplication, null)
 
         receiver = object : BroadcastReceiver() {
             override fun onReceive(context: Context, intent: Intent) {
@@ -55,8 +53,8 @@ class MainActivity : AppCompatActivity() {
         graphCard.show()
         registerReceiver(receiver, IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
 
-        startSpringAnimation(binding.statusCardView.root)
-        startSpringAnimation(binding.graphCardView.root)
+        startSpringAnimation(binding.statusCardView!!.root)
+        startSpringAnimation(binding.graphCardView!!.root)
         startSpringAnimation(binding.fab)
         startSpringAnimation(binding.toolbar)
     }

@@ -11,7 +11,7 @@ class UserManager(context: Context) {
 
     fun insertUser(account: String, password: String, pack: Int): Boolean {
         try {
-            val position = Integer.parseInt(dbHelper.getUserDao()!!.queryRaw(dbHelper.getUserDao()!!.queryBuilder().selectRaw("MAX(position)").prepareStatementString()).firstResult[0])
+            val position = Integer.parseInt(dbHelper.getUserDao()!!.queryRaw(dbHelper.getUserDao()!!.queryBuilder().selectRaw("MAX(position)").prepareStatementString()).firstResult[0] ?: "0")
             dbHelper.getUserDao()!!.createOrUpdate(User(0, account, password, pack, position + 1))
             return true
         } catch (e: Exception) {
@@ -43,15 +43,14 @@ class UserManager(context: Context) {
         return false
     }
 
-    val allUsers: MutableList<User>?
+    val allUsers: MutableList<User>
         get() {
             try {
                 return dbHelper.getUserDao()!!.queryBuilder().orderBy("position", true).query()
             } catch (e: Exception) {
                 Log.e(TAG, "getAllUsers", e)
             }
-
-            return null
+            return mutableListOf()
         }
 
     companion object {

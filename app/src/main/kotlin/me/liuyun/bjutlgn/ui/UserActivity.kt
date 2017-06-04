@@ -54,20 +54,20 @@ class UserActivity : AppCompatActivity() {
                         val from = holder.adapterPosition
                         val to = target.adapterPosition
                         val step = if (from < to) 1 else -1
-                        val first = adapter.users!![from]
+                        val first = adapter.users[from]
                         var previousPos = first.position
                         var i = from
                         while (if (from < to) i < to else i > to) {
-                            val next = adapter.users!![i + step]
+                            val next = adapter.users[i + step]
                             val pos = next.position
                             next.position = previousPos
                             previousPos = pos
-                            adapter.users!![i] = next
+                            adapter.users[i] = next
                             userManager.updateUser(next)
                             i += step
                         }
                         first.position = previousPos
-                        adapter.users!![to] = first
+                        adapter.users[to] = first
                         userManager.updateUser(first)
                         adapter.notifyItemMoved(from, to)
                         return true
@@ -75,8 +75,8 @@ class UserActivity : AppCompatActivity() {
 
                     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                         val pos = viewHolder.adapterPosition
-                        userManager.deleteUser(adapter.users!![pos].id)
-                        adapter.users!!.removeAt(pos)
+                        userManager.deleteUser(adapter.users[pos].id)
+                        adapter.users.removeAt(pos)
                         adapter.notifyItemRemoved(pos)
                     }
                 }).attachToRecyclerView(binding.recycler)
@@ -115,14 +115,14 @@ class UserActivity : AppCompatActivity() {
                         currentUser.password = password.text.toString()
                         currentUser.pack = currentPackage
                         userManager.updateUser(currentUser)
-                        adapter.users!!.clear()
-                        adapter.users!!.addAll(userManager.allUsers!!)
+                        adapter.users.clear()
+                        adapter.users.addAll(userManager.allUsers)
                         adapter.notifyItemChanged(currentUser.position)
                     } else {
                         userManager.insertUser(account.text.toString(), password.text.toString(), currentPackage)
-                        adapter.users!!.clear()
-                        adapter.users!!.addAll(userManager.allUsers!!)
-                        adapter.notifyItemInserted(adapter.users!!.size)
+                        adapter.users.clear()
+                        adapter.users.addAll(userManager.allUsers)
+                        adapter.notifyItemInserted(adapter.users.size)
                     }
                 }
                 .setNegativeButton(R.string.button_cancel) { _, _ -> }
@@ -130,7 +130,7 @@ class UserActivity : AppCompatActivity() {
                 .show()
     }
 
-    internal inner class UserAdapter(var users: MutableList<User>?) : RecyclerView.Adapter<UserAdapter.UserViewHolder>() {
+    internal inner class UserAdapter(var users: MutableList<User>) : RecyclerView.Adapter<UserAdapter.UserViewHolder>() {
 
         override fun onCreateViewHolder(parent: ViewGroup, i: Int): UserViewHolder {
             val binding: UserCardBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.user_card, parent, false)
@@ -138,11 +138,11 @@ class UserActivity : AppCompatActivity() {
         }
 
         override fun getItemCount(): Int {
-            return users?.size ?: 0
+            return users.size
         }
 
         override fun onBindViewHolder(holder: UserViewHolder, i: Int) {
-            val user = users!![holder.adapterPosition]
+            val user = users[holder.adapterPosition]
 
             holder.itemView.setOnClickListener {
                 prefs.edit()
@@ -168,7 +168,7 @@ class UserActivity : AppCompatActivity() {
             holder.buttonEdit.setOnClickListener { openUserDialog(false, user) }
             holder.buttonDelete.setOnClickListener {
                 userManager.deleteUser(user.id)
-                adapter.users!!.removeAt(holder.adapterPosition)
+                adapter.users.removeAt(holder.adapterPosition)
                 notifyItemRemoved(holder.adapterPosition)
             }
         }

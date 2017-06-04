@@ -22,7 +22,7 @@ class LicenseActivity : AppCompatActivity() {
         setSupportActionBar(binding.toolbar)
         binding.toolbar.setNavigationOnClickListener { onBackPressed() }
 
-        val licenses = mutableListOf(
+        val licenses = arrayListOf(
                 License(this, "Android Support Library", LicenseType.APACHE_LICENSE_20, "2005-2013", "The Android Open Source Project"),
                 License(this, "RxJava", LicenseType.APACHE_LICENSE_20, "2016-present", "RxJava Contributors"),
                 License(this, "RxAndroid", LicenseType.APACHE_LICENSE_20, "2015", "The RxAndroid authors"),
@@ -33,7 +33,7 @@ class LicenseActivity : AppCompatActivity() {
         )
 
         val fragment = RecyclerViewLicenseFragment.newInstance()
-                .addCustomLicense(licenses as ArrayList<License>)
+                .addCustomLicense(licenses)
                 .addLicense(intArrayOf(LicenseID.OKHTTP, LicenseID.RETROFIT, LicenseID.LICENSE_FRAGMENT))
                 .setCustomUI(CustomUI()
                         .setTitleTextColor(resources.getColor(R.color.colorAccent, theme))

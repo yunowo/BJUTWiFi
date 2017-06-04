@@ -29,14 +29,19 @@ object BjutRetrofit {
                 }
 
                 override fun loadForRequest(url: HttpUrl): List<Cookie> {
-                    val cookies = cookieStore.get(url.host())
-                    return if (cookies != null) cookies else ArrayList<Cookie>()
+                    return cookieStore[url.host()] ?: ArrayList<Cookie>()
                 }
             }).build()
-    val bjutService = Retrofit.Builder()
-            .baseUrl(server)
-            .client(client)
-            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-            .addConverterFactory(ScalarsConverterFactory.create())
-            .build().create<BjutService>(BjutService::class.java)!!
+    val bjutService by lazy {
+        Retrofit.Builder()
+                .baseUrl(server)
+                .client(client)
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .addConverterFactory(ScalarsConverterFactory.create())
+                .build().create<BjutService>(BjutService::class.java)
+    }
+
+    fun evictAll() {
+        client.connectionPool().evictAll()
+    }
 }

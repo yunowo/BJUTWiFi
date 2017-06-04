@@ -1,4 +1,4 @@
-package me.liuyun.bjutlgn.widget
+package me.liuyun.bjutlgn.ui
 
 import android.databinding.DataBindingUtil
 import android.support.v7.widget.CardView
