@@ -8,6 +8,7 @@
 -keepclasseswithmembernames class * { @butterknife.* <fields>; }
 
 -dontwarn okio.**
+-dontwarn javax.annotation.**
 
 # Platform calls Class.forName on types which do not exist on Android to determine platform.
 -dontnote retrofit2.Platform
