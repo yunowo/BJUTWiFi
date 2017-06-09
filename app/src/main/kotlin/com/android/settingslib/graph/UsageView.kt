@@ -15,16 +15,14 @@
 package com.android.settingslib.graph
 
 import android.content.Context
-import android.content.res.TypedArray
 import android.util.AttributeSet
 import android.util.SparseIntArray
 import android.view.Gravity
 import android.view.LayoutInflater
-import android.view.View
 import android.widget.FrameLayout
 import android.widget.LinearLayout
+import android.widget.Space
 import android.widget.TextView
-
 import me.liuyun.bjutlgn.R
 
 class UsageView(context: Context, attrs: AttributeSet) : FrameLayout(context, attrs) {
@@ -35,9 +33,9 @@ class UsageView(context: Context, attrs: AttributeSet) : FrameLayout(context, at
 
     init {
         LayoutInflater.from(context).inflate(R.layout.usage_view, this)
-        mUsageGraph = findViewById(R.id.usage_graph) as UsageGraph
-        mLabels = arrayOf(findViewById(R.id.label_bottom) as TextView, findViewById(R.id.label_middle) as TextView, findViewById(R.id.label_top) as TextView)
-        mBottomLabels = arrayOf(findViewById(R.id.label_start) as TextView, findViewById(R.id.label_end) as TextView)
+        mUsageGraph = findViewById(R.id.usage_graph)
+        mLabels = arrayOf(findViewById(R.id.label_bottom), findViewById(R.id.label_middle), findViewById(R.id.label_top))
+        mBottomLabels = arrayOf(findViewById(R.id.label_start), findViewById(R.id.label_end))
         val a = context.obtainStyledAttributes(attrs, R.styleable.UsageView, 0, 0)
         if (a.hasValue(R.styleable.UsageView_sideLabels)) {
             setSideLabels(a.getTextArray(R.styleable.UsageView_sideLabels))
@@ -57,16 +55,16 @@ class UsageView(context: Context, attrs: AttributeSet) : FrameLayout(context, at
         if (a.hasValue(R.styleable.UsageView_android_gravity)) {
             val gravity = a.getInt(R.styleable.UsageView_android_gravity, 0)
             if (gravity == Gravity.END) {
-                val layout = findViewById(R.id.graph_label_group) as LinearLayout
-                val labels = findViewById(R.id.label_group) as LinearLayout
+                val layout: LinearLayout = findViewById(R.id.graph_label_group)
+                val labels: LinearLayout = findViewById(R.id.label_group)
                 // Swap the children order.
                 layout.removeView(labels)
                 layout.addView(labels)
                 // Set gravity.
                 labels.gravity = Gravity.END
                 // Swap the bottom space order.
-                val bottomLabels = findViewById(R.id.bottom_label_group) as LinearLayout
-                val bottomSpace = bottomLabels.findViewById(R.id.bottom_label_space)
+                val bottomLabels: LinearLayout = findViewById(R.id.bottom_label_group)
+                val bottomSpace: Space = bottomLabels.findViewById(R.id.bottom_label_space)
                 bottomLabels.removeView(bottomSpace)
                 bottomLabels.addView(bottomSpace)
             } else if (gravity != Gravity.START) {
@@ -107,7 +105,7 @@ class UsageView(context: Context, attrs: AttributeSet) : FrameLayout(context, at
     }
 
     private fun setWeight(id: Int, weight: Float) {
-        val v = findViewById(id)
+        val v: LinearLayout = findViewById(id)
         val params = v.layoutParams as LinearLayout.LayoutParams
         params.weight = weight
         v.layoutParams = params
