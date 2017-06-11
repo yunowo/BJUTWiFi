@@ -2,6 +2,13 @@
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <data>
+
+        <variable
+            name="user"
+            type="me.liuyun.bjutlgn.entity.User"/>
+    </data>
+
     <LinearLayout
         android:id="@+id/user_dialog"
         android:layout_width="match_parent"
@@ -18,6 +25,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/pref_account"
+                android:text="@={user.account}"
                 android:imeOptions="actionNext"
                 android:inputType="textNoSuggestions|textVisiblePassword"
                 android:maxLines="1"/>
@@ -32,6 +40,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/pref_password"
+                android:text="@={user.password}"
                 android:imeOptions="actionDone"
                 android:inputType="textNoSuggestions|textVisiblePassword"
                 android:maxLines="1"/>

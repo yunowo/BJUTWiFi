@@ -17,8 +17,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
-import android.widget.Button
-import android.widget.CheckedTextView
 import me.liuyun.bjutlgn.R
 import me.liuyun.bjutlgn.databinding.ActivityUsersBinding
 import me.liuyun.bjutlgn.databinding.UserCardBinding
@@ -39,7 +37,7 @@ class UserActivity : AppCompatActivity() {
 
         setSupportActionBar(binding.toolbar)
         binding.toolbar.setNavigationOnClickListener { onBackPressed() }
-        binding.fab.setOnClickListener { openUserDialog(true, null) }
+        binding.fab.setOnClickListener { openUserDialog(true, User()) }
 
         val llm = LinearLayoutManager(this)
         llm.orientation = LinearLayoutManager.VERTICAL
@@ -89,18 +87,14 @@ class UserActivity : AppCompatActivity() {
         super.onResume()
     }
 
-    internal fun openUserDialog(newUser: Boolean, currentUser: User?) {
+    internal fun openUserDialog(newUser: Boolean, user: User) {
         val context = this@UserActivity
         val binding: UserDialogBinding = DataBindingUtil.inflate(layoutInflater, R.layout.user_dialog, null, false)
-        val account = binding.account
-        val password = binding.password
-        val spinner = binding.spinnerPack
+        binding.user = user
         if (!newUser) {
-            account.setText(currentUser!!.account)
-            password.setText(currentUser.password)
-            spinner.setSelection(currentUser.pack)
+            binding.spinnerPack.setSelection(user.pack)
         }
-        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+        binding.spinnerPack.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
                 currentPackage = position
             }
@@ -111,15 +105,13 @@ class UserActivity : AppCompatActivity() {
                 .setTitle(R.string.pref_user)
                 .setPositiveButton(R.string.button_ok) { _, _ ->
                     if (!newUser) {
-                        currentUser!!.account = account.text.toString()
-                        currentUser.password = password.text.toString()
-                        currentUser.pack = currentPackage
-                        userManager.updateUser(currentUser)
+                        user.pack = currentPackage
+                        userManager.updateUser(user)
                         adapter.users.clear()
                         adapter.users.addAll(userManager.allUsers)
-                        adapter.notifyItemChanged(currentUser.position)
+                        adapter.notifyItemChanged(user.position)
                     } else {
-                        userManager.insertUser(account.text.toString(), password.text.toString(), currentPackage)
+                        userManager.insertUser(user)
                         adapter.users.clear()
                         adapter.users.addAll(userManager.allUsers)
                         adapter.notifyItemInserted(adapter.users.size)
@@ -160,13 +152,13 @@ class UserActivity : AppCompatActivity() {
                     .append(resources.getStringArray(R.array.packages)[user.pack])
             builder.setSpan(TextAppearanceSpan(this@UserActivity, android.R.style.TextAppearance_Small),
                     user.account.length + 1, builder.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-            holder.userView.text = builder
+            holder.binding.user.text = builder
             if (user.id == currentId) {
-                holder.userView.isChecked = true
+                holder.binding.user.isChecked = true
             }
 
-            holder.buttonEdit.setOnClickListener { openUserDialog(false, user) }
-            holder.buttonDelete.setOnClickListener {
+            holder.binding.buttonEdit.setOnClickListener { openUserDialog(false, user) }
+            holder.binding.buttonDelete.setOnClickListener {
                 userManager.deleteUser(user.id)
                 adapter.users.removeAt(holder.adapterPosition)
                 notifyItemRemoved(holder.adapterPosition)
@@ -175,9 +167,6 @@ class UserActivity : AppCompatActivity() {
 
         internal inner class UserViewHolder(view: View) : RecyclerView.ViewHolder(view) {
             val binding: UserCardBinding = DataBindingUtil.getBinding(view)
-            var userView: CheckedTextView = binding.user
-            var buttonEdit: Button = binding.buttonEdit
-            var buttonDelete: Button = binding.buttonDelete
 
             init {
 

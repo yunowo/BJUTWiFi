@@ -9,10 +9,11 @@ class UserManager(context: Context) {
 
     private val dbHelper: DBHelper = DBHelper(context)
 
-    fun insertUser(account: String, password: String, pack: Int): Boolean {
+    fun insertUser(user: User): Boolean {
         try {
-            val position = Integer.parseInt(dbHelper.getUserDao()!!.queryRaw(dbHelper.getUserDao()!!.queryBuilder().selectRaw("MAX(position)").prepareStatementString()).firstResult[0] ?: "0")
-            dbHelper.getUserDao()!!.createOrUpdate(User(0, account, password, pack, position + 1))
+            val position = (dbHelper.getUserDao()!!.queryRaw(dbHelper.getUserDao()!!.queryBuilder().selectRaw("MAX(position)").prepareStatementString()).firstResult[0] ?: "-1").toInt()
+            user.position = position + 1
+            dbHelper.getUserDao()!!.createOrUpdate(user)
             return true
         } catch (e: Exception) {
             Log.e(TAG, "insertUser", e)
