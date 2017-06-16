@@ -2,47 +2,41 @@ package me.liuyun.bjutlgn.db
 
 import android.content.Context
 import android.util.Log
-
+import com.j256.ormlite.dao.Dao
 import me.liuyun.bjutlgn.entity.Flow
 
 class FlowManager(context: Context) {
 
     private val dbHelper: DBHelper = DBHelper(context)
 
-    fun insertFlow(timestamp: Long, flow: Int): Boolean {
+    fun transaction(body: (Dao<Flow, Int>) -> Unit): Boolean {
         try {
-            dbHelper.getFlowDao()!!.create(Flow(0, timestamp, flow))
+            body(dbHelper.flowDao)
             return true
         } catch (e: Exception) {
-            Log.e(TAG, "insertFlow", e)
+            Log.e(TAG, body.toString(), e)
         }
-
         return false
     }
 
-    val allFlow: List<Flow>?
+    fun insertFlow(timestamp: Long, flow: Int): Boolean {
+        return transaction { it.create(Flow(0, timestamp, flow)) }
+    }
+
+    fun clearFlow(): Boolean {
+        return transaction { it.deleteBuilder().delete() }
+    }
+
+    val allFlow: List<Flow>
         get() {
             try {
-                return dbHelper.getFlowDao()!!.queryForAll()
+                return dbHelper.flowDao.queryForAll()
             } catch (e: Exception) {
                 Log.e(TAG, "getAllFlow", e)
             }
 
-            return null
+            return mutableListOf()
         }
 
-    fun clearFlow(): Boolean {
-        try {
-            dbHelper.getFlowDao()!!.deleteBuilder().delete()
-            return true
-        } catch (e: Exception) {
-            Log.e(TAG, "clearFlow", e)
-        }
-
-        return false
-    }
-
-    companion object {
-        private val TAG = "FlowManager"
-    }
+    val TAG: String = this.javaClass.name
 }

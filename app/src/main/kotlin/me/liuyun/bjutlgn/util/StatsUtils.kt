@@ -8,22 +8,20 @@ import java.util.regex.Pattern
 
 object StatsUtils {
     fun parseStats(text: String): Stats {
-        var time = 0
-        var flow = 0
-        var fee = 0
+        val stats = Stats()
         try {
             val p = Pattern.compile("time='(.*?)';flow='(.*?)';fsele=1;fee='(.*?)'")
             val m = p.matcher(text.replace(" ", ""))
             while (m.find()) {
-                time = Integer.parseInt(m.group(1))
-                flow = Integer.parseInt(m.group(2))
-                fee = Integer.parseInt(m.group(3))
+                stats.time = Integer.parseInt(m.group(1))
+                stats.flow = Integer.parseInt(m.group(2))
+                stats.fee = Integer.parseInt(m.group(3))
             }
         } catch (e: Exception) {
             e.printStackTrace()
         }
 
-        return Stats(flow, time, fee, true)
+        return stats
         //TODO if flow=0 then check real connection
     }
 

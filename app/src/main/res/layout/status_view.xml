@@ -8,8 +8,9 @@
         android:layout_height="match_parent">
 
         <GridLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
             android:layout_margin="8dp"
             android:columnCount="2"
             android:rowCount="3">
@@ -19,8 +20,8 @@
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_column="0"
-                android:layout_gravity="center"
-                android:layout_margin="5dp"
+                android:layout_gravity="center_vertical|end"
+                android:layout_margin="10dp"
                 android:layout_row="0"
                 android:layout_rowSpan="3"
                 app:max="100"
@@ -37,10 +38,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_column="1"
+                android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="5dp"
-                android:layout_marginStart="10dp"
                 android:layout_row="0"
-                android:gravity="center_horizontal"
                 android:textSize="18sp"/>
 
             <LinearLayout
@@ -48,30 +48,24 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_column="1"
-                android:layout_gravity="fill"
-                android:layout_marginStart="10dp"
+                android:layout_gravity="center_horizontal"
                 android:layout_row="1"
                 android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/flow"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="10dp"
-                    android:gravity="center_horizontal"/>
+                    android:layout_height="wrap_content"/>
 
                 <TextView
                     android:id="@+id/time"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="10dp"
-                    android:gravity="center_horizontal"/>
+                    android:layout_height="wrap_content"/>
 
                 <TextView
                     android:id="@+id/fee"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"/>
+                    android:layout_height="wrap_content"/>
             </LinearLayout>
 
             <LinearLayout
@@ -79,7 +73,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_column="1"
-                android:layout_gravity="fill_horizontal"
+                android:layout_gravity="center_horizontal"
                 android:layout_row="2"
                 android:gravity="center"
                 android:orientation="horizontal">

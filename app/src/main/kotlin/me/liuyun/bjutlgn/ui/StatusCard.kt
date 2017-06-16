@@ -10,6 +10,9 @@ import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.FrameLayout
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.experimental.CommonPool
+import kotlinx.coroutines.experimental.android.UI
+import kotlinx.coroutines.experimental.async
 import me.liuyun.bjutlgn.R
 import me.liuyun.bjutlgn.WiFiApplication
 import me.liuyun.bjutlgn.api.BjutRetrofit
@@ -19,7 +22,7 @@ import me.liuyun.bjutlgn.entity.Stats
 import me.liuyun.bjutlgn.util.NetworkUtils
 import me.liuyun.bjutlgn.util.StatsUtils
 
-class StatusCard(private val cardView: FrameLayout, private val graphCard: GraphCard?, private val context: WiFiApplication, private val captivePortal: CaptivePortal?) {
+class StatusCard(private val cardView: FrameLayout, private val graphCard: GraphCard?, private val app: WiFiApplication, private val captivePortal: CaptivePortal?) {
     val b: StatusViewBinding = DataBindingUtil.findBinding(cardView)
     private val service: BjutService = BjutRetrofit.bjutService
 
@@ -30,45 +33,49 @@ class StatusCard(private val cardView: FrameLayout, private val graphCard: Graph
     }
 
     fun onRefresh() {
-        //BjutRetrofit.evictAll()
-        val state = NetworkUtils.getNetworkState(context)
+        val state = NetworkUtils.getNetworkState(app)
         if (state == NetworkUtils.STATE_BJUT_WIFI) {
             b.progressRing.visibility = View.VISIBLE
             b.infoLayout.visibility = View.VISIBLE
             b.buttonsLayout.visibility = View.VISIBLE
         } else {
             b.progressRing.visibility = View.GONE
-            b.infoLayout.visibility = View.INVISIBLE
-            b.buttonsLayout.visibility = View.INVISIBLE
+            b.infoLayout.visibility = View.GONE
+            b.buttonsLayout.visibility = View.GONE
         }
         when (state) {
-            NetworkUtils.STATE_NO_NETWORK -> b.user.text = context.res.getString(R.string.status_no_network)
-            NetworkUtils.STATE_MOBILE -> b.user.text = context.res.getString(R.string.status_mobile_network)
+            NetworkUtils.STATE_NO_NETWORK -> b.user.text = app.res.getString(R.string.status_no_network)
+            NetworkUtils.STATE_MOBILE -> b.user.text = app.res.getString(R.string.status_mobile_network)
             NetworkUtils.STATE_BJUT_WIFI -> refreshStatus()
-            NetworkUtils.STATE_OTHER_WIFI -> b.user.text = String.format(context.res.getString(R.string.status_other_wifi), NetworkUtils.getWifiSSID(context))
+            NetworkUtils.STATE_OTHER_WIFI -> b.user.text = String.format(app.res.getString(R.string.status_other_wifi), NetworkUtils.getWifiSSID(app))
         }
     }
 
-    private fun refreshStatus() {
-        val account = context.prefs.getString("account", "")
+    private fun refreshStatus() = async(UI) {
+        val job = async(CommonPool) {
+            BjutRetrofit.evictAll()
+        }
+        job.await()
+
+        val account = app.prefs.getString("account", "")
         b.user.text = account
         service.stats()
                 .map<Stats>({ StatsUtils.parseStats(it) })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ stat ->
+                .subscribe({ stats ->
                     Snackbar.make(cardView, R.string.stats_refresh_ok, Snackbar.LENGTH_SHORT).show()
-                    b.flow.text = String.format(context.res.getString(R.string.stats_flow), stat.flow / 1024f)
-                    b.fee.text = String.format(context.res.getString(R.string.stats_fee), stat.fee / 10000f)
-                    b.time.text = String.format(context.res.getString(R.string.stats_time), stat.time)
+                    b.flow.text = String.format(app.res.getString(R.string.stats_flow), stats.flow / 1024f)
+                    b.fee.text = String.format(app.res.getString(R.string.stats_fee), stats.fee / 10000f)
+                    b.time.text = String.format(app.res.getString(R.string.stats_time), stats.time)
 
-                    val animator = ObjectAnimator.ofInt(b.progressRing, "progress", StatsUtils.getPercent(stat, context))
+                    val animator = ObjectAnimator.ofInt(b.progressRing, "progress", StatsUtils.getPercent(stats, app))
                     animator.interpolator = AccelerateDecelerateInterpolator()
                     animator.duration = 500
                     animator.start()
 
-                    if (stat.flow != 0) {
-                        context.flowManager.insertFlow(System.currentTimeMillis() / 1000L, stat.flow)
+                    if (stats.flow != 0) {
+                        app.flowManager.insertFlow(System.currentTimeMillis() / 1000L, stats.flow)
                         graphCard?.show()
 
                         captivePortal?.reportCaptivePortalDismissed()
@@ -78,8 +85,8 @@ class StatusCard(private val cardView: FrameLayout, private val graphCard: Graph
     }
 
     internal fun onLogin() {
-        val account = context.prefs.getString("account", "")
-        val password = context.prefs.getString("password", "")
+        val account = app.prefs.getString("account", "")
+        val password = app.prefs.getString("password", "")
 
         if (!TextUtils.isEmpty(account) && !TextUtils.isEmpty(password)) {
             service.login(account, password, "1", "123")

@@ -2,6 +2,7 @@ package me.liuyun.bjutlgn.db
 
 import android.content.Context
 import android.util.Log
+import com.j256.ormlite.dao.Dao
 
 import me.liuyun.bjutlgn.entity.User
 
@@ -9,53 +10,42 @@ class UserManager(context: Context) {
 
     private val dbHelper: DBHelper = DBHelper(context)
 
-    fun insertUser(user: User): Boolean {
+    fun transaction(body: (Dao<User, Int>) -> Unit): Boolean {
         try {
-            val position = (dbHelper.getUserDao()!!.queryRaw(dbHelper.getUserDao()!!.queryBuilder().selectRaw("MAX(position)").prepareStatementString()).firstResult[0] ?: "-1").toInt()
-            user.position = position + 1
-            dbHelper.getUserDao()!!.createOrUpdate(user)
+            body(dbHelper.userDao)
             return true
         } catch (e: Exception) {
-            Log.e(TAG, "insertUser", e)
+            Log.e(TAG, body.toString(), e)
         }
-
         return false
+    }
+
+    fun insertUser(user: User): Boolean {
+        return transaction {
+            val position = (it.queryRaw(dbHelper.userDao.queryBuilder().selectRaw("MAX(position)").prepareStatementString()).firstResult[0] ?: "-1").toInt()
+            user.position = position + 1
+            dbHelper.userDao.createOrUpdate(user)
+        }
     }
 
     fun updateUser(user: User): Boolean {
-        try {
-            dbHelper.getUserDao()!!.update(user)
-            return true
-        } catch (e: Exception) {
-            Log.e(TAG, "updateUser", e)
-        }
-
-        return false
+        return transaction { it.update(user) }
     }
 
     fun deleteUser(id: Int): Boolean {
-        try {
-            dbHelper.getUserDao()!!.deleteById(id)
-            return true
-        } catch (e: Exception) {
-            Log.e(TAG, "deleteUser", e)
-        }
-
-        return false
+        return transaction { it.deleteById(id) }
     }
 
     val allUsers: MutableList<User>
         get() {
             try {
-                return dbHelper.getUserDao()!!.queryBuilder().orderBy("position", true).query()
+                return dbHelper.userDao.queryBuilder().orderBy("position", true).query()
             } catch (e: Exception) {
                 Log.e(TAG, "getAllUsers", e)
             }
             return mutableListOf()
         }
 
-    companion object {
-        private val TAG = "UserManager"
-    }
+    val TAG: String = this.javaClass.name
 
 }

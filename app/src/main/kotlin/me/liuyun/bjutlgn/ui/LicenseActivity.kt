@@ -11,7 +11,6 @@ import com.artitk.licensefragment.model.LicenseType
 import com.artitk.licensefragment.support.v4.RecyclerViewLicenseFragment
 import me.liuyun.bjutlgn.R
 import me.liuyun.bjutlgn.databinding.ActivityLicenseBinding
-import java.util.*
 
 class LicenseActivity : AppCompatActivity() {
     val binding: ActivityLicenseBinding by lazy { DataBindingUtil.setContentView<ActivityLicenseBinding>(this, R.layout.activity_license) }

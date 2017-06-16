@@ -22,10 +22,10 @@ import me.liuyun.bjutlgn.util.StatsUtils
 @TargetApi(Build.VERSION_CODES.N)
 class BjutTileService : TileService() {
     private val TAG = BjutTileService::class.java.simpleName
-    private var iconOff: Icon? = null
-    private var iconOn: Icon? = null
-    private var res: Resources? = null
-    private var service: BjutService? = null
+    lateinit var iconOff: Icon
+    lateinit var iconOn: Icon
+    lateinit var res: Resources
+    lateinit var service: BjutService
 
     override fun onCreate() {
         super.onCreate()
@@ -74,7 +74,7 @@ class BjutTileService : TileService() {
     }
 
     internal fun setAvailableState(tile: Tile) {
-        service!!.stats()
+        service.stats()
                 .map<Stats>({ StatsUtils.parseStats(it) })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -90,19 +90,19 @@ class BjutTileService : TileService() {
 
     internal fun setOnlineState(tile: Tile, stats: Stats) {
         tile.icon = iconOn
-        tile.label = res!!.getString(R.string.status_logged_in, stats.flow, StatsUtils.getPercent(stats, this))
+        tile.label = res.getString(R.string.status_logged_in, stats.flow, StatsUtils.getPercent(stats, this))
         tile.state = Tile.STATE_ACTIVE
     }
 
     internal fun setOfflineState(tile: Tile) {
         tile.icon = iconOff
-        tile.label = res!!.getString(R.string.status_not_logged_in)
+        tile.label = res.getString(R.string.status_not_logged_in)
         tile.state = Tile.STATE_INACTIVE
     }
 
     internal fun setUnavailableState(tile: Tile) {
         tile.icon = iconOff
-        tile.label = res!!.getString(R.string.status_unavailable)
+        tile.label = res.getString(R.string.status_unavailable)
         tile.state = Tile.STATE_INACTIVE
         //tile.setState(Tile.STATE_UNAVAILABLE);
     }

@@ -12,9 +12,8 @@ import me.liuyun.bjutlgn.entity.User
 import java.sql.SQLException
 
 class DBHelper(context: Context) : OrmLiteSqliteOpenHelper(context, DBHelper.DATABASE_NAME, null, DBHelper.DATABASE_VERSION) {
-
-    private var flowDao: Dao<Flow, Int>? = null
-    private var userDao: Dao<User, Int>? = null
+    val flowDao: Dao<Flow, Int> by lazy { getDao<Dao<Flow, Int>, Flow>(Flow::class.java) }
+    val userDao: Dao<User, Int> by lazy { getDao<Dao<User, Int>, User>(User::class.java) }
 
     override fun onCreate(db: SQLiteDatabase, connectionSource: ConnectionSource) {
         try {
@@ -37,28 +36,6 @@ class DBHelper(context: Context) : OrmLiteSqliteOpenHelper(context, DBHelper.DAT
             throw RuntimeException(e)
         }
 
-    }
-
-    @Throws(SQLException::class)
-    fun getUserDao(): Dao<User, Int>? {
-        if (userDao == null) {
-            userDao = getDao<Dao<User, Int>, User>(User::class.java)
-        }
-        return userDao
-    }
-
-    @Throws(SQLException::class)
-    fun getFlowDao(): Dao<Flow, Int>? {
-        if (flowDao == null) {
-            flowDao = getDao<Dao<Flow, Int>, Flow>(Flow::class.java)
-        }
-        return flowDao
-    }
-
-    override fun close() {
-        super.close()
-        flowDao = null
-        userDao = null
     }
 
     companion object {

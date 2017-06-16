@@ -9,11 +9,8 @@ import me.liuyun.bjutlgn.util.ThemeHelper
 
 class WiFiApplication : Application() {
     lateinit var flowManager: FlowManager
-        private set
     lateinit var res: Resources
-        private set
     lateinit var prefs: SharedPreferences
-        private set
 
     override fun onCreate() {
         super.onCreate()

@@ -21,7 +21,7 @@ class GraphCard(cardView: CardView, private val context: WiFiApplication) {
             context.flowManager.clearFlow()
         }
 
-        val flowList = context.flowManager.allFlow ?: emptyList()
+        val flowList = context.flowManager.allFlow
         chart.clearPaths()
         chart.configureGraph(60 * 24 * endOfCurrentMonth.get(Calendar.DATE), StatsUtils.getPack(context) * 1024, true, true)
         calcPoints(flowList)
