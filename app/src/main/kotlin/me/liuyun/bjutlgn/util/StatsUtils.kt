@@ -26,9 +26,8 @@ object StatsUtils {
     }
 
     fun getPack(context: Context): Int {
-        val resources = context.resources
         val prefs = PreferenceManager.getDefaultSharedPreferences(context)
-        return resources.getIntArray(R.array.packages_values)[prefs.getInt("current_package", 0)]
+        return context.resources.getIntArray(R.array.packages_values)[prefs.getInt("current_package", 0)]
     }
 
     fun getPercent(stats: Stats, context: Context): Int {

@@ -71,7 +71,6 @@ class ThemeActivity : AppCompatActivity() {
             var tvTheme = binding.tvTitle
             var btnChoose = binding.btnChoose
             var themeId: Int = 0
-                set
 
             init {
                 btnChoose.setOnClickListener { onItemClick() }

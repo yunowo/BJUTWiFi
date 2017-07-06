@@ -18,7 +18,6 @@ import me.liuyun.bjutlgn.WiFiApplication
 import me.liuyun.bjutlgn.api.BjutRetrofit
 import me.liuyun.bjutlgn.api.BjutService
 import me.liuyun.bjutlgn.databinding.StatusViewBinding
-import me.liuyun.bjutlgn.entity.Stats
 import me.liuyun.bjutlgn.util.NetworkUtils
 import me.liuyun.bjutlgn.util.StatsUtils
 
@@ -60,7 +59,7 @@ class StatusCard(private val cardView: FrameLayout, private val graphCard: Graph
         val account = app.prefs.getString("account", "")
         b.user.text = account
         service.stats()
-                .map<Stats>({ StatsUtils.parseStats(it) })
+                .map({ StatsUtils.parseStats(it) })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ stats ->

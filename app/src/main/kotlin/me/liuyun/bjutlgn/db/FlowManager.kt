@@ -9,34 +9,35 @@ class FlowManager(context: Context) {
 
     private val dbHelper: DBHelper = DBHelper(context)
 
-    fun transaction(body: (Dao<Flow, Int>) -> Unit): Boolean {
+    fun transaction(body: (Dao<Flow, Int>) -> Int): Int {
         try {
-            body(dbHelper.flowDao)
-            return true
+            return  body(dbHelper.flowDao)
         } catch (e: Exception) {
             Log.e(TAG, body.toString(), e)
         }
-        return false
+        return 0
     }
 
-    fun insertFlow(timestamp: Long, flow: Int): Boolean {
+    fun <T> transaction(body: (Dao<Flow, Int>) -> MutableList<T>): MutableList<T> {
+        try {
+            return body(dbHelper.flowDao)
+        } catch (e: Exception) {
+            Log.e(TAG, body.toString(), e)
+        }
+        return mutableListOf()
+    }
+
+    fun insertFlow(timestamp: Long, flow: Int): Int {
         return transaction { it.create(Flow(0, timestamp, flow)) }
     }
 
-    fun clearFlow(): Boolean {
+    fun clearFlow(): Int {
         return transaction { it.deleteBuilder().delete() }
     }
 
-    val allFlow: List<Flow>
-        get() {
-            try {
-                return dbHelper.flowDao.queryForAll()
-            } catch (e: Exception) {
-                Log.e(TAG, "getAllFlow", e)
-            }
-
-            return mutableListOf()
-        }
+    fun allFlow(): MutableList<Flow> {
+        return transaction<Flow> { it.queryForAll() }
+    }
 
     val TAG: String = this.javaClass.name
 }

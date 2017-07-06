@@ -10,41 +10,44 @@ class UserManager(context: Context) {
 
     private val dbHelper: DBHelper = DBHelper(context)
 
-    fun transaction(body: (Dao<User, Int>) -> Unit): Boolean {
+    fun transaction(body: (Dao<User, Int>) -> Int): Int {
         try {
-            body(dbHelper.userDao)
-            return true
+            return body(dbHelper.userDao)
         } catch (e: Exception) {
             Log.e(TAG, body.toString(), e)
         }
-        return false
+        return 0
     }
 
-    fun insertUser(user: User): Boolean {
+    fun <T> transaction(body: (Dao<User, Int>) -> MutableList<T>): MutableList<T> {
+        try {
+            return body(dbHelper.userDao)
+        } catch (e: Exception) {
+            Log.e(TAG, body.toString(), e)
+        }
+        return mutableListOf()
+    }
+
+
+    fun insertUser(user: User): Int {
         return transaction {
             val position = (it.queryRaw(dbHelper.userDao.queryBuilder().selectRaw("MAX(position)").prepareStatementString()).firstResult[0] ?: "-1").toInt()
             user.position = position + 1
-            dbHelper.userDao.createOrUpdate(user)
+            dbHelper.userDao.createOrUpdate(user).numLinesChanged
         }
     }
 
-    fun updateUser(user: User): Boolean {
+    fun updateUser(user: User): Int {
         return transaction { it.update(user) }
     }
 
-    fun deleteUser(id: Int): Boolean {
+    fun deleteUser(id: Int): Int {
         return transaction { it.deleteById(id) }
     }
 
-    val allUsers: MutableList<User>
-        get() {
-            try {
-                return dbHelper.userDao.queryBuilder().orderBy("position", true).query()
-            } catch (e: Exception) {
-                Log.e(TAG, "getAllUsers", e)
-            }
-            return mutableListOf()
-        }
+    fun allUsers(): MutableList<User> {
+        return transaction<User> { it.queryBuilder().orderBy("position", true).query() ?: mutableListOf() }
+    }
 
     val TAG: String = this.javaClass.name
 

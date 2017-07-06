@@ -43,7 +43,7 @@ class UserActivity : AppCompatActivity() {
         llm.orientation = LinearLayoutManager.VERTICAL
         binding.recycler.layoutManager = llm
         userManager = UserManager(this)
-        adapter = UserAdapter(userManager.allUsers)
+        adapter = UserAdapter(userManager.allUsers())
         binding.recycler.adapter = adapter
         binding.recycler.itemAnimator = DefaultItemAnimator()
         ItemTouchHelper(
@@ -108,12 +108,12 @@ class UserActivity : AppCompatActivity() {
                         user.pack = currentPackage
                         userManager.updateUser(user)
                         adapter.users.clear()
-                        adapter.users.addAll(userManager.allUsers)
+                        adapter.users.addAll(userManager.allUsers())
                         adapter.notifyItemChanged(user.position)
                     } else {
                         userManager.insertUser(user)
                         adapter.users.clear()
-                        adapter.users.addAll(userManager.allUsers)
+                        adapter.users.addAll(userManager.allUsers())
                         adapter.notifyItemInserted(adapter.users.size)
                     }
                 }

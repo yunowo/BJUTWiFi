@@ -53,10 +53,8 @@ class MainActivity : AppCompatActivity() {
         graphCard.show()
         registerReceiver(receiver, IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
 
-        startSpringAnimation(binding.statusCardView!!.root)
-        startSpringAnimation(binding.graphCardView!!.root)
-        startSpringAnimation(binding.fab)
-        startSpringAnimation(binding.toolbar)
+        listOf(binding.statusCardView!!.root, binding.graphCardView!!.root, binding.fab, binding.toolbar)
+                .forEach { startSpringAnimation(it) }
     }
 
     override fun onPause() {
