@@ -33,9 +33,7 @@ class MainActivity : AppCompatActivity() {
         statusCard = StatusCard(binding.statusCardView?.statusView?.root as FrameLayout, graphCard, application as WiFiApplication, null)
 
         receiver = object : BroadcastReceiver() {
-            override fun onReceive(context: Context, intent: Intent) {
-                statusCard.onRefresh()
-            }
+            override fun onReceive(context: Context, intent: Intent) = statusCard.onRefresh()
         }
 
         binding.fab.setOnClickListener { statusCard.onRefresh() }
@@ -68,17 +66,17 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val id = item.itemId
-        if (id == R.id.action_settings) {
-            val intent = Intent(this, SettingsActivity::class.java)
-            this.startActivity(intent)
-            return true
-        } else if (id == R.id.action_users) {
-            val intent = Intent(this, UserActivity::class.java)
-            this.startActivity(intent)
-            return true
+        when (item.itemId) {
+            R.id.action_settings -> {
+                startActivity(Intent(this, SettingsActivity::class.java))
+                return true
+            }
+            R.id.action_users -> {
+                startActivity(Intent(this, UserActivity::class.java))
+                return true
+            }
+            else -> return super.onOptionsItemSelected(item)
         }
-        return super.onOptionsItemSelected(item)
     }
 
     private fun startSpringAnimation(view: View) {

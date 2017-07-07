@@ -18,16 +18,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import me.liuyun.bjutlgn.R
+import me.liuyun.bjutlgn.WiFiApplication
 import me.liuyun.bjutlgn.databinding.ActivityUsersBinding
 import me.liuyun.bjutlgn.databinding.UserCardBinding
 import me.liuyun.bjutlgn.databinding.UserDialogBinding
-import me.liuyun.bjutlgn.db.UserManager
+import me.liuyun.bjutlgn.db.UserDao
 import me.liuyun.bjutlgn.entity.User
 
 class UserActivity : AppCompatActivity() {
     val binding: ActivityUsersBinding by lazy { DataBindingUtil.setContentView<ActivityUsersBinding>(this, R.layout.activity_users) }
     lateinit internal var adapter: UserAdapter
-    lateinit private var userManager: UserManager
+    lateinit private var userDao: UserDao
     lateinit private var prefs: SharedPreferences
     private var currentId: Int = 0
     private var currentPackage: Int = 0
@@ -37,13 +38,13 @@ class UserActivity : AppCompatActivity() {
 
         setSupportActionBar(binding.toolbar)
         binding.toolbar.setNavigationOnClickListener { onBackPressed() }
-        binding.fab.setOnClickListener { openUserDialog(true, User()) }
+        binding.fab.setOnClickListener { openUserDialog(true, User(0, "", "", 0, 0)) }
 
         val llm = LinearLayoutManager(this)
         llm.orientation = LinearLayoutManager.VERTICAL
         binding.recycler.layoutManager = llm
-        userManager = UserManager(this)
-        adapter = UserAdapter(userManager.allUsers())
+        userDao = (application as WiFiApplication).appDatabase.userDao()
+        adapter = UserAdapter(userDao.all() as MutableList<User>)
         binding.recycler.adapter = adapter
         binding.recycler.itemAnimator = DefaultItemAnimator()
         ItemTouchHelper(
@@ -61,19 +62,19 @@ class UserActivity : AppCompatActivity() {
                             next.position = previousPos
                             previousPos = pos
                             adapter.users[i] = next
-                            userManager.updateUser(next)
+                            userDao.update(next)
                             i += step
                         }
                         first.position = previousPos
                         adapter.users[to] = first
-                        userManager.updateUser(first)
+                        userDao.update(first)
                         adapter.notifyItemMoved(from, to)
                         return true
                     }
 
                     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                         val pos = viewHolder.adapterPosition
-                        userManager.deleteUser(adapter.users[pos].id)
+                        userDao.delete(adapter.users[pos])
                         adapter.users.removeAt(pos)
                         adapter.notifyItemRemoved(pos)
                     }
@@ -81,10 +82,6 @@ class UserActivity : AppCompatActivity() {
 
         prefs = PreferenceManager.getDefaultSharedPreferences(this)
         currentId = prefs.getInt("current_user", 0)
-    }
-
-    override fun onResume() {
-        super.onResume()
     }
 
     internal fun openUserDialog(newUser: Boolean, user: User) {
@@ -106,14 +103,15 @@ class UserActivity : AppCompatActivity() {
                 .setPositiveButton(R.string.button_ok) { _, _ ->
                     if (!newUser) {
                         user.pack = currentPackage
-                        userManager.updateUser(user)
+                        userDao.update(user)
                         adapter.users.clear()
-                        adapter.users.addAll(userManager.allUsers())
+                        adapter.users.addAll(userDao.all())
                         adapter.notifyItemChanged(user.position)
                     } else {
-                        userManager.insertUser(user)
+                        user.position = userDao.maxPosition()?.let { it.position + 1 } ?: 0
+                        userDao.insert(user)
                         adapter.users.clear()
-                        adapter.users.addAll(userManager.allUsers())
+                        adapter.users.addAll(userDao.all())
                         adapter.notifyItemInserted(adapter.users.size)
                     }
                 }
@@ -159,7 +157,7 @@ class UserActivity : AppCompatActivity() {
 
             holder.binding.buttonEdit.setOnClickListener { openUserDialog(false, user) }
             holder.binding.buttonDelete.setOnClickListener {
-                userManager.deleteUser(user.id)
+                userDao.delete(user)
                 adapter.users.removeAt(holder.adapterPosition)
                 notifyItemRemoved(holder.adapterPosition)
             }

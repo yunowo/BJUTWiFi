@@ -1,14 +1,15 @@
 package me.liuyun.bjutlgn
 
 import android.app.Application
+import android.arch.persistence.room.Room
 import android.content.SharedPreferences
 import android.content.res.Resources
 import android.preference.PreferenceManager
-import me.liuyun.bjutlgn.db.FlowManager
+import me.liuyun.bjutlgn.db.AppDatabase
 import me.liuyun.bjutlgn.util.ThemeHelper
 
 class WiFiApplication : Application() {
-    lateinit var flowManager: FlowManager
+    lateinit var appDatabase: AppDatabase
     lateinit var res: Resources
     lateinit var prefs: SharedPreferences
 
@@ -16,7 +17,7 @@ class WiFiApplication : Application() {
         super.onCreate()
         prefs = PreferenceManager.getDefaultSharedPreferences(this)
         res = resources
-        flowManager = FlowManager(this)
+        appDatabase = Room.databaseBuilder(this, AppDatabase::class.java, "bjutwifi.db").allowMainThreadQueries().build()
         ThemeHelper.init(this, prefs.getInt("theme", R.style.ThemeBlue))
     }
 }

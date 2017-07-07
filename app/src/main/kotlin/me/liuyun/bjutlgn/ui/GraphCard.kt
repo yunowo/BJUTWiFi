@@ -18,10 +18,10 @@ class GraphCard(cardView: CardView, private val context: WiFiApplication) {
         val month = Calendar.getInstance().get(Calendar.MONTH)
         if (context.prefs.getInt("current_month", -1) != month) {
             context.prefs.edit().putInt("current_month", month).apply()
-            context.flowManager.clearFlow()
+            context.appDatabase.flowDao().deleteAll()
         }
 
-        val flowList = context.flowManager.allFlow()
+        val flowList = context.appDatabase.flowDao().all()
         chart.clearPaths()
         chart.configureGraph(60 * 24 * endOfCurrentMonth.get(Calendar.DATE), StatsUtils.getPack(context) * 1024, true, true)
         calcPoints(flowList)
@@ -35,9 +35,7 @@ class GraphCard(cardView: CardView, private val context: WiFiApplication) {
         val points = SparseIntArray()
         points.put(0, 0)
 
-        for (flow in flowList) {
-            points.put((flow.timestamp / 60 - startOfMonth).toInt(), flow.flow / 1024)
-        }
+        flowList.forEach { flow -> points.put((flow.timestamp / 60 - startOfMonth).toInt(), flow.flow / 1024) }
         chart.addPath(points)
     }
 

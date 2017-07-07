@@ -19,10 +19,10 @@ object StatsUtils {
             }
         } catch (e: Exception) {
             e.printStackTrace()
+            stats.isOnline = false
         }
 
         return stats
-        //TODO if flow=0 then check real connection
     }
 
     fun getPack(context: Context): Int {

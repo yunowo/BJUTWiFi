@@ -18,6 +18,7 @@ import me.liuyun.bjutlgn.WiFiApplication
 import me.liuyun.bjutlgn.api.BjutRetrofit
 import me.liuyun.bjutlgn.api.BjutService
 import me.liuyun.bjutlgn.databinding.StatusViewBinding
+import me.liuyun.bjutlgn.entity.Flow
 import me.liuyun.bjutlgn.util.NetworkUtils
 import me.liuyun.bjutlgn.util.StatsUtils
 
@@ -34,13 +35,9 @@ class StatusCard(private val cardView: FrameLayout, private val graphCard: Graph
     fun onRefresh() {
         val state = NetworkUtils.getNetworkState(app)
         if (state == NetworkUtils.STATE_BJUT_WIFI) {
-            b.progressRing.visibility = View.VISIBLE
-            b.infoLayout.visibility = View.VISIBLE
-            b.buttonsLayout.visibility = View.VISIBLE
+            arrayOf(b.progressRing, b.infoLayout, b.buttonsLayout).forEach { it.visibility = View.VISIBLE }
         } else {
-            b.progressRing.visibility = View.GONE
-            b.infoLayout.visibility = View.GONE
-            b.buttonsLayout.visibility = View.GONE
+            arrayOf(b.progressRing, b.infoLayout, b.buttonsLayout).forEach { it.visibility = View.GONE }
         }
         when (state) {
             NetworkUtils.STATE_NO_NETWORK -> b.user.text = app.res.getString(R.string.status_no_network)
@@ -73,8 +70,8 @@ class StatusCard(private val cardView: FrameLayout, private val graphCard: Graph
                     animator.duration = 500
                     animator.start()
 
-                    if (stats.flow != 0) {
-                        app.flowManager.insertFlow(System.currentTimeMillis() / 1000L, stats.flow)
+                    if (stats.isOnline) {
+                        app.appDatabase.flowDao().insert(Flow(0, System.currentTimeMillis() / 1000L, stats.flow))
                         graphCard?.show()
 
                         captivePortal?.reportCaptivePortalDismissed()

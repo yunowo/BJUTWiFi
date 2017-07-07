@@ -1,11 +1,11 @@
 package me.liuyun.bjutlgn.entity
 
-import com.j256.ormlite.field.DatabaseField
-import com.j256.ormlite.table.DatabaseTable
+import android.arch.persistence.room.Entity
+import android.arch.persistence.room.PrimaryKey
 
-@DatabaseTable(tableName = "users")
-data class User(@DatabaseField(generatedId = true) var id: Int = 0,
-                @DatabaseField var account: String = "",
-                @DatabaseField var password: String = "",
-                @DatabaseField var pack: Int = 0,
-                @DatabaseField var position: Int = 0)
+@Entity(tableName = "users")
+data class User(@PrimaryKey(autoGenerate = true) var id: Int,
+                var account: String,
+                var password: String,
+                var pack: Int,
+                var position: Int)
