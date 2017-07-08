@@ -3,14 +3,14 @@ package me.liuyun.bjutlgn.ui
 import android.databinding.DataBindingUtil
 import android.support.v7.widget.CardView
 import android.util.SparseIntArray
-import me.liuyun.bjutlgn.WiFiApplication
+import me.liuyun.bjutlgn.App
 import me.liuyun.bjutlgn.databinding.GraphCardBinding
 import me.liuyun.bjutlgn.entity.Flow
 import me.liuyun.bjutlgn.util.StatsUtils
 import java.text.DateFormat
 import java.util.*
 
-class GraphCard(cardView: CardView, private val context: WiFiApplication) {
+class GraphCard(cardView: CardView, private val context: App) {
     val binding: GraphCardBinding = DataBindingUtil.findBinding(cardView)
     var chart = binding.chart
 

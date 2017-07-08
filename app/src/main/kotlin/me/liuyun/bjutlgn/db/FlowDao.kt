@@ -10,7 +10,7 @@ import me.liuyun.bjutlgn.entity.Flow
 @Dao
 interface FlowDao {
     @Query("SELECT * FROM flow")
-    fun all(): List<Flow>
+    fun all(): MutableList<Flow>
 
     @Insert
     fun insert(flow: Flow)

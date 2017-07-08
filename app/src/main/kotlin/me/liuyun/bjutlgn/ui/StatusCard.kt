@@ -14,7 +14,7 @@ import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.async
 import me.liuyun.bjutlgn.R
-import me.liuyun.bjutlgn.WiFiApplication
+import me.liuyun.bjutlgn.App
 import me.liuyun.bjutlgn.api.BjutRetrofit
 import me.liuyun.bjutlgn.api.BjutService
 import me.liuyun.bjutlgn.databinding.StatusViewBinding
@@ -22,7 +22,7 @@ import me.liuyun.bjutlgn.entity.Flow
 import me.liuyun.bjutlgn.util.NetworkUtils
 import me.liuyun.bjutlgn.util.StatsUtils
 
-class StatusCard(private val cardView: FrameLayout, private val graphCard: GraphCard?, private val app: WiFiApplication, private val captivePortal: CaptivePortal?) {
+class StatusCard(private val cardView: FrameLayout, private val graphCard: GraphCard?, private val app: App, private val captivePortal: CaptivePortal?) {
     val b: StatusViewBinding = DataBindingUtil.findBinding(cardView)
     private val service: BjutService = BjutRetrofit.bjutService
 

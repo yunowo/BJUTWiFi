@@ -1,5 +1,6 @@
 package me.liuyun.bjutlgn.db
 
+import android.arch.lifecycle.LiveData
 import android.arch.persistence.room.*
 import me.liuyun.bjutlgn.entity.User
 
@@ -11,10 +12,10 @@ import me.liuyun.bjutlgn.entity.User
 @Dao
 interface UserDao {
     @Query("SELECT * FROM users ORDER BY position ASC")
-    fun all(): List<User>
+    fun all(): LiveData<MutableList<User>>
 
     @Query("SELECT * FROM users WHERE id IN (:ids)")
-    fun allByIds(ids: IntArray): List<User>
+    fun allByIds(ids: IntArray): MutableList<User>
 
     @Query("SELECT * FROM users WHERE position = (SELECT max(position) FROM users) LIMIT 1")
     fun maxPosition(): User?
@@ -27,6 +28,9 @@ interface UserDao {
 
     @Update
     fun update(user: User)
+
+    @Update
+    fun updateAll(vararg users: User)
 
     @Delete
     fun delete(user: User)

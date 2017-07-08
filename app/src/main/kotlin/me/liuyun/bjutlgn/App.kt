@@ -8,7 +8,7 @@ import android.preference.PreferenceManager
 import me.liuyun.bjutlgn.db.AppDatabase
 import me.liuyun.bjutlgn.util.ThemeHelper
 
-class WiFiApplication : Application() {
+class App : Application() {
     lateinit var appDatabase: AppDatabase
     lateinit var res: Resources
     lateinit var prefs: SharedPreferences

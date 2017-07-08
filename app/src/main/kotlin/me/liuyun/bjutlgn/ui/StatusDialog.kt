@@ -9,7 +9,7 @@ import android.net.CaptivePortal
 import android.view.LayoutInflater
 import android.widget.FrameLayout
 import me.liuyun.bjutlgn.R
-import me.liuyun.bjutlgn.WiFiApplication
+import me.liuyun.bjutlgn.App
 import me.liuyun.bjutlgn.databinding.StatusViewBinding
 
 object StatusDialog {
@@ -17,7 +17,7 @@ object StatusDialog {
     fun statusDialog(context: Context, captivePortal: CaptivePortal?): Dialog {
         context.setTheme(R.style.AppTheme_Dialog)
         val binding: StatusViewBinding = DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.status_view, null, false)
-        StatusCard(binding.root as FrameLayout, null, context.applicationContext as WiFiApplication, captivePortal).onRefresh()
+        StatusCard(binding.root as FrameLayout, null, context.applicationContext as App, captivePortal).onRefresh()
         return AlertDialog.Builder(context, R.style.AppTheme_Dialog)
                 .setTitle(R.string.app_name)
                 .setView(binding.root)

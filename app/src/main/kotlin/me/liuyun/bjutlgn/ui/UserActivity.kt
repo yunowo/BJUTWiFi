@@ -3,13 +3,13 @@ package me.liuyun.bjutlgn.ui
 import android.app.AlertDialog
 import android.arch.lifecycle.LifecycleRegistry
 import android.arch.lifecycle.LifecycleRegistryOwner
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.ViewModel
+import android.arch.lifecycle.Observer
 import android.content.SharedPreferences
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.util.DiffUtil
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -21,8 +21,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
+import me.liuyun.bjutlgn.App
 import me.liuyun.bjutlgn.R
-import me.liuyun.bjutlgn.WiFiApplication
 import me.liuyun.bjutlgn.databinding.ActivityUsersBinding
 import me.liuyun.bjutlgn.databinding.UserCardBinding
 import me.liuyun.bjutlgn.databinding.UserDialogBinding
@@ -48,43 +48,31 @@ class UserActivity : AppCompatActivity(), LifecycleRegistryOwner {
         binding.toolbar.setNavigationOnClickListener { onBackPressed() }
         binding.fab.setOnClickListener { openUserDialog(true, User(0, "", "", 0, 0)) }
 
+        userDao = (application as App).appDatabase.userDao()
+        adapter = UserAdapter()
+        val users = userDao.all()
+        users.observe(this@UserActivity, Observer {
+            it?.let {
+                val diff = DiffUtil.calculateDiff(UsersDiffCallback(adapter.users, it))
+                adapter.users = it
+                diff.dispatchUpdatesTo(adapter)
+            }
+        })
+
         val llm = LinearLayoutManager(this)
         llm.orientation = LinearLayoutManager.VERTICAL
         binding.recycler.layoutManager = llm
-        userDao = (application as WiFiApplication).appDatabase.userDao()
-        adapter = UserAdapter(userDao.all() as MutableList<User>)
         binding.recycler.adapter = adapter
         binding.recycler.itemAnimator = DefaultItemAnimator()
         ItemTouchHelper(
                 object : ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP or ItemTouchHelper.DOWN, ItemTouchHelper.START) {
                     override fun onMove(view: RecyclerView, holder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
-                        val from = holder.adapterPosition
-                        val to = target.adapterPosition
-                        val step = if (from < to) 1 else -1
-                        val first = adapter.users[from]
-                        var previousPos = first.position
-                        var i = from
-                        while (if (from < to) i < to else i > to) {
-                            val next = adapter.users[i + step]
-                            val pos = next.position
-                            next.position = previousPos
-                            previousPos = pos
-                            adapter.users[i] = next
-                            userDao.update(next)
-                            i += step
-                        }
-                        first.position = previousPos
-                        adapter.users[to] = first
-                        userDao.update(first)
-                        adapter.notifyItemMoved(from, to)
+                        adapter.onItemMove(holder.adapterPosition, target.adapterPosition)
                         return true
                     }
 
                     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                        val pos = viewHolder.adapterPosition
-                        userDao.delete(adapter.users[pos])
-                        adapter.users.removeAt(pos)
-                        adapter.notifyItemRemoved(pos)
+                        adapter.onItemDismiss(viewHolder.adapterPosition)
                     }
                 }).attachToRecyclerView(binding.recycler)
 
@@ -112,15 +100,9 @@ class UserActivity : AppCompatActivity(), LifecycleRegistryOwner {
                     if (!newUser) {
                         user.pack = currentPackage
                         userDao.update(user)
-                        adapter.users.clear()
-                        adapter.users.addAll(userDao.all())
-                        adapter.notifyItemChanged(user.position)
                     } else {
                         user.position = userDao.maxPosition()?.let { it.position + 1 } ?: 0
                         userDao.insert(user)
-                        adapter.users.clear()
-                        adapter.users.addAll(userDao.all())
-                        adapter.notifyItemInserted(adapter.users.size)
                     }
                 }
                 .setNegativeButton(R.string.button_cancel) { _, _ -> }
@@ -128,15 +110,7 @@ class UserActivity : AppCompatActivity(), LifecycleRegistryOwner {
                 .show()
     }
 
-    internal inner class UserViewModel : ViewModel() {
-        val user: LiveData<User>
-
-        init {
-            user = userDao.all()
-        }
-    }
-
-    internal inner class UserAdapter(var users: MutableList<User>) : RecyclerView.Adapter<UserAdapter.UserViewHolder>() {
+    internal inner class UserAdapter(var users: MutableList<User> = mutableListOf()) : RecyclerView.Adapter<UserAdapter.UserViewHolder>() {
 
         override fun onCreateViewHolder(parent: ViewGroup, i: Int): UserViewHolder {
             val binding: UserCardBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.user_card, parent, false)
@@ -171,21 +145,57 @@ class UserActivity : AppCompatActivity(), LifecycleRegistryOwner {
                 holder.binding.user.isChecked = true
             }
 
-            holder.binding.buttonEdit.setOnClickListener { openUserDialog(false, user) }
-            holder.binding.buttonDelete.setOnClickListener {
-                userDao.delete(user)
-                adapter.users.removeAt(holder.adapterPosition)
-                notifyItemRemoved(holder.adapterPosition)
+            holder.binding.buttonEdit.setOnClickListener { openUserDialog(false, user.copy()) }
+            holder.binding.buttonDelete.setOnClickListener { userDao.delete(user) }
+        }
+
+        fun onItemMove(from: Int, to: Int) {
+            val step = if (from < to) 1 else -1
+            val first = users[from]
+            var previousPos = first.position
+            var i = from
+            while (if (from < to) i < to else i > to) {
+                val next = users[i + step]
+                val pos = next.position
+                next.position = previousPos
+                previousPos = pos
+                users[i] = next
+                userDao.update(next)
+                i += step
             }
+            first.position = previousPos
+            users[to] = first
+            userDao.update(first)
+            notifyItemMoved(from, to)
+        }
+
+        fun onItemDismiss(pos: Int) {
+            userDao.delete(adapter.users[pos])
         }
 
         internal inner class UserViewHolder(view: View) : RecyclerView.ViewHolder(view) {
             val binding: UserCardBinding = DataBindingUtil.getBinding(view)
-
-            init {
-
-            }
         }
+    }
+
+    internal inner class UsersDiffCallback(val oldUsers: List<User>, val newUsers: List<User>) : DiffUtil.Callback() {
+
+        override fun getOldListSize(): Int {
+            return oldUsers.size
+        }
+
+        override fun getNewListSize(): Int {
+            return newUsers.size
+        }
+
+        override fun areItemsTheSame(p0: Int, p1: Int): Boolean {
+            return oldUsers[p0].id == newUsers[p1].id
+        }
+
+        override fun areContentsTheSame(p0: Int, p1: Int): Boolean {
+            return oldUsers[p0] == newUsers[p1]
+        }
+
     }
 
 }
