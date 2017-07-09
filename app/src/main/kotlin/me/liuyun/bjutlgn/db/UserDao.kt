@@ -23,14 +23,8 @@ interface UserDao {
     @Insert
     fun insert(user: User)
 
-    @Insert
-    fun insertAll(vararg users: User)
-
     @Update
     fun update(user: User)
-
-    @Update
-    fun updateAll(vararg users: User)
 
     @Delete
     fun delete(user: User)
