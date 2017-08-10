@@ -13,13 +13,17 @@ import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.async
-import me.liuyun.bjutlgn.R
 import me.liuyun.bjutlgn.App
+import me.liuyun.bjutlgn.R
 import me.liuyun.bjutlgn.api.BjutRetrofit
 import me.liuyun.bjutlgn.api.BjutService
 import me.liuyun.bjutlgn.databinding.StatusViewBinding
 import me.liuyun.bjutlgn.entity.Flow
 import me.liuyun.bjutlgn.util.NetworkUtils
+import me.liuyun.bjutlgn.util.NetworkUtils.STATE_BJUT_WIFI
+import me.liuyun.bjutlgn.util.NetworkUtils.STATE_MOBILE
+import me.liuyun.bjutlgn.util.NetworkUtils.STATE_NO_NETWORK
+import me.liuyun.bjutlgn.util.NetworkUtils.STATE_OTHER_WIFI
 import me.liuyun.bjutlgn.util.StatsUtils
 
 class StatusCard(private val cardView: FrameLayout, private val graphCard: GraphCard?, private val app: App, private val captivePortal: CaptivePortal?) {
@@ -34,16 +38,16 @@ class StatusCard(private val cardView: FrameLayout, private val graphCard: Graph
 
     fun onRefresh() {
         val state = NetworkUtils.getNetworkState(app)
-        if (state == NetworkUtils.STATE_BJUT_WIFI) {
+        if (state == STATE_BJUT_WIFI) {
             arrayOf(b.progressRing, b.infoLayout, b.buttonsLayout).forEach { it.visibility = View.VISIBLE }
         } else {
             arrayOf(b.progressRing, b.infoLayout, b.buttonsLayout).forEach { it.visibility = View.GONE }
         }
         when (state) {
-            NetworkUtils.STATE_NO_NETWORK -> b.user.text = app.res.getString(R.string.status_no_network)
-            NetworkUtils.STATE_MOBILE -> b.user.text = app.res.getString(R.string.status_mobile_network)
-            NetworkUtils.STATE_BJUT_WIFI -> refreshStatus()
-            NetworkUtils.STATE_OTHER_WIFI -> b.user.text = String.format(app.res.getString(R.string.status_other_wifi), NetworkUtils.getWifiSSID(app))
+            STATE_NO_NETWORK -> b.user.text = app.res.getString(R.string.status_no_network)
+            STATE_MOBILE -> b.user.text = app.res.getString(R.string.status_mobile_network)
+            STATE_BJUT_WIFI -> refreshStatus()
+            STATE_OTHER_WIFI -> b.user.text = String.format(app.res.getString(R.string.status_other_wifi), NetworkUtils.getWifiSSID(app))
         }
     }
 
