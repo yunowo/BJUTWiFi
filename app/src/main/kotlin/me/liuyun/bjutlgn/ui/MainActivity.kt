@@ -23,7 +23,7 @@ class MainActivity : AppCompatActivity() {
     val binding: ActivityMainBinding by lazy { DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main) }
     lateinit var statusCard: StatusCard
     lateinit var graphCard: GraphCard
-    lateinit var receiver: BroadcastReceiver
+    private var receiver: BroadcastReceiver? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,6 +31,10 @@ class MainActivity : AppCompatActivity() {
 
         graphCard = GraphCard(binding.graphCardView?.root as CardView, application as App)
         statusCard = StatusCard(binding.statusCardView?.statusView?.root as FrameLayout, graphCard, application as App, null)
+
+        receiver = object : BroadcastReceiver() {
+            override fun onReceive(context: Context, intent: Intent) = statusCard.onRefresh()
+        }
 
         binding.fab.setOnClickListener { statusCard.onRefresh() }
 
@@ -45,18 +49,16 @@ class MainActivity : AppCompatActivity() {
         super.onResume()
         statusCard.onRefresh()
         graphCard.show()
-        receiver = object : BroadcastReceiver() {
-            override fun onReceive(context: Context, intent: Intent) = statusCard.onRefresh()
-        }
-        registerReceiver(receiver, IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
+
+        receiver?.let { registerReceiver(receiver, IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION)) }
 
         listOf(binding.statusCardView!!.root, binding.graphCardView!!.root, binding.fab, binding.toolbar)
                 .forEach { startSpringAnimation(it) }
     }
 
     override fun onPause() {
-        unregisterReceiver(receiver)
         super.onPause()
+        unregisterReceiver(receiver)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
