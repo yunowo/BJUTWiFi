@@ -15,8 +15,8 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.FrameLayout
-import me.liuyun.bjutlgn.R
 import me.liuyun.bjutlgn.App
+import me.liuyun.bjutlgn.R
 import me.liuyun.bjutlgn.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -32,10 +32,6 @@ class MainActivity : AppCompatActivity() {
         graphCard = GraphCard(binding.graphCardView?.root as CardView, application as App)
         statusCard = StatusCard(binding.statusCardView?.statusView?.root as FrameLayout, graphCard, application as App, null)
 
-        receiver = object : BroadcastReceiver() {
-            override fun onReceive(context: Context, intent: Intent) = statusCard.onRefresh()
-        }
-
         binding.fab.setOnClickListener { statusCard.onRefresh() }
 
         binding.swipeRefresh.setColorSchemeColors(resources.getColor(R.color.colorAccent, theme))
@@ -49,6 +45,9 @@ class MainActivity : AppCompatActivity() {
         super.onResume()
         statusCard.onRefresh()
         graphCard.show()
+        receiver = object : BroadcastReceiver() {
+            override fun onReceive(context: Context, intent: Intent) = statusCard.onRefresh()
+        }
         registerReceiver(receiver, IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
 
         listOf(binding.statusCardView!!.root, binding.graphCardView!!.root, binding.fab, binding.toolbar)
