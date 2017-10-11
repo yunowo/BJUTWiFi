@@ -26,7 +26,7 @@ object NetworkUtils {
                     isMobile = true
                 }
                 ConnectivityManager.TYPE_WIFI -> {
-                    if (info.extraInfo.replace("\"", "") == "bjut_wifi") {
+                    if (info.extraInfo != null && info.extraInfo.replace("\"", "") == "bjut_wifi") {
                         if (info.extraInfo != activeNetworkInfo.extraInfo) {
                             manager.bindProcessToNetwork(network)
                             Log.d("bind", info.extraInfo)
