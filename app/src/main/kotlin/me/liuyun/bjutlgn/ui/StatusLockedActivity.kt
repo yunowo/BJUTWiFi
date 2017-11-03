@@ -3,10 +3,10 @@ package me.liuyun.bjutlgn.ui
 import android.content.DialogInterface
 import android.net.CaptivePortal
 import android.net.ConnectivityManager
+import android.os.Build
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.WindowManager
-
 
 class StatusLockedActivity : AppCompatActivity(), DialogInterface.OnDismissListener {
 
@@ -15,9 +15,15 @@ class StatusLockedActivity : AppCompatActivity(), DialogInterface.OnDismissListe
 
         val captivePortal = intent.getParcelableExtra<CaptivePortal>(ConnectivityManager.EXTRA_CAPTIVE_PORTAL)
 
-        window.addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED)
+        @Suppress("DEPRECATION")
+        if (Build.VERSION.SDK_INT >= 27) {
+            setShowWhenLocked(true)
+            setTurnScreenOn(true)
+        } else {
+            window.addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED)
+            window.addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON)
+        }
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-        window.addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON)
         window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION)
         window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
         val dialog = StatusDialog.statusDialog(this, captivePortal)

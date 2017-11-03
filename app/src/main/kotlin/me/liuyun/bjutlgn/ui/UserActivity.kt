@@ -1,8 +1,6 @@
 package me.liuyun.bjutlgn.ui
 
 import android.app.AlertDialog
-import android.arch.lifecycle.LifecycleRegistry
-import android.arch.lifecycle.LifecycleRegistryOwner
 import android.arch.lifecycle.Observer
 import android.content.SharedPreferences
 import android.databinding.DataBindingUtil
@@ -29,10 +27,7 @@ import me.liuyun.bjutlgn.databinding.UserDialogBinding
 import me.liuyun.bjutlgn.db.UserDao
 import me.liuyun.bjutlgn.entity.User
 
-class UserActivity : AppCompatActivity(), LifecycleRegistryOwner {
-
-    val registry = LifecycleRegistry(this)
-    override fun getLifecycle(): LifecycleRegistry = registry
+class UserActivity : AppCompatActivity() {
 
     val binding: ActivityUsersBinding by lazy { DataBindingUtil.setContentView<ActivityUsersBinding>(this, R.layout.activity_users) }
     lateinit internal var adapter: UserAdapter
