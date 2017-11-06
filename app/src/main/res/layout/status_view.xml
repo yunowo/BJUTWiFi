@@ -5,111 +5,141 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
-        <GridLayout
-            android:layout_width="wrap_content"
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center_horizontal"
-            android:layout_margin="8dp"
-            android:columnCount="2"
-            android:rowCount="3">
+            android:layout_margin="8dp">
 
-            <io.netopen.hotbitmapgg.library.view.RingProgressBar
+            <me.itangqi.waveloadingview.WaveLoadingView
                 android:id="@+id/progress_ring"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_column="0"
-                android:layout_gravity="center_vertical|end"
+                android:layout_width="110dp"
+                android:layout_height="110dp"
                 android:layout_margin="10dp"
-                android:layout_row="0"
-                android:layout_rowSpan="3"
-                app:max="100"
-                app:ringColor="@color/ring_grey"
-                app:ringProgressColor="@color/colorAccent"
-                app:ringWidth="3dp"
-                app:style="STROKE"
-                app:textColor="@color/colorAccent"
-                app:textIsShow="true"
-                app:textSize="18sp"/>
+                android:layout_marginEnd="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/guideline"
+                app:layout_constraintTop_toTopOf="parent"
+                app:wlv_borderColor="@color/ring_grey"
+                app:wlv_borderWidth="2dp"
+                app:wlv_shapeType="circle"
+                app:wlv_titleCenterColor="@color/colorAccent"
+                app:wlv_titleCenterSize="18sp"
+                app:wlv_titleCenterStrokeWidth="1dp"
+                app:wlv_waveAmplitude="40"
+                app:wlv_waveColor="@color/colorAccent"/>
+
+            <TextView
+                android:id="@+id/non_bjut"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"/>
 
             <TextView
                 android:id="@+id/user"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/guideline"/>
+
+            <TextView
+                android:id="@+id/flow"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/guideline"
+                app:layout_constraintTop_toBottomOf="@id/user"/>
+
+            <TextView
+                android:id="@+id/time"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="24dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/guideline"
+                app:layout_constraintTop_toBottomOf="@id/flow"/>
+
+            <TextView
+                android:id="@+id/fee"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="24dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/guideline"
+                app:layout_constraintTop_toBottomOf="@id/time"/>
+
+            <Button
+                android:id="@+id/sign_in_button"
+                style="@style/Widget.AppCompat.Button.Borderless.Colored"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_column="1"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="5dp"
-                android:layout_row="0"
-                android:textSize="18sp"/>
+                android:minWidth="60dp"
+                android:text="@string/action_sign_in"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/sign_out_button"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@id/guideline"
+                app:layout_constraintTop_toBottomOf="@id/fee"/>
 
-            <LinearLayout
+            <Button
+                android:id="@+id/sign_out_button"
+                style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:layout_marginStart="5dp"
+                android:minWidth="60dp"
+                android:text="@string/action_sign_out"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/refresh_button"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/sign_in_button"
+                app:layout_constraintTop_toBottomOf="@id/fee"/>
+
+            <Button
+                android:id="@+id/refresh_button"
+                style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minWidth="60dp"
+                android:text="@string/action_refresh"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/sign_out_button"
+                app:layout_constraintTop_toBottomOf="@id/fee"/>
+
+            <android.support.constraint.Group
                 android:id="@+id/info_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_column="1"
-                android:layout_gravity="center_horizontal"
-                android:layout_row="1"
-                android:orientation="vertical">
+                app:constraint_referenced_ids="flow,fee,time"/>
 
-                <TextView
-                    android:id="@+id/flow"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-
-                <TextView
-                    android:id="@+id/time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-
-                <TextView
-                    android:id="@+id/fee"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-            </LinearLayout>
-
-            <LinearLayout
+            <android.support.constraint.Group
                 android:id="@+id/buttons_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_column="1"
-                android:layout_gravity="center_horizontal"
-                android:layout_row="2"
-                android:gravity="center"
-                android:orientation="horizontal">
+                app:constraint_referenced_ids="sign_out_button,refresh_button,sign_in_button"/>
 
-                <Button
-                    android:id="@+id/sign_in_button"
-                    style="@style/Widget.AppCompat.Button.Borderless.Colored"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="0dp"
-                    android:layout_marginStart="0dp"
-                    android:minWidth="60dp"
-                    android:text="@string/action_sign_in"/>
+            <android.support.constraint.Guideline
+                android:id="@+id/guideline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.36"/>
 
-                <Button
-                    android:id="@+id/sign_out_button"
-                    style="@style/Widget.AppCompat.Button.Borderless.Colored"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="5dp"
-                    android:layout_marginStart="5dp"
-                    android:minWidth="60dp"
-                    android:text="@string/action_sign_out"/>
-
-                <Button
-                    android:id="@+id/refresh_button"
-                    style="@style/Widget.AppCompat.Button.Borderless.Colored"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="0dp"
-                    android:layout_marginStart="0dp"
-                    android:minWidth="60dp"
-                    android:text="@string/action_refresh"/>
-            </LinearLayout>
-
-        </GridLayout>
+        </android.support.constraint.ConstraintLayout>
     </FrameLayout>
 
 </layout>

@@ -39,15 +39,17 @@ class StatusCard(private val cardView: FrameLayout, private val graphCard: Graph
     fun onRefresh() {
         val state = NetworkUtils.getNetworkState(app)
         if (state == STATE_BJUT_WIFI) {
-            arrayOf(b.progressRing, b.infoLayout, b.buttonsLayout).forEach { it.visibility = View.VISIBLE }
+            arrayOf(b.user, b.progressRing, b.infoLayout, b.buttonsLayout).forEach { it.visibility = View.VISIBLE }
+            b.nonBjut.visibility = View.GONE
         } else {
-            arrayOf(b.progressRing, b.infoLayout, b.buttonsLayout).forEach { it.visibility = View.GONE }
+            arrayOf(b.user, b.progressRing, b.infoLayout, b.buttonsLayout).forEach { it.visibility = View.GONE }
+            b.nonBjut.visibility = View.VISIBLE
         }
         when (state) {
-            STATE_NO_NETWORK -> b.user.text = app.res.getString(R.string.status_no_network)
-            STATE_MOBILE -> b.user.text = app.res.getString(R.string.status_mobile_network)
+            STATE_NO_NETWORK -> b.nonBjut.text = app.res.getString(R.string.status_no_network)
+            STATE_MOBILE -> b.nonBjut.text = app.res.getString(R.string.status_mobile_network)
             STATE_BJUT_WIFI -> refreshStatus()
-            STATE_OTHER_WIFI -> b.user.text = String.format(app.res.getString(R.string.status_other_wifi), NetworkUtils.getWifiSSID(app))
+            STATE_OTHER_WIFI -> b.nonBjut.text = String.format(app.res.getString(R.string.status_other_wifi), NetworkUtils.getWifiSSID(app))
         }
     }
 
@@ -69,7 +71,18 @@ class StatusCard(private val cardView: FrameLayout, private val graphCard: Graph
                     b.fee.text = String.format(app.res.getString(R.string.stats_fee), stats.fee / 10000f)
                     b.time.text = String.format(app.res.getString(R.string.stats_time), stats.time)
 
-                    val animator = ObjectAnimator.ofInt(b.progressRing, "progress", StatsUtils.getPercent(stats, app))
+                    val percent = StatsUtils.getPercent(stats, app)
+                    b.progressRing.centerTitle = "$percent %"
+                    val w = app.res.getColor(android.R.color.white, app.theme)
+                    val a = app.res.getColor(R.color.colorAccent, app.theme)
+                    if (percent > 50) {
+                        b.progressRing.centerTitleColor = w
+                        b.progressRing.setCenterTitleStrokeColor(a)
+                    } else {
+                        b.progressRing.centerTitleColor = a
+                        b.progressRing.setCenterTitleStrokeColor(w)
+                    }
+                    val animator = ObjectAnimator.ofInt(b.progressRing, "progressValue", percent)
                     animator.interpolator = AccelerateDecelerateInterpolator()
                     animator.duration = 500
                     animator.start()
