@@ -5,7 +5,6 @@ import android.databinding.DataBindingUtil
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -23,13 +22,10 @@ class ThemeActivity : AppCompatActivity() {
         setSupportActionBar(binding.toolbar)
         binding.toolbar.setNavigationOnClickListener { onBackPressed() }
 
-        binding.recycler.layoutManager = LinearLayoutManager(this)
         binding.recycler.adapter = ThemeAdapter()
     }
 
     internal inner class ThemeAdapter : RecyclerView.Adapter<ThemeAdapter.ThemeItemHolder>() {
-        var resources = getResources()
-        var theme = getTheme()
         var white = resources.getColor(android.R.color.white, theme)
         var grey = resources.getColor(android.R.color.darker_gray, theme)
 

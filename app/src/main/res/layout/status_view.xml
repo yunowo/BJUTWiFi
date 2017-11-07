@@ -24,6 +24,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:wlv_borderColor="@color/ring_grey"
                 app:wlv_borderWidth="2dp"
+                app:wlv_progressValue="0"
                 app:wlv_shapeType="circle"
                 app:wlv_titleCenterColor="@color/colorAccent"
                 app:wlv_titleCenterSize="18sp"

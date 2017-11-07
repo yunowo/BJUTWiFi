@@ -4,14 +4,14 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.wifi.WifiManager
 import android.util.Log
+import me.liuyun.bjutlgn.util.NetworkUtils.NetworkState.*
 
 object NetworkUtils {
-    val STATE_NO_NETWORK = 0
-    val STATE_MOBILE = 1
-    val STATE_BJUT_WIFI = 2
-    val STATE_OTHER_WIFI = 3
+    enum class NetworkState {
+        STATE_NO_NETWORK, STATE_MOBILE, STATE_BJUT_WIFI, STATE_OTHER_WIFI
+    }
 
-    fun getNetworkState(context: Context): Int {
+    fun getNetworkState(context: Context): NetworkState {
         var isMobile = false
         var isBjut = false
         var isOther = false

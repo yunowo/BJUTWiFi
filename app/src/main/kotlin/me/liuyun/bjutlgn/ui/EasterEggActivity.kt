@@ -31,8 +31,8 @@ import me.liuyun.bjutlgn.R
 class EasterEggActivity : Activity() {
 
     lateinit var layout: FrameLayout
-    internal var tapCount: Int = 0
-    internal var interpolator = PathInterpolator(0f, 0f, 0.5f, 1f)
+    private var tapCount: Int = 0
+    private var interpolator = PathInterpolator(0f, 0f, 0.5f, 1f)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -13,9 +13,9 @@ object StatsUtils {
             val p = Pattern.compile("time='(.*?)';flow='(.*?)';fsele=1;fee='(.*?)'")
             val m = p.matcher(text.replace(" ", ""))
             while (m.find()) {
-                stats.time = Integer.parseInt(m.group(1))
-                stats.flow = Integer.parseInt(m.group(2))
-                stats.fee = Integer.parseInt(m.group(3))
+                stats.time = m.group(1).toInt()
+                stats.flow = m.group(2).toInt()
+                stats.fee = m.group(3).toInt()
             }
         } catch (e: Exception) {
             e.printStackTrace()
@@ -30,7 +30,5 @@ object StatsUtils {
         return context.resources.getIntArray(R.array.packages_values)[prefs.getInt("current_package", 0)]
     }
 
-    fun getPercent(stats: Stats, context: Context): Int {
-        return Math.round(stats.flow.toFloat() / 1024f / 1024f / getPack(context).toFloat() * 100)
-    }
+    fun getPercent(stats: Stats, context: Context) = Math.round(stats.flow.toFloat() / 1024f / 1024f / getPack(context).toFloat() * 100)
 }

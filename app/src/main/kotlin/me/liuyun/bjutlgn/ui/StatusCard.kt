@@ -5,6 +5,7 @@ import android.databinding.DataBindingUtil
 import android.net.CaptivePortal
 import android.support.design.widget.Snackbar
 import android.text.TextUtils
+import android.text.format.Formatter
 import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.FrameLayout
@@ -20,10 +21,7 @@ import me.liuyun.bjutlgn.api.BjutService
 import me.liuyun.bjutlgn.databinding.StatusViewBinding
 import me.liuyun.bjutlgn.entity.Flow
 import me.liuyun.bjutlgn.util.NetworkUtils
-import me.liuyun.bjutlgn.util.NetworkUtils.STATE_BJUT_WIFI
-import me.liuyun.bjutlgn.util.NetworkUtils.STATE_MOBILE
-import me.liuyun.bjutlgn.util.NetworkUtils.STATE_NO_NETWORK
-import me.liuyun.bjutlgn.util.NetworkUtils.STATE_OTHER_WIFI
+import me.liuyun.bjutlgn.util.NetworkUtils.NetworkState.*
 import me.liuyun.bjutlgn.util.StatsUtils
 
 class StatusCard(private val cardView: FrameLayout, private val graphCard: GraphCard?, private val app: App, private val captivePortal: CaptivePortal?) {
@@ -49,7 +47,7 @@ class StatusCard(private val cardView: FrameLayout, private val graphCard: Graph
             STATE_NO_NETWORK -> b.nonBjut.text = app.res.getString(R.string.status_no_network)
             STATE_MOBILE -> b.nonBjut.text = app.res.getString(R.string.status_mobile_network)
             STATE_BJUT_WIFI -> refreshStatus()
-            STATE_OTHER_WIFI -> b.nonBjut.text = String.format(app.res.getString(R.string.status_other_wifi), NetworkUtils.getWifiSSID(app))
+            STATE_OTHER_WIFI -> b.nonBjut.text = app.res.getString(R.string.status_other_wifi).format(NetworkUtils.getWifiSSID(app))
         }
     }
 
@@ -62,14 +60,14 @@ class StatusCard(private val cardView: FrameLayout, private val graphCard: Graph
         val account = app.prefs.getString("account", "")
         b.user.text = account
         service.stats()
-                .map({ StatsUtils.parseStats(it) })
+                .map(StatsUtils::parseStats)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ stats ->
                     Snackbar.make(cardView, R.string.stats_refresh_ok, Snackbar.LENGTH_SHORT).show()
-                    b.flow.text = String.format(app.res.getString(R.string.stats_flow), stats.flow / 1024f)
-                    b.fee.text = String.format(app.res.getString(R.string.stats_fee), stats.fee / 10000f)
-                    b.time.text = String.format(app.res.getString(R.string.stats_time), stats.time)
+                    b.flow.text = app.res.getString(R.string.stats_flow).format(Formatter.formatFileSize(app, stats.flow * 1024L))
+                    b.fee.text = app.res.getString(R.string.stats_fee).format(stats.fee / 10000f)
+                    b.time.text = app.res.getString(R.string.stats_time).format(stats.time)
 
                     val percent = StatsUtils.getPercent(stats, app)
                     b.progressRing.centerTitle = "$percent %"
@@ -97,7 +95,7 @@ class StatusCard(private val cardView: FrameLayout, private val graphCard: Graph
                         { Snackbar.make(cardView, R.string.stats_refresh_failed, Snackbar.LENGTH_SHORT).show() })
     }
 
-    internal fun onLogin() {
+    private fun onLogin() {
         val account = app.prefs.getString("account", "")
         val password = app.prefs.getString("password", "")
 
@@ -110,7 +108,7 @@ class StatusCard(private val cardView: FrameLayout, private val graphCard: Graph
         }
     }
 
-    internal fun onLogout() {
+    private fun onLogout() {
         service.logout()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

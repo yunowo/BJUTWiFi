@@ -9,7 +9,6 @@ import android.preference.PreferenceManager
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.util.DiffUtil
 import android.support.v7.widget.DefaultItemAnimator
-import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.helper.ItemTouchHelper
 import android.text.SpannableStringBuilder
@@ -54,9 +53,6 @@ class UserActivity : AppCompatActivity() {
             }
         })
 
-        val llm = LinearLayoutManager(this)
-        llm.orientation = LinearLayoutManager.VERTICAL
-        binding.recycler.layoutManager = llm
         binding.recycler.adapter = adapter
         binding.recycler.itemAnimator = DefaultItemAnimator()
         ItemTouchHelper(
@@ -112,9 +108,7 @@ class UserActivity : AppCompatActivity() {
             return UserViewHolder(binding.root)
         }
 
-        override fun getItemCount(): Int {
-            return users.size
-        }
+        override fun getItemCount() = users.size
 
         override fun onBindViewHolder(holder: UserViewHolder, i: Int) {
             val user = users[holder.adapterPosition]
@@ -173,24 +167,11 @@ class UserActivity : AppCompatActivity() {
         }
     }
 
-    internal inner class UsersDiffCallback(val oldUsers: List<User>, val newUsers: List<User>) : DiffUtil.Callback() {
-
-        override fun getOldListSize(): Int {
-            return oldUsers.size
-        }
-
-        override fun getNewListSize(): Int {
-            return newUsers.size
-        }
-
-        override fun areItemsTheSame(p0: Int, p1: Int): Boolean {
-            return oldUsers[p0].id == newUsers[p1].id
-        }
-
-        override fun areContentsTheSame(p0: Int, p1: Int): Boolean {
-            return oldUsers[p0] == newUsers[p1]
-        }
-
+    internal inner class UsersDiffCallback(private val oldUsers: List<User>, private val newUsers: List<User>) : DiffUtil.Callback() {
+        override fun getOldListSize() = oldUsers.size
+        override fun getNewListSize() = newUsers.size
+        override fun areItemsTheSame(p0: Int, p1: Int) = oldUsers[p0].id == newUsers[p1].id
+        override fun areContentsTheSame(p0: Int, p1: Int) = oldUsers[p0] == newUsers[p1]
     }
 
 }

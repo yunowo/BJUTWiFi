@@ -15,7 +15,7 @@
     <string name="action_sign_out">Sign out</string>
     <string name="action_refresh">Refresh</string>
     <string name="tile_icon_label">Wi-Fi Status</string>
-    <string name="stats_flow">Used flux: %.3f MB</string>
+    <string name="stats_flow">Used flux: %s</string>
     <string name="stats_time">Used time: %d min</string>
     <string name="stats_fee">Balance: %.2f RMB</string>
     <string name="stats_login_failed">Login Failed.</string>

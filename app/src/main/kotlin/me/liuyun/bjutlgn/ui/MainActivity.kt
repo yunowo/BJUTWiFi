@@ -18,6 +18,7 @@ import android.widget.FrameLayout
 import me.liuyun.bjutlgn.App
 import me.liuyun.bjutlgn.R
 import me.liuyun.bjutlgn.databinding.ActivityMainBinding
+import org.jetbrains.anko.startActivity
 
 class MainActivity : AppCompatActivity() {
     val binding: ActivityMainBinding by lazy { DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main) }
@@ -66,18 +67,16 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.action_settings -> {
-                startActivity(Intent(this, SettingsActivity::class.java))
-                return true
-            }
-            R.id.action_users -> {
-                startActivity(Intent(this, UserActivity::class.java))
-                return true
-            }
-            else -> return super.onOptionsItemSelected(item)
+    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
+        R.id.action_settings -> {
+            startActivity<SettingsActivity>()
+            true
         }
+        R.id.action_users -> {
+            startActivity<UserActivity>()
+            true
+        }
+        else -> super.onOptionsItemSelected(item)
     }
 
     private fun startSpringAnimation(view: View) {

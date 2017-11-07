@@ -1,10 +1,7 @@
 package me.liuyun.bjutlgn.tile
 
-import android.annotation.TargetApi
 import android.content.Intent
-import android.content.res.Resources
 import android.graphics.drawable.Icon
-import android.os.Build
 import android.service.quicksettings.Tile
 import android.service.quicksettings.TileService
 import android.util.Log
@@ -17,21 +14,19 @@ import me.liuyun.bjutlgn.entity.Stats
 import me.liuyun.bjutlgn.ui.StatusDialog
 import me.liuyun.bjutlgn.ui.StatusLockedActivity
 import me.liuyun.bjutlgn.util.NetworkUtils
+import me.liuyun.bjutlgn.util.NetworkUtils.NetworkState.STATE_BJUT_WIFI
 import me.liuyun.bjutlgn.util.StatsUtils
 
-@TargetApi(Build.VERSION_CODES.N)
 class BjutTileService : TileService() {
     private val TAG = BjutTileService::class.java.simpleName
     lateinit var iconOff: Icon
     lateinit var iconOn: Icon
-    lateinit var res: Resources
     lateinit var service: BjutService
 
     override fun onCreate() {
         super.onCreate()
         iconOff = Icon.createWithResource(this, R.drawable.ic_cloud_off)
         iconOn = Icon.createWithResource(this, R.drawable.ic_cloud_done)
-        res = resources
         service = BjutRetrofit.bjutService
     }
 
@@ -61,7 +56,7 @@ class BjutTileService : TileService() {
     override fun onStartListening() {
         Log.d(TAG, "onStartListening")
         val tile = qsTile
-        if (NetworkUtils.getNetworkState(this) != NetworkUtils.STATE_BJUT_WIFI) {
+        if (NetworkUtils.getNetworkState(this) != STATE_BJUT_WIFI) {
             setUnavailableState(tile)
         } else {
             setAvailableState(tile)
@@ -73,7 +68,7 @@ class BjutTileService : TileService() {
         Log.d(TAG, "onStopListening")
     }
 
-    internal fun setAvailableState(tile: Tile) {
+    private fun setAvailableState(tile: Tile) {
         service.stats()
                 .map<Stats>({ StatsUtils.parseStats(it) })
                 .subscribeOn(Schedulers.io())
@@ -88,22 +83,22 @@ class BjutTileService : TileService() {
                 ) { setOfflineState(tile) }
     }
 
-    internal fun setOnlineState(tile: Tile, stats: Stats) {
+    private fun setOnlineState(tile: Tile, stats: Stats) {
         tile.icon = iconOn
-        tile.label = res.getString(R.string.status_logged_in, stats.flow, StatsUtils.getPercent(stats, this))
+        tile.label = resources.getString(R.string.status_logged_in, stats.flow, StatsUtils.getPercent(stats, this))
         tile.state = Tile.STATE_ACTIVE
     }
 
-    internal fun setOfflineState(tile: Tile) {
+    private fun setOfflineState(tile: Tile) {
         tile.icon = iconOff
-        tile.label = res.getString(R.string.status_not_logged_in)
+        tile.label = resources.getString(R.string.status_not_logged_in)
         tile.state = Tile.STATE_INACTIVE
     }
 
-    internal fun setUnavailableState(tile: Tile) {
+    private fun setUnavailableState(tile: Tile) {
         tile.icon = iconOff
-        tile.label = res.getString(R.string.status_unavailable)
+        tile.label = resources.getString(R.string.status_unavailable)
         tile.state = Tile.STATE_INACTIVE
-        //tile.setState(Tile.STATE_UNAVAILABLE);
+        // tile.setState(Tile.STATE_UNAVAILABLE)
     }
 }

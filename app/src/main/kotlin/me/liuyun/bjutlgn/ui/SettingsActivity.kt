@@ -1,14 +1,14 @@
 package me.liuyun.bjutlgn.ui
 
-import android.content.Intent
 import android.databinding.DataBindingUtil
-import android.net.Uri
 import android.os.Bundle
 import android.preference.PreferenceFragment
 import android.support.v7.app.AppCompatActivity
 import me.liuyun.bjutlgn.BuildConfig
 import me.liuyun.bjutlgn.R
 import me.liuyun.bjutlgn.databinding.ActivityPrefsBinding
+import org.jetbrains.anko.browse
+import org.jetbrains.anko.startActivity
 
 class SettingsActivity : AppCompatActivity() {
     val binding: ActivityPrefsBinding by lazy { DataBindingUtil.setContentView<ActivityPrefsBinding>(this, R.layout.activity_prefs) }
@@ -26,27 +26,25 @@ class SettingsActivity : AppCompatActivity() {
             super.onCreate(savedInstanceState)
             addPreferencesFromResource(R.xml.settings)
             findPreference("theme").setOnPreferenceClickListener {
-                context.startActivity(Intent(context, ThemeActivity::class.java))
+                context.startActivity<ThemeActivity>()
                 true
             }
             findPreference("version").summary = BuildConfig.VERSION_NAME
             findPreference("version").setOnPreferenceClickListener {
                 tapCount++
                 if (tapCount < 5) return@setOnPreferenceClickListener false
-                startActivity(Intent(context, EasterEggActivity::class.java))
+                context.startActivity<EasterEggActivity>()
                 tapCount = 0
                 true
             }
             findPreference("licenses").setOnPreferenceClickListener {
-                startActivity(Intent(context, LicenseActivity::class.java))
+                context.startActivity<LicenseActivity>()
                 true
             }
             findPreference("source").setOnPreferenceClickListener {
-                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(resources.getString(R.string.source_code_url))))
+                context.browse(resources.getString(R.string.source_code_url))
                 true
             }
         }
-
-
     }
 }
