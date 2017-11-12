@@ -14,6 +14,7 @@ before_install:
 - openssl aes-256-cbc -K $encrypted_fe6e969707e0_key -iv $encrypted_fe6e969707e0_iv
   -in yun.jks.enc -out yun.jks -d
 - chmod +x gradlew
+- gem install fir-cli
 
 script:
 - "./gradlew assembleReleaseGitHub"
@@ -27,3 +28,7 @@ deploy:
   skip_cleanup: true
   on:
     tags: true
+
+after_script:
+- fir login $fir_token
+- fir p app/build/outputs/apk/releaseGitHub/app-releaseGitHub.apk 
