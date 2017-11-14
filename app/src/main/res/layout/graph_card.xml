@@ -30,7 +30,7 @@
                 android:id="@+id/chart"
                 android:layout_width="match_parent"
                 android:layout_height="250dp"
-                android:colorAccent="?android:attr/colorAccent"
+                android:colorAccent="?android:attr/colorPrimary"
                 android:gravity="end"
                 settings:sideLabels="@array/graph_side_labels"
                 settings:textColor="?android:attr/textColorSecondary">

@@ -18,6 +18,7 @@ import android.widget.FrameLayout
 import me.liuyun.bjutlgn.App
 import me.liuyun.bjutlgn.R
 import me.liuyun.bjutlgn.databinding.ActivityMainBinding
+import me.liuyun.bjutlgn.util.ThemeHelper
 import org.jetbrains.anko.startActivity
 
 class MainActivity : AppCompatActivity() {
@@ -39,7 +40,7 @@ class MainActivity : AppCompatActivity() {
 
         binding.fab.setOnClickListener { statusCard.onRefresh() }
 
-        binding.swipeRefresh.setColorSchemeColors(resources.getColor(R.color.colorAccent, theme))
+        binding.swipeRefresh.setColorSchemeColors(ThemeHelper.getThemePrimaryColor(this))
         binding.swipeRefresh.setOnRefreshListener {
             statusCard.onRefresh()
             binding.swipeRefresh.isRefreshing = false

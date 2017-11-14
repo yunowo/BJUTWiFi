@@ -36,9 +36,15 @@ object ThemeHelper : Application.ActivityLifecycleCallbacks {
         activity.finish()
     }
 
-    private fun getThemePrimaryColor(context: Context): Int {
+    fun getThemePrimaryColor(context: Context): Int {
         val value = TypedValue()
         context.theme.resolveAttribute(R.attr.colorPrimary, value, true)
+        return value.data
+    }
+
+    fun getThemeSecondaryColor(context: Context): Int {
+        val value = TypedValue()
+        context.theme.resolveAttribute(android.R.attr.colorSecondary, value, true)
         return value.data
     }
 

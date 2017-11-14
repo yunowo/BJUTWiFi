@@ -11,6 +11,7 @@ import com.artitk.licensefragment.model.LicenseID
 import com.artitk.licensefragment.model.LicenseType
 import me.liuyun.bjutlgn.R
 import me.liuyun.bjutlgn.databinding.ActivityLicenseBinding
+import me.liuyun.bjutlgn.util.ThemeHelper
 
 class LicenseActivity : AppCompatActivity() {
     val binding: ActivityLicenseBinding by lazy { DataBindingUtil.setContentView<ActivityLicenseBinding>(this, R.layout.activity_license) }
@@ -32,7 +33,7 @@ class LicenseActivity : AppCompatActivity() {
                 .addCustomLicense(licenses)
                 .addLicense(intArrayOf(LicenseID.OKHTTP, LicenseID.RETROFIT, LicenseID.LICENSE_FRAGMENT))
                 .setCustomUI(CustomUI()
-                        .setTitleTextColor(resources.getColor(R.color.colorAccent, theme))
+                        .setTitleTextColor(ThemeHelper.getThemePrimaryColor(this))
                         .setLicenseBackgroundColor(resources.getColor(R.color.background_grey, theme))
                         .setLicenseTextColor(Color.DKGRAY))
 

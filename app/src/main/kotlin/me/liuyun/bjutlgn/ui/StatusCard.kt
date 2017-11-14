@@ -23,6 +23,7 @@ import me.liuyun.bjutlgn.entity.Flow
 import me.liuyun.bjutlgn.util.NetworkUtils
 import me.liuyun.bjutlgn.util.NetworkUtils.NetworkState.*
 import me.liuyun.bjutlgn.util.StatsUtils
+import me.liuyun.bjutlgn.util.ThemeHelper
 
 class StatusCard(private val cardView: FrameLayout, private val graphCard: GraphCard?, private val app: App, private val captivePortal: CaptivePortal?) {
     val b: StatusViewBinding = DataBindingUtil.findBinding(cardView)
@@ -72,7 +73,7 @@ class StatusCard(private val cardView: FrameLayout, private val graphCard: Graph
                     val percent = StatsUtils.getPercent(stats, app)
                     b.progressRing.centerTitle = "$percent %"
                     val w = app.res.getColor(android.R.color.white, app.theme)
-                    val a = app.res.getColor(R.color.colorAccent, app.theme)
+                    val a = ThemeHelper.getThemePrimaryColor(cardView.context)
                     if (percent > 50) {
                         b.progressRing.centerTitleColor = w
                         b.progressRing.setCenterTitleStrokeColor(a)

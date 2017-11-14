@@ -22,15 +22,15 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/guideline"
                 app:layout_constraintTop_toTopOf="parent"
-                app:wlv_borderColor="@color/ring_grey"
+                app:wlv_borderColor="?android:colorSecondary"
                 app:wlv_borderWidth="2dp"
                 app:wlv_progressValue="0"
                 app:wlv_shapeType="circle"
-                app:wlv_titleCenterColor="@color/colorAccent"
+                app:wlv_titleCenterColor="?android:attr/colorPrimary"
                 app:wlv_titleCenterSize="18sp"
                 app:wlv_titleCenterStrokeWidth="1dp"
                 app:wlv_waveAmplitude="40"
-                app:wlv_waveColor="@color/colorAccent"/>
+                app:wlv_waveColor="?android:attr/colorPrimary"/>
 
             <TextView
                 android:id="@+id/non_bjut"

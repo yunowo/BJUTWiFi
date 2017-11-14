@@ -24,6 +24,7 @@ import android.util.SparseIntArray
 import android.util.TypedValue
 import android.view.View
 import me.liuyun.bjutlgn.R
+import me.liuyun.bjutlgn.util.ThemeHelper
 
 class UsageGraph(context: Context, attrs: AttributeSet?) : View(context, attrs) {
 
@@ -75,7 +76,7 @@ class UsageGraph(context: Context, attrs: AttributeSet?) : View(context, attrs) 
         val interval = resources.getDimensionPixelSize(R.dimen.usage_graph_dot_interval).toFloat()
         mDottedPaint.strokeWidth = dots * 3
         mDottedPaint.pathEffect = DashPathEffect(floatArrayOf(dots, interval), 0f)
-        mDottedPaint.color = context.getColor(R.color.usage_graph_dots)
+        mDottedPaint.color = ThemeHelper.getThemeSecondaryColor(context)
 
         val v = TypedValue()
         context.theme.resolveAttribute(android.R.attr.listDivider, v, true)
