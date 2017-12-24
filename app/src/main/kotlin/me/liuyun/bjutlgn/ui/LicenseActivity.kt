@@ -1,6 +1,5 @@
 package me.liuyun.bjutlgn.ui
 
-import android.databinding.DataBindingUtil
 import android.graphics.Color
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -9,18 +8,18 @@ import com.artitk.licensefragment.model.CustomUI
 import com.artitk.licensefragment.model.License
 import com.artitk.licensefragment.model.LicenseID
 import com.artitk.licensefragment.model.LicenseType
+import kotlinx.android.synthetic.main.activity_license.*
 import me.liuyun.bjutlgn.R
-import me.liuyun.bjutlgn.databinding.ActivityLicenseBinding
 import me.liuyun.bjutlgn.util.ThemeHelper
 
 class LicenseActivity : AppCompatActivity() {
-    val binding: ActivityLicenseBinding by lazy { DataBindingUtil.setContentView<ActivityLicenseBinding>(this, R.layout.activity_license) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_license)
 
-        setSupportActionBar(binding.toolbar)
-        binding.toolbar.setNavigationOnClickListener { onBackPressed() }
+        setSupportActionBar(toolbar)
+        toolbar.setNavigationOnClickListener { onBackPressed() }
 
         val licenses = arrayListOf(
                 License(this, "Android Support Library", LicenseType.APACHE_LICENSE_20, "2005-2013", "The Android Open Source Project"),

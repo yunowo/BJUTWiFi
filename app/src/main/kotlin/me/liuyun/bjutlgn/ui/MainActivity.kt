@@ -4,7 +4,6 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.databinding.DataBindingUtil
 import android.net.ConnectivityManager
 import android.os.Bundle
 import android.support.animation.SpringAnimation
@@ -15,35 +14,36 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.FrameLayout
+import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.status_card.view.*
 import me.liuyun.bjutlgn.App
 import me.liuyun.bjutlgn.R
-import me.liuyun.bjutlgn.databinding.ActivityMainBinding
 import me.liuyun.bjutlgn.util.ThemeHelper
 import org.jetbrains.anko.startActivity
 
 class MainActivity : AppCompatActivity() {
-    val binding: ActivityMainBinding by lazy { DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main) }
     lateinit var statusCard: StatusCard
     lateinit var graphCard: GraphCard
     private var receiver: BroadcastReceiver? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setSupportActionBar(binding.toolbar)
+        setContentView(R.layout.activity_main)
+        setSupportActionBar(toolbar)
 
-        graphCard = GraphCard(binding.graphCardView?.root as CardView, application as App)
-        statusCard = StatusCard(binding.statusCardView?.statusView?.root as FrameLayout, graphCard, application as App, null)
+        graphCard = GraphCard(graph_card_view as CardView, application as App)
+        statusCard = StatusCard(status_card_view.status_view as FrameLayout, graphCard, application as App, null)
 
         receiver = object : BroadcastReceiver() {
             override fun onReceive(context: Context, intent: Intent) = statusCard.onRefresh()
         }
 
-        binding.fab.setOnClickListener { statusCard.onRefresh() }
+        fab.setOnClickListener { statusCard.onRefresh() }
 
-        binding.swipeRefresh.setColorSchemeColors(ThemeHelper.getThemePrimaryColor(this))
-        binding.swipeRefresh.setOnRefreshListener {
+        swipe_refresh.setColorSchemeColors(ThemeHelper.getThemePrimaryColor(this))
+        swipe_refresh.setOnRefreshListener {
             statusCard.onRefresh()
-            binding.swipeRefresh.isRefreshing = false
+            swipe_refresh.isRefreshing = false
         }
     }
 
@@ -54,8 +54,7 @@ class MainActivity : AppCompatActivity() {
 
         receiver?.let { registerReceiver(receiver, IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION)) }
 
-        listOf(binding.statusCardView!!.root, binding.graphCardView!!.root, binding.fab, binding.toolbar)
-                .forEach { startSpringAnimation(it) }
+        listOf(status_card_view, graph_card_view, fab, toolbar).forEach { startSpringAnimation(it) }
     }
 
     override fun onPause() {

@@ -1,42 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
+<android.support.v7.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:settings="http://schemas.android.com/apk/res-auto">
+    xmlns:settings="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/graph_card_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="8dp"
+    android:layout_marginEnd="8dp"
+    android:layout_marginStart="8dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?android:attr/selectableItemBackground">
 
-    <android.support.v7.widget.CardView
-        android:id="@+id/graph_card_view"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:clickable="true"
-        android:focusable="true"
-        android:foreground="?android:attr/selectableItemBackground">
+        android:layout_margin="8dp"
+        android:orientation="vertical">
 
-        <LinearLayout
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:orientation="vertical">
+            android:text="@string/graph_header"
+            android:textSize="16sp"/>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/graph_header"
-                android:textSize="16sp"/>
+        <com.android.settingslib.graph.UsageView
+            android:id="@+id/chart"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:colorAccent="?android:attr/colorPrimary"
+            android:gravity="end"
+            settings:sideLabels="@array/graph_side_labels"
+            settings:textColor="?android:attr/textColorSecondary">
 
-            <com.android.settingslib.graph.UsageView
-                android:id="@+id/chart"
-                android:layout_width="match_parent"
-                android:layout_height="250dp"
-                android:colorAccent="?android:attr/colorPrimary"
-                android:gravity="end"
-                settings:sideLabels="@array/graph_side_labels"
-                settings:textColor="?android:attr/textColorSecondary">
+        </com.android.settingslib.graph.UsageView>
+    </LinearLayout>
 
-            </com.android.settingslib.graph.UsageView>
-        </LinearLayout>
-
-    </android.support.v7.widget.CardView>
-</layout>
+</android.support.v7.widget.CardView>

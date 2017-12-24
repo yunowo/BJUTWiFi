@@ -1,40 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?attr/selectableItemBackground"
+    android:gravity="center">
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/color_dot"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_margin="10dp"
+        android:background="?attr/colorPrimary"
+        android:gravity="center"
+        android:text="@string/theme_tick"
+        android:textColor="@android:color/white"/>
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:clickable="true"
-        android:foreground="?attr/selectableItemBackground"
-        android:gravity="center">
+        android:layout_weight="1"
+        android:textColor="?attr/colorPrimary"/>
 
-        <TextView
-            android:id="@+id/color_dot"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_margin="10dp"
-            android:background="?attr/colorPrimary"
-            android:gravity="center"
-            android:text="@string/theme_tick"
-            android:textColor="@android:color/white"/>
-
-        <TextView
-            android:id="@+id/tv_title"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:textColor="?attr/colorPrimary"/>
-
-        <RadioButton
-            android:id="@+id/btn_choose"
-            android:layout_width="60dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="15dp"
-            android:background="@drawable/btn_border_checkable"
-            android:button="@null"
-            android:focusable="false"
-            android:gravity="center"
-            android:textSize="12sp"/>
-    </LinearLayout>
-</layout>
+    <RadioButton
+        android:id="@+id/btn_choose"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:background="@drawable/btn_border_checkable"
+        android:button="@null"
+        android:focusable="false"
+        android:gravity="center"
+        android:textSize="12sp"/>
+</LinearLayout>

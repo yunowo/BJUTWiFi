@@ -1,9 +1,7 @@
 package me.liuyun.bjutlgn.ui
 
-import android.app.AlertDialog
 import android.arch.lifecycle.Observer
 import android.content.SharedPreferences
-import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.support.v7.app.AppCompatActivity
@@ -18,17 +16,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
+import kotlinx.android.synthetic.main.activity_users.*
+import kotlinx.android.synthetic.main.user_card.view.*
+import kotlinx.android.synthetic.main.user_dialog.view.*
 import me.liuyun.bjutlgn.App
 import me.liuyun.bjutlgn.R
-import me.liuyun.bjutlgn.databinding.ActivityUsersBinding
-import me.liuyun.bjutlgn.databinding.UserCardBinding
-import me.liuyun.bjutlgn.databinding.UserDialogBinding
 import me.liuyun.bjutlgn.db.UserDao
 import me.liuyun.bjutlgn.entity.User
+import org.jetbrains.anko.alert
 
 class UserActivity : AppCompatActivity() {
-
-    val binding: ActivityUsersBinding by lazy { DataBindingUtil.setContentView<ActivityUsersBinding>(this, R.layout.activity_users) }
     lateinit internal var adapter: UserAdapter
     lateinit private var userDao: UserDao
     lateinit private var prefs: SharedPreferences
@@ -37,10 +34,11 @@ class UserActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_users)
 
-        setSupportActionBar(binding.toolbar)
-        binding.toolbar.setNavigationOnClickListener { onBackPressed() }
-        binding.fab.setOnClickListener { openUserDialog(true, User(0, "", "", 0, 0)) }
+        setSupportActionBar(toolbar)
+        toolbar.setNavigationOnClickListener { onBackPressed() }
+        fab.setOnClickListener { openUserDialog(true, User(0, "", "", 0, 0)) }
 
         userDao = (application as App).appDatabase.userDao()
         adapter = UserAdapter()
@@ -53,8 +51,8 @@ class UserActivity : AppCompatActivity() {
             }
         })
 
-        binding.recycler.adapter = adapter
-        binding.recycler.itemAnimator = DefaultItemAnimator()
+        recycler.adapter = adapter
+        recycler.itemAnimator = DefaultItemAnimator()
         ItemTouchHelper(
                 object : ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP or ItemTouchHelper.DOWN, ItemTouchHelper.START) {
                     override fun onMove(view: RecyclerView, holder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
@@ -65,7 +63,7 @@ class UserActivity : AppCompatActivity() {
                     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                         adapter.onItemDismiss(viewHolder.adapterPosition)
                     }
-                }).attachToRecyclerView(binding.recycler)
+                }).attachToRecyclerView(recycler)
 
         prefs = PreferenceManager.getDefaultSharedPreferences(this)
         currentId = prefs.getInt("current_user", 0)
@@ -73,40 +71,41 @@ class UserActivity : AppCompatActivity() {
 
     internal fun openUserDialog(newUser: Boolean, user: User) {
         val context = this@UserActivity
-        val binding: UserDialogBinding = DataBindingUtil.inflate(layoutInflater, R.layout.user_dialog, null, false)
-        binding.user = user
+        val view: View = layoutInflater.inflate(R.layout.user_dialog, null, false)
+        view.account.setText(user.account)
+        view.account.setSelection(user.account.length)
+        view.password.setText(user.password)
         if (!newUser) {
-            binding.spinnerPack.setSelection(user.pack)
+            view.spinner_pack.setSelection(user.pack)
         }
-        binding.spinnerPack.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+        view.spinner_pack.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
                 currentPackage = position
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {}
         }
-        AlertDialog.Builder(context)
-                .setTitle(R.string.pref_user)
-                .setPositiveButton(R.string.button_ok) { _, _ ->
-                    if (!newUser) {
-                        user.pack = currentPackage
-                        userDao.update(user)
-                    } else {
-                        user.position = userDao.maxPosition()?.let { it.position + 1 } ?: 0
-                        userDao.insert(user)
-                    }
+        alert(R.string.pref_user) {
+            customView = view
+            positiveButton(R.string.button_ok) { _ ->
+                user.account = view.account.text.toString()
+                user.password = view.password.text.toString()
+                if (!newUser) {
+                    user.pack = currentPackage
+                    userDao.update(user)
+                } else {
+                    user.position = userDao.maxPosition()?.let { it.position + 1 } ?: 0
+                    userDao.insert(user)
                 }
-                .setNegativeButton(R.string.button_cancel) { _, _ -> }
-                .setView(binding.root)
-                .show()
+            }
+            negativeButton(R.string.button_cancel) {}
+        }.show()
     }
 
     internal inner class UserAdapter(var users: MutableList<User> = mutableListOf()) : RecyclerView.Adapter<UserAdapter.UserViewHolder>() {
 
-        override fun onCreateViewHolder(parent: ViewGroup, i: Int): UserViewHolder {
-            val binding: UserCardBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.user_card, parent, false)
-            return UserViewHolder(binding.root)
-        }
+        override fun onCreateViewHolder(parent: ViewGroup, i: Int) =
+                UserViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.user_card, parent, false))
 
         override fun getItemCount() = users.size
 
@@ -129,13 +128,13 @@ class UserActivity : AppCompatActivity() {
                     .append(resources.getStringArray(R.array.packages)[user.pack])
             builder.setSpan(TextAppearanceSpan(this@UserActivity, android.R.style.TextAppearance_Small),
                     user.account.length + 1, builder.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-            holder.binding.user.text = builder
+            holder.v.user.text = builder
             if (user.id == currentId) {
-                holder.binding.user.isChecked = true
+                holder.v.user.isChecked = true
             }
 
-            holder.binding.buttonEdit.setOnClickListener { openUserDialog(false, user.copy()) }
-            holder.binding.buttonDelete.setOnClickListener { userDao.delete(user) }
+            holder.v.button_edit.setOnClickListener { openUserDialog(false, user.copy()) }
+            holder.v.button_delete.setOnClickListener { userDao.delete(user) }
         }
 
         fun onItemMove(from: Int, to: Int) {
@@ -162,9 +161,7 @@ class UserActivity : AppCompatActivity() {
             userDao.delete(adapter.users[pos])
         }
 
-        internal inner class UserViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-            val binding: UserCardBinding = DataBindingUtil.getBinding(view)
-        }
+        internal inner class UserViewHolder(val v: View) : RecyclerView.ViewHolder(v)
     }
 
     internal inner class UsersDiffCallback(private val oldUsers: List<User>, private val newUsers: List<User>) : DiffUtil.Callback() {
