@@ -1,8 +1,10 @@
 language: android
 
+git:
+  depth: 9999999
+
 android:
   components:
-  - tools
   - tools
   - build-tools-27.0.3
   - android-27
@@ -31,4 +33,4 @@ deploy:
 
 after_script:
 - fir login $fir_token
-- fir p app/build/outputs/apk/releaseGitHub/app-releaseGitHub.apk 
+- fir p app/build/outputs/apk/releaseGitHub/app-releaseGitHub.apk -c "$TRAVIS_COMMIT_MESSAGE"
