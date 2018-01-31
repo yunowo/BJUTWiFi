@@ -17,7 +17,6 @@ import kotlinx.coroutines.experimental.async
 import me.liuyun.bjutlgn.App
 import me.liuyun.bjutlgn.R
 import me.liuyun.bjutlgn.api.BjutRetrofit
-import me.liuyun.bjutlgn.api.BjutService
 import me.liuyun.bjutlgn.entity.Flow
 import me.liuyun.bjutlgn.util.NetworkUtils
 import me.liuyun.bjutlgn.util.NetworkUtils.NetworkState.*
@@ -25,7 +24,7 @@ import me.liuyun.bjutlgn.util.StatsUtils
 import me.liuyun.bjutlgn.util.ThemeHelper
 
 class StatusCard(private val cv: FrameLayout, private val graphCard: GraphCard?, private val app: App, private val captivePortal: CaptivePortal?) {
-    private val service: BjutService = BjutRetrofit.bjutService
+    private val res = app.resources
 
     init {
         cv.refresh_button.setOnClickListener { onRefresh() }
@@ -43,10 +42,10 @@ class StatusCard(private val cv: FrameLayout, private val graphCard: GraphCard?,
             cv.non_bjut.visibility = View.VISIBLE
         }
         when (state) {
-            STATE_NO_NETWORK -> cv.non_bjut.text = app.res.getString(R.string.status_no_network)
-            STATE_MOBILE -> cv.non_bjut.text = app.res.getString(R.string.status_mobile_network)
+            STATE_NO_NETWORK -> cv.non_bjut.text = res.getString(R.string.status_no_network)
+            STATE_MOBILE -> cv.non_bjut.text = res.getString(R.string.status_mobile_network)
             STATE_BJUT_WIFI -> refreshStatus()
-            STATE_OTHER_WIFI -> cv.non_bjut.text = app.res.getString(R.string.status_other_wifi).format(NetworkUtils.getWifiSSID(app))
+            STATE_OTHER_WIFI -> cv.non_bjut.text = res.getString(R.string.status_other_wifi).format(NetworkUtils.getWifiSSID(app))
         }
     }
 
@@ -56,21 +55,20 @@ class StatusCard(private val cv: FrameLayout, private val graphCard: GraphCard?,
         }
         job.await()
 
-        val account = app.prefs.getString("account", "")
-        cv.user.text = account
-        service.stats()
+        cv.user.text = app.prefs.getString("account", "")
+        BjutRetrofit.bjutService.stats()
                 .map(StatsUtils::parseStats)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ stats ->
                     Snackbar.make(cv, R.string.stats_refresh_ok, Snackbar.LENGTH_SHORT).show()
-                    cv.flow.text = app.res.getString(R.string.stats_flow).format(Formatter.formatFileSize(app, stats.flow * 1024L))
-                    cv.fee.text = app.res.getString(R.string.stats_fee).format(stats.fee / 10000f)
-                    cv.time.text = app.res.getString(R.string.stats_time).format(stats.time)
+                    cv.flow.text = res.getString(R.string.stats_flow).format(Formatter.formatFileSize(app, stats.flow * 1024L))
+                    cv.fee.text = res.getString(R.string.stats_fee).format(stats.fee / 10000f)
+                    cv.time.text = res.getString(R.string.stats_time).format(stats.time)
 
                     val percent = StatsUtils.getPercent(stats, app)
                     cv.progress_ring.centerTitle = "$percent %"
-                    val w = app.res.getColor(android.R.color.white, app.theme)
+                    val w = res.getColor(android.R.color.white, app.theme)
                     val a = ThemeHelper.getThemePrimaryColor(cv.context)
                     if (percent > 50) {
                         cv.progress_ring.centerTitleColor = w
@@ -90,8 +88,7 @@ class StatusCard(private val cv: FrameLayout, private val graphCard: GraphCard?,
 
                         captivePortal?.reportCaptivePortalDismissed()
                     }
-                },
-                        { Snackbar.make(cv, R.string.stats_refresh_failed, Snackbar.LENGTH_SHORT).show() })
+                }, { Snackbar.make(cv, R.string.stats_refresh_failed, Snackbar.LENGTH_SHORT).show() })
     }
 
     private fun onLogin() {
@@ -99,7 +96,7 @@ class StatusCard(private val cv: FrameLayout, private val graphCard: GraphCard?,
         val password = app.prefs.getString("password", "")
 
         if (!TextUtils.isEmpty(account) && !TextUtils.isEmpty(password)) {
-            service.login(account, password, "1", "123")
+            BjutRetrofit.bjutService.login(account, password, "1", "123")
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe({ refreshStatus() },
@@ -108,7 +105,7 @@ class StatusCard(private val cv: FrameLayout, private val graphCard: GraphCard?,
     }
 
     private fun onLogout() {
-        service.logout()
+        BjutRetrofit.bjutService.logout()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ Snackbar.make(cv, R.string.stats_logout_ok, Snackbar.LENGTH_SHORT).show() },

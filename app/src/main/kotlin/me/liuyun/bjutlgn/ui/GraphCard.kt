@@ -10,19 +10,19 @@ import me.liuyun.bjutlgn.util.StatsUtils
 import java.text.DateFormat
 import java.util.*
 
-class GraphCard(private val cardView: CardView, private val context: App) {
+class GraphCard(private val cardView: CardView, private val app: App) {
     val chart: UsageView = cardView.chart
 
     fun show() {
         val month = Calendar.getInstance().get(Calendar.MONTH)
-        if (context.prefs.getInt("current_month", -1) != month) {
-            context.prefs.edit().putInt("current_month", month).apply()
-            context.appDatabase.flowDao().deleteAll()
+        if (app.prefs.getInt("current_month", -1) != month) {
+            app.prefs.edit().putInt("current_month", month).apply()
+            app.appDatabase.flowDao().deleteAll()
         }
 
-        val flowList = context.appDatabase.flowDao().all()
+        val flowList = app.appDatabase.flowDao().all()
         chart.clearPaths()
-        chart.configureGraph(60 * 24 * endOfCurrentMonth.get(Calendar.DATE), StatsUtils.getPack(context) * 1024, true, true)
+        chart.configureGraph(60 * 24 * endOfCurrentMonth.get(Calendar.DATE), StatsUtils.getPack(app) * 1024, true, true)
         calcPoints(flowList)
 
         val dateFormat = DateFormat.getDateInstance(DateFormat.SHORT)
@@ -34,25 +34,21 @@ class GraphCard(private val cardView: CardView, private val context: App) {
         val points = SparseIntArray()
         points.put(0, 0)
 
-        flowList.forEach { flow -> points.put((flow.timestamp / 60 - startOfMonth).toInt(), flow.flow / 1024) }
+        flowList.forEach { points.put((it.timestamp / 60 - startOfMonth).toInt(), it.flow / 1024) }
         chart.addPath(points)
     }
 
     private val startOfCurrentMonth: Calendar
-        get() {
-            val cal = Calendar.getInstance()
-            cal.set(Calendar.HOUR_OF_DAY, 0)
-            cal.clear(Calendar.MINUTE)
-            cal.clear(Calendar.SECOND)
-            cal.clear(Calendar.MILLISECOND)
-            cal.set(Calendar.DAY_OF_MONTH, 1)
-            return cal
+        get() = Calendar.getInstance().apply {
+            set(Calendar.HOUR_OF_DAY, 0)
+            clear(Calendar.MINUTE)
+            clear(Calendar.SECOND)
+            clear(Calendar.MILLISECOND)
+            set(Calendar.DAY_OF_MONTH, 1)
         }
 
     private val endOfCurrentMonth: Calendar
-        get() {
-            val cal = Calendar.getInstance()
-            cal.set(Calendar.DATE, cal.getActualMaximum(Calendar.DATE))
-            return cal
+        get() = Calendar.getInstance().apply {
+            set(Calendar.DATE, getActualMaximum(Calendar.DATE))
         }
 }

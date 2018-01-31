@@ -26,9 +26,9 @@ import me.liuyun.bjutlgn.entity.User
 import org.jetbrains.anko.alert
 
 class UserActivity : AppCompatActivity() {
-    lateinit internal var adapter: UserAdapter
-    lateinit private var userDao: UserDao
-    lateinit private var prefs: SharedPreferences
+    private lateinit var adapter: UserAdapter
+    private lateinit var userDao: UserDao
+    private lateinit var prefs: SharedPreferences
     private var currentId: Int = 0
     private var currentPackage: Int = 0
 
@@ -70,7 +70,6 @@ class UserActivity : AppCompatActivity() {
     }
 
     internal fun openUserDialog(newUser: Boolean, user: User) {
-        val context = this@UserActivity
         val view: View = layoutInflater.inflate(R.layout.user_dialog, null, false)
         view.account.setText(user.account)
         view.account.setSelection(user.account.length)

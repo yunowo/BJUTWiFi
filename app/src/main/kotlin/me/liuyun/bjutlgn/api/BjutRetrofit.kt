@@ -20,12 +20,12 @@ object BjutRetrofit {
     private val client = OkHttpClient.Builder()
             .connectTimeout(5, TimeUnit.SECONDS)
             .readTimeout(5, TimeUnit.SECONDS)
-            .addInterceptor { chain -> chain.proceed(chain.request().newBuilder().headers(headers).build()) }
+            .addInterceptor { it.proceed(it.request().newBuilder().headers(headers).build()) }
             .cookieJar(object : CookieJar {
                 private val cookieStore = HashMap<String, List<Cookie>>()
 
                 override fun saveFromResponse(url: HttpUrl, cookies: List<Cookie>) {
-                    cookieStore.put(url.host(), cookies)
+                    cookieStore[url.host()] = cookies
                 }
 
                 override fun loadForRequest(url: HttpUrl): List<Cookie> {
