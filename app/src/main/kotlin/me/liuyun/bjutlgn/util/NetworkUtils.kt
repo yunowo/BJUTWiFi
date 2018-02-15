@@ -2,7 +2,7 @@ package me.liuyun.bjutlgn.util
 
 import android.content.Context
 import android.net.ConnectivityManager
-import android.net.wifi.WifiManager
+import android.net.NetworkInfo
 import android.util.Log
 import me.liuyun.bjutlgn.util.NetworkUtils.NetworkState.*
 
@@ -44,7 +44,9 @@ object NetworkUtils {
     }
 
     fun getWifiSSID(context: Context): String {
-        val wifiManager = context.applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
-        return wifiManager.connectionInfo.ssid
+        val manager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val info = manager.activeNetworkInfo ?: return "<unknown ssid>"
+        if (info.type != ConnectivityManager.TYPE_WIFI || info.state != NetworkInfo.State.CONNECTED) return "<unknown ssid>"
+        return info.extraInfo
     }
 }
