@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="background_grey">#FFF5F5F5</color>
+    <color name="grey">#FFEEEEEE</color>
+    <color name="grey_dark">#FFE0E0E0</color>
 
     <color name="greenYun">#00cc69</color>
     <color name="greenYunDark">#00ad48</color>

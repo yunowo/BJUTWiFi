@@ -6,20 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <android.support.design.widget.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="?attr/actionBarSize"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-            app:navigationIcon="?attr/homeAsUpIndicator"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-            app:title="@string/pref_user"/>
-    </android.support.design.widget.AppBarLayout>
+    <include layout="@layout/app_bar"/>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
@@ -29,7 +16,7 @@
         android:layout_margin="@dimen/fab_margin"
         android:clickable="true"
         android:focusable="true"
-        app:backgroundTint="?attr/colorPrimary"
+        app:backgroundTint="?attr/colorAccent"
         app:fabSize="normal"
         app:srcCompat="@drawable/ic_add"/>
 

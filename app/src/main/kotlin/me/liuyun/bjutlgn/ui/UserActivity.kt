@@ -17,7 +17,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import kotlinx.android.synthetic.main.activity_users.*
-import kotlinx.android.synthetic.main.user_card.view.*
+import kotlinx.android.synthetic.main.app_bar.*
+import kotlinx.android.synthetic.main.item_user.view.*
 import kotlinx.android.synthetic.main.user_dialog.view.*
 import me.liuyun.bjutlgn.App
 import me.liuyun.bjutlgn.R
@@ -104,7 +105,7 @@ class UserActivity : AppCompatActivity() {
     internal inner class UserAdapter(var users: MutableList<User> = mutableListOf()) : RecyclerView.Adapter<UserAdapter.UserViewHolder>() {
 
         override fun onCreateViewHolder(parent: ViewGroup, i: Int) =
-                UserViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.user_card, parent, false))
+                UserViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_user, parent, false))
 
         override fun getItemCount() = users.size
 

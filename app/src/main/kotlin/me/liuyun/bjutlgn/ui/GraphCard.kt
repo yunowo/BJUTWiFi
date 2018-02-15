@@ -1,7 +1,7 @@
 package me.liuyun.bjutlgn.ui
 
-import android.support.v7.widget.CardView
 import android.util.SparseIntArray
+import android.widget.LinearLayout
 import com.android.settingslib.graph.UsageView
 import kotlinx.android.synthetic.main.graph_card.view.*
 import me.liuyun.bjutlgn.App
@@ -10,7 +10,7 @@ import me.liuyun.bjutlgn.util.StatsUtils
 import java.text.DateFormat
 import java.util.*
 
-class GraphCard(private val cardView: CardView, private val app: App) {
+class GraphCard(private val cardView: LinearLayout, private val app: App) {
     val chart: UsageView = cardView.chart
 
     fun show() {

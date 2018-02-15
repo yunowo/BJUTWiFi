@@ -5,6 +5,13 @@
             android:title="@string/pref_theme"/>
     </PreferenceCategory>
 
+    <PreferenceCategory android:title="@string/pref_debug">
+        <SwitchPreference
+            android:key="debug"
+            android:summary="@string/pref_debug_mode_summary"
+            android:title="@string/pref_debug_mode"/>
+    </PreferenceCategory>
+
     <PreferenceCategory android:title="@string/pref_header_about">
         <Preference
             android:key="version"

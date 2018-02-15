@@ -9,7 +9,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.activity_theme.*
-import kotlinx.android.synthetic.main.theme_item.view.*
+import kotlinx.android.synthetic.main.app_bar.*
+import kotlinx.android.synthetic.main.item_theme.view.*
 import me.liuyun.bjutlgn.R
 import me.liuyun.bjutlgn.util.ThemeHelper
 import me.liuyun.bjutlgn.util.ThemeRes
@@ -29,7 +30,7 @@ class ThemeActivity : AppCompatActivity() {
         var grey = resources.getColor(android.R.color.darker_gray, theme)
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-                ThemeItemHolder(LayoutInflater.from(parent.context).inflate(R.layout.theme_item, parent, false))
+                ThemeItemHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_theme, parent, false))
 
         override fun onBindViewHolder(holder: ThemeItemHolder, position: Int) {
             val res = ThemeRes.values()[position]

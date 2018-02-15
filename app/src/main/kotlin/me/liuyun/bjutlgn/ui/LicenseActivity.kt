@@ -8,7 +8,7 @@ import com.artitk.licensefragment.model.CustomUI
 import com.artitk.licensefragment.model.License
 import com.artitk.licensefragment.model.LicenseID
 import com.artitk.licensefragment.model.LicenseType
-import kotlinx.android.synthetic.main.activity_license.*
+import kotlinx.android.synthetic.main.app_bar.*
 import me.liuyun.bjutlgn.R
 import me.liuyun.bjutlgn.util.ThemeHelper
 
@@ -32,8 +32,8 @@ class LicenseActivity : AppCompatActivity() {
                 .addCustomLicense(licenses)
                 .addLicense(intArrayOf(LicenseID.OKHTTP, LicenseID.RETROFIT, LicenseID.LICENSE_FRAGMENT))
                 .setCustomUI(CustomUI()
-                        .setTitleTextColor(ThemeHelper.getThemePrimaryColor(this))
-                        .setLicenseBackgroundColor(resources.getColor(R.color.background_grey, theme))
+                        .setTitleTextColor(ThemeHelper.getThemeAccentColor(this))
+                        .setLicenseBackgroundColor(resources.getColor(R.color.grey, theme))
                         .setLicenseTextColor(Color.DKGRAY))
 
         fragmentManager.beginTransaction().replace(R.id.content, fragment).commit()

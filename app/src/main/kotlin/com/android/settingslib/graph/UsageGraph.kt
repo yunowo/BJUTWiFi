@@ -104,7 +104,7 @@ class UsageGraph(context: Context, attrs: AttributeSet?) : View(context, attrs) 
     }
 
     fun addPath(points: SparseIntArray) {
-        for (i in 0..points.size() - 1) {
+        for (i in 0 until points.size()) {
             mPaths.put(points.keyAt(i), points.valueAt(i))
         }
         mPaths.put(points.keyAt(points.size() - 1) + 1, PATH_DELIM)
@@ -136,7 +136,7 @@ class UsageGraph(context: Context, attrs: AttributeSet?) : View(context, attrs) 
         mLocalPaths.clear()
         var pendingXLoc = 0
         var pendingYLoc = PATH_DELIM
-        for (i in 0..mPaths.size() - 1) {
+        for (i in 0 until mPaths.size()) {
             val x = mPaths.keyAt(i)
             val y = mPaths.valueAt(i)
             if (y == PATH_DELIM) {

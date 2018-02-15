@@ -42,6 +42,12 @@ object ThemeHelper : Application.ActivityLifecycleCallbacks {
         return value.data
     }
 
+    fun getThemeAccentColor(context: Context): Int {
+        val value = TypedValue()
+        context.theme.resolveAttribute(R.attr.colorAccent, value, true)
+        return value.data
+    }
+
     fun getThemeSecondaryColor(context: Context): Int {
         val value = TypedValue()
         context.theme.resolveAttribute(android.R.attr.colorSecondary, value, true)

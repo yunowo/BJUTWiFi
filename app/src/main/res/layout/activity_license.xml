@@ -5,21 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <android.support.design.widget.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="?attr/actionBarSize"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-            app:layout_scrollFlags="scroll|enterAlways"
-            app:navigationIcon="?attr/homeAsUpIndicator"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-            app:title="@string/license_title"/>
-    </android.support.design.widget.AppBarLayout>
+    <include layout="@layout/app_bar"/>
 
     <FrameLayout
         android:id="@+id/content"

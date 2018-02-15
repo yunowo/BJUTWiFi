@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="me.liuyun.bjutlgn">
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    package="me.liuyun.bjutlgn">
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
@@ -27,10 +28,18 @@
                 android:name="android.app.shortcuts"
                 android:resource="@xml/shortcuts"/>
         </activity>
-        <activity android:name=".ui.SettingsActivity"/>
-        <activity android:name=".ui.ThemeActivity"/>
-        <activity android:name=".ui.LicenseActivity"/>
-        <activity android:name=".ui.UserActivity"/>
+        <activity
+            android:name=".ui.SettingsActivity"
+            android:label="@string/settings"/>
+        <activity
+            android:name=".ui.ThemeActivity"
+            android:label="@string/theme_title"/>
+        <activity
+            android:name=".ui.LicenseActivity"
+            android:label="@string/license_title"/>
+        <activity
+            android:name=".ui.UserActivity"
+            android:label="@string/pref_user"/>
         <activity
             android:name=".ui.StatusLockedActivity"
             android:excludeFromRecents="true"

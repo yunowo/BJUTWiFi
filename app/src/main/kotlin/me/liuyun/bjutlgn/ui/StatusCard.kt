@@ -2,6 +2,8 @@ package me.liuyun.bjutlgn.ui
 
 import android.animation.ObjectAnimator
 import android.net.CaptivePortal
+import android.support.animation.SpringAnimation
+import android.support.animation.SpringForce
 import android.support.design.widget.Snackbar
 import android.text.TextUtils
 import android.text.format.Formatter
@@ -18,6 +20,7 @@ import me.liuyun.bjutlgn.App
 import me.liuyun.bjutlgn.R
 import me.liuyun.bjutlgn.api.BjutRetrofit
 import me.liuyun.bjutlgn.entity.Flow
+import me.liuyun.bjutlgn.entity.Stats
 import me.liuyun.bjutlgn.util.NetworkUtils
 import me.liuyun.bjutlgn.util.NetworkUtils.NetworkState.*
 import me.liuyun.bjutlgn.util.StatsUtils
@@ -27,13 +30,12 @@ class StatusCard(private val cv: FrameLayout, private val graphCard: GraphCard?,
     private val res = app.resources
 
     init {
-        cv.refresh_button.setOnClickListener { onRefresh() }
         cv.sign_in_button.setOnClickListener { onLogin() }
         cv.sign_out_button.setOnClickListener { onLogout() }
     }
 
     fun onRefresh() {
-        val state = NetworkUtils.getNetworkState(app)
+        val state = if (app.prefs.getBoolean("debug", false)) STATE_BJUT_WIFI else NetworkUtils.getNetworkState(app)
         if (state == STATE_BJUT_WIFI) {
             arrayOf(cv.user, cv.progress_ring, cv.info_layout, cv.buttons_layout).forEach { it.visibility = View.VISIBLE }
             cv.non_bjut.visibility = View.GONE
@@ -56,39 +58,70 @@ class StatusCard(private val cv: FrameLayout, private val graphCard: GraphCard?,
         job.await()
 
         cv.user.text = app.prefs.getString("account", "")
+
+        if (app.prefs.getBoolean("debug", false)) {
+            statsSuccess(Stats(4000000, 100, 1000, true))
+            return@async
+        }
+
         BjutRetrofit.bjutService.stats()
                 .map(StatsUtils::parseStats)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ stats ->
-                    Snackbar.make(cv, R.string.stats_refresh_ok, Snackbar.LENGTH_SHORT).show()
-                    cv.flow.text = res.getString(R.string.stats_flow).format(Formatter.formatFileSize(app, stats.flow * 1024L))
-                    cv.fee.text = res.getString(R.string.stats_fee).format(stats.fee / 10000f)
-                    cv.time.text = res.getString(R.string.stats_time).format(stats.time)
+                .subscribe({ statsSuccess(it) }, { Snackbar.make(cv, R.string.stats_refresh_failed, Snackbar.LENGTH_SHORT).show() })
+    }
 
-                    val percent = StatsUtils.getPercent(stats, app)
-                    cv.progress_ring.centerTitle = "$percent %"
-                    val w = res.getColor(android.R.color.white, app.theme)
-                    val a = ThemeHelper.getThemePrimaryColor(cv.context)
-                    if (percent > 50) {
-                        cv.progress_ring.centerTitleColor = w
-                        cv.progress_ring.setCenterTitleStrokeColor(a)
-                    } else {
-                        cv.progress_ring.centerTitleColor = a
-                        cv.progress_ring.setCenterTitleStrokeColor(w)
-                    }
-                    val animator = ObjectAnimator.ofInt(cv.progress_ring, "progressValue", percent)
-                    animator.interpolator = AccelerateDecelerateInterpolator()
-                    animator.duration = 500
-                    animator.start()
+    private fun statsSuccess(stats: Stats) {
+        cv.fee.text = res.getString(R.string.stats_fee).format(stats.fee / 10000f)
+        cv.time.text = res.getString(R.string.stats_time).format(stats.time)
 
-                    if (stats.isOnline) {
-                        app.appDatabase.flowDao().insert(Flow(0, System.currentTimeMillis() / 1000L, stats.flow))
-                        graphCard?.show()
+        val percent = StatsUtils.getPercent(stats, app)
+        cv.progress_ring.centerTitle = "$percent %"
+        cv.progress_ring.bottomTitle = Formatter.formatFileSize(app, stats.flow * 1024L)
+        val w = res.getColor(android.R.color.white, app.theme)
+        val a = ThemeHelper.getThemeAccentColor(cv.context)
+        if (percent > 50) {
+            cv.progress_ring.centerTitleColor = w
+            cv.progress_ring.setCenterTitleStrokeColor(a)
+        } else {
+            cv.progress_ring.centerTitleColor = a
+            cv.progress_ring.setCenterTitleStrokeColor(w)
+        }
+        if (percent > 20) {
+            cv.progress_ring.bottomTitleColor = w
+            cv.progress_ring.setBottomTitleStrokeColor(a)
+        } else {
+            cv.progress_ring.bottomTitleColor = a
+            cv.progress_ring.setBottomTitleStrokeColor(w)
+        }
+        val animator = ObjectAnimator.ofInt(cv.progress_ring, "progressValue", percent)
+        animator.interpolator = AccelerateDecelerateInterpolator()
+        animator.duration = 500
+        animator.start()
+        startSpringAnimation(cv.progress_ring)
 
-                        captivePortal?.reportCaptivePortalDismissed()
-                    }
-                }, { Snackbar.make(cv, R.string.stats_refresh_failed, Snackbar.LENGTH_SHORT).show() })
+        if (stats.isOnline) {
+            app.appDatabase.flowDao().insert(Flow(0, System.currentTimeMillis() / 1000L, stats.flow))
+            graphCard?.show()
+
+            captivePortal?.reportCaptivePortalDismissed()
+        }
+    }
+
+    private fun startSpringAnimation(view: View) {
+        view.scaleX = 0.1f
+        view.scaleY = 0.1f
+        val spring = SpringForce(1f)
+                .setDampingRatio(SpringForce.DAMPING_RATIO_MEDIUM_BOUNCY)
+                .setStiffness(SpringForce.STIFFNESS_LOW)
+        SpringAnimation(view, SpringAnimation.SCALE_X)
+                .setSpring(spring)
+                .setStartVelocity(0.7f)
+                .start()
+        SpringAnimation(view, SpringAnimation.SCALE_Y)
+                .setSpring(spring)
+                .setStartVelocity(0.7f)
+                .start()
     }
 
     private fun onLogin() {

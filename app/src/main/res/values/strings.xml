@@ -11,12 +11,14 @@
     <string name="pref_user">User</string>
     <string name="pref_header_theme">Theme</string>
     <string name="pref_theme">Theme</string>
+    <string name="pref_debug">Debug</string>
+    <string name="pref_debug_mode">Debug Mode</string>
+    <string name="pref_debug_mode_summary">Device is always connected to BJUT Wi-Fi</string>
     <string name="action_sign_in">Sign in</string>
     <string name="action_sign_out">Sign out</string>
     <string name="action_refresh">Refresh</string>
     <string name="tile_icon_label">Wi-Fi Status</string>
-    <string name="stats_flow">Used flux: %s</string>
-    <string name="stats_time">Used time: %d min</string>
+    <string name="stats_time">Used: %d min</string>
     <string name="stats_fee">Balance: %.2f RMB</string>
     <string name="stats_login_failed">Login Failed.</string>
     <string name="stats_logout_failed">Logout Failed.</string>

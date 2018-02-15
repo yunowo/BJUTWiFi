@@ -13,7 +13,7 @@
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:layout_margin="10dp"
-        android:background="?attr/colorPrimary"
+        android:background="?attr/colorAccent"
         android:gravity="center"
         android:text="@string/theme_tick"
         android:textColor="@android:color/white"/>
@@ -23,14 +23,14 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:textColor="?attr/colorPrimary"/>
+        android:textColor="?attr/colorAccent"/>
 
     <RadioButton
         android:id="@+id/btn_choose"
         android:layout_width="60dp"
         android:layout_height="wrap_content"
         android:layout_margin="15dp"
-        android:background="@drawable/btn_border_checkable"
+        android:background="@drawable/button_border"
         android:button="@null"
         android:focusable="false"
         android:gravity="center"
