@@ -26,11 +26,11 @@
             app:wlv_shapeType="circle"
             app:wlv_titleBottomColor="?android:attr/colorAccent"
             app:wlv_titleBottomSize="14sp"
-            app:wlv_titleBottomStrokeWidth="1dp"
+            app:wlv_titleBottomStrokeWidth="2dp"
             app:wlv_titleCenterColor="?android:attr/colorAccent"
             app:wlv_titleCenterSize="26sp"
-            app:wlv_titleCenterStrokeWidth="1dp"
-            app:wlv_waveAmplitude="40"
+            app:wlv_titleCenterStrokeWidth="2dp"
+            app:wlv_waveAmplitude="30"
             app:wlv_waveColor="?android:attr/colorAccent"/>
 
         <TextView
