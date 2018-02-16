@@ -1,6 +1,5 @@
 package me.liuyun.bjutlgn.ui
 
-import android.animation.ObjectAnimator
 import android.net.CaptivePortal
 import android.support.animation.SpringAnimation
 import android.support.animation.SpringForce
@@ -8,7 +7,6 @@ import android.support.design.widget.Snackbar
 import android.text.TextUtils
 import android.text.format.Formatter
 import android.view.View
-import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.FrameLayout
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -94,10 +92,7 @@ class StatusCard(private val cv: FrameLayout, private val graphCard: GraphCard?,
             cv.progress_ring.bottomTitleColor = a
             cv.progress_ring.setBottomTitleStrokeColor(w)
         }
-        val animator = ObjectAnimator.ofInt(cv.progress_ring, "progressValue", percent)
-        animator.interpolator = AccelerateDecelerateInterpolator()
-        animator.duration = 500
-        animator.start()
+        cv.progress_ring.progressValue = percent
         startSpringAnimation(cv.progress_ring)
 
         if (stats.isOnline) {
