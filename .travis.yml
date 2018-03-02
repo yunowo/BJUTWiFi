@@ -17,6 +17,7 @@ before_install:
   -in yun.jks.enc -out yun.jks -d
 - chmod +x gradlew
 - gem install fir-cli
+- yes | sdkmanager "platforms;android-27"
 
 script:
 - "./gradlew assembleReleaseGitHub"
