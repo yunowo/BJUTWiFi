@@ -12,7 +12,7 @@
  * permissions and limitations under the License.
  */
 
-package com.android.settingslib.graph
+package com.android.settings.graph
 
 import android.content.Context
 import android.util.AttributeSet
@@ -84,7 +84,6 @@ class UsageView(context: Context, attrs: AttributeSet) : FrameLayout(context, at
 
     fun configureGraph(maxX: Int, maxY: Int, showProjection: Boolean, projectUp: Boolean) {
         mUsageGraph.setMax(maxX, maxY)
-        mUsageGraph.setShowProjection(showProjection, projectUp)
     }
 
     fun setAccentColor(color: Int) {

@@ -25,23 +25,23 @@ class SettingsActivity : AppCompatActivity() {
             super.onCreate(savedInstanceState)
             addPreferencesFromResource(R.xml.settings)
             findPreference("theme").setOnPreferenceClickListener {
-                context.startActivity<ThemeActivity>()
+                startActivity<ThemeActivity>()
                 true
             }
             findPreference("version").summary = BuildConfig.VERSION_NAME
             findPreference("version").setOnPreferenceClickListener {
                 tapCount++
                 if (tapCount < 5) return@setOnPreferenceClickListener false
-                context.startActivity<EasterEggActivity>()
+                startActivity<EasterEggActivity>()
                 tapCount = 0
                 true
             }
             findPreference("licenses").setOnPreferenceClickListener {
-                context.startActivity<LicenseActivity>()
+                startActivity<LicenseActivity>()
                 true
             }
             findPreference("source").setOnPreferenceClickListener {
-                context.browse(resources.getString(R.string.source_code_url))
+                browse(resources.getString(R.string.source_code_url))
                 true
             }
         }

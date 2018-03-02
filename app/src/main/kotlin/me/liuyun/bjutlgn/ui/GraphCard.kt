@@ -2,7 +2,8 @@ package me.liuyun.bjutlgn.ui
 
 import android.util.SparseIntArray
 import android.widget.LinearLayout
-import com.android.settingslib.graph.UsageView
+import androidx.content.edit
+import com.android.settings.graph.UsageView
 import kotlinx.android.synthetic.main.graph_card.view.*
 import me.liuyun.bjutlgn.App
 import me.liuyun.bjutlgn.entity.Flow
@@ -10,13 +11,13 @@ import me.liuyun.bjutlgn.util.StatsUtils
 import java.text.DateFormat
 import java.util.*
 
-class GraphCard(private val cardView: LinearLayout, private val app: App) {
+class GraphCard(cardView: LinearLayout, private val app: App) {
     val chart: UsageView = cardView.chart
 
     fun show() {
         val month = Calendar.getInstance().get(Calendar.MONTH)
         if (app.prefs.getInt("current_month", -1) != month) {
-            app.prefs.edit().putInt("current_month", month).apply()
+            app.prefs.edit { putInt("current_month", month) }
             app.appDatabase.flowDao().deleteAll()
         }
 

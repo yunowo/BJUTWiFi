@@ -12,7 +12,7 @@
  * permissions and limitations under the License.
  */
 
-package com.android.settingslib.graph
+package com.android.settings.graph
 
 import android.content.Context
 import android.graphics.*
@@ -42,11 +42,13 @@ class UsageGraph(context: Context, attrs: AttributeSet?) : View(context, attrs) 
     private val mPaths = SparseIntArray()
     // Paths in local coordinates for drawing.
     private val mLocalPaths = SparseIntArray()
-    private val mCornerRadius: Int
+    // Paths for projection in coordinates they are passed in.
+    private val mProjectedPaths = SparseIntArray()
+    // Paths for projection in local coordinates for drawing.
+    private val mLocalProjectedPaths = SparseIntArray()
 
+    private val mCornerRadius: Int
     private var mAccentColor: Int = 0
-    private var mShowProjection: Boolean = false
-    private var mProjectUp: Boolean = false
 
     private var mMaxX = 100f
     private var mMaxY = 100f
@@ -87,11 +89,16 @@ class UsageGraph(context: Context, attrs: AttributeSet?) : View(context, attrs) 
 
     internal fun clearPaths() {
         mPaths.clear()
+        mLocalPaths.clear()
+        mProjectedPaths.clear()
+        mLocalProjectedPaths.clear()
     }
 
     internal fun setMax(maxX: Int, maxY: Int) {
         mMaxX = maxX.toFloat()
         mMaxY = maxY.toFloat()
+        calculateLocalPaths()
+        postInvalidate()
     }
 
     internal fun setDividerLoc(height: Int) {
@@ -104,11 +111,24 @@ class UsageGraph(context: Context, attrs: AttributeSet?) : View(context, attrs) 
     }
 
     fun addPath(points: SparseIntArray) {
-        for (i in 0 until points.size()) {
-            mPaths.put(points.keyAt(i), points.valueAt(i))
+        addPathAndUpdate(points, mPaths, mLocalPaths)
+    }
+
+    fun addProjectedPath(points: SparseIntArray) {
+        addPathAndUpdate(points, mProjectedPaths, mLocalProjectedPaths)
+    }
+
+    private fun addPathAndUpdate(points: SparseIntArray, paths: SparseIntArray,
+                                 localPaths: SparseIntArray) {
+        var i = 0
+        val size = points.size()
+        while (i < size) {
+            paths.put(points.keyAt(i), points.valueAt(i))
+            i++
         }
-        mPaths.put(points.keyAt(points.size() - 1) + 1, PATH_DELIM)
-        calculateLocalPaths()
+        // Add a delimiting value immediately after the last point.
+        paths.put(points.keyAt(points.size() - 1) + 1, PATH_DELIM)
+        calculateLocalPaths(paths, localPaths)
         postInvalidate()
     }
 
@@ -119,12 +139,6 @@ class UsageGraph(context: Context, attrs: AttributeSet?) : View(context, attrs) 
         postInvalidate()
     }
 
-    internal fun setShowProjection(showProjection: Boolean, projectUp: Boolean) {
-        mShowProjection = showProjection
-        mProjectUp = projectUp
-        postInvalidate()
-    }
-
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
         updateGradient()
@@ -132,34 +146,41 @@ class UsageGraph(context: Context, attrs: AttributeSet?) : View(context, attrs) 
     }
 
     private fun calculateLocalPaths() {
-        if (width == 0) return
-        mLocalPaths.clear()
+        calculateLocalPaths(mPaths, mLocalPaths)
+        calculateLocalPaths(mProjectedPaths, mLocalProjectedPaths)
+    }
+
+    private fun calculateLocalPaths(paths: SparseIntArray, localPaths: SparseIntArray) {
+        if (width == 0) {
+            return
+        }
+        localPaths.clear()
         var pendingXLoc = 0
         var pendingYLoc = PATH_DELIM
-        for (i in 0 until mPaths.size()) {
-            val x = mPaths.keyAt(i)
-            val y = mPaths.valueAt(i)
+        for (i in 0 until paths.size()) {
+            val x = paths.keyAt(i)
+            val y = paths.valueAt(i)
             if (y == PATH_DELIM) {
-                if (i == mPaths.size() - 1 && pendingYLoc != PATH_DELIM) {
+                if (i == paths.size() - 1 && pendingYLoc != PATH_DELIM) {
                     // Connect to the end of the graph.
-                    mLocalPaths.put(pendingXLoc, pendingYLoc)
+                    localPaths.put(pendingXLoc, pendingYLoc)
                 }
                 // Clear out any pending points.
                 pendingYLoc = PATH_DELIM
-                mLocalPaths.put(pendingXLoc + 1, PATH_DELIM)
+                localPaths.put(pendingXLoc + 1, PATH_DELIM)
             } else {
                 val lx = getX(x.toFloat())
                 val ly = getY(y.toFloat())
                 pendingXLoc = lx
-                if (mLocalPaths.size() > 0) {
-                    val lastX = mLocalPaths.keyAt(mLocalPaths.size() - 1)
-                    val lastY = mLocalPaths.valueAt(mLocalPaths.size() - 1)
+                if (localPaths.size() > 0) {
+                    val lastX = localPaths.keyAt(localPaths.size() - 1)
+                    val lastY = localPaths.valueAt(localPaths.size() - 1)
                     if (lastY != PATH_DELIM && !hasDiff(lastX, lx) && !hasDiff(lastY, ly)) {
                         pendingYLoc = ly
                         continue
                     }
                 }
-                mLocalPaths.put(lx, ly)
+                localPaths.put(lx, ly)
             }
         }
     }
@@ -194,66 +215,58 @@ class UsageGraph(context: Context, attrs: AttributeSet?) : View(context, attrs) 
                 mMiddleDividerTint)
         drawDivider(canvas.height - mDividerSize, canvas, -1)
 
-        if (mLocalPaths.size() == 0) {
+        if (mLocalPaths.size() == 0 && mLocalProjectedPaths.size() == 0) {
             return
         }
-        if (mShowProjection) {
-            drawProjection(canvas)
+        drawLinePath(canvas, mLocalProjectedPaths, mDottedPaint)
+        drawFilledPath(canvas, mLocalPaths, mFillPaint)
+        drawLinePath(canvas, mLocalPaths, mLinePaint)
+    }
+
+    private fun drawLinePath(canvas: Canvas, localPaths: SparseIntArray, paint: Paint) {
+        if (localPaths.size() == 0) {
+            return
         }
-        drawFilledPath(canvas)
-        drawLinePath(canvas)
-    }
-
-    private fun drawProjection(canvas: Canvas) {
         mPath.reset()
-        val x = mLocalPaths.keyAt(mLocalPaths.size() - 2)
-        val y = mLocalPaths.valueAt(mLocalPaths.size() - 2)
-        mPath.moveTo(x.toFloat(), y.toFloat())
-        mPath.lineTo(canvas.width.toFloat(), (if (mProjectUp) 0 else canvas.height).toFloat())
-        canvas.drawPath(mPath, mDottedPaint)
-    }
-
-    private fun drawLinePath(canvas: Canvas) {
-        mPath.reset()
-        mPath.moveTo(mLocalPaths.keyAt(0).toFloat(), mLocalPaths.valueAt(0).toFloat())
+        mPath.moveTo(localPaths.keyAt(0).toFloat(), localPaths.valueAt(0).toFloat())
         var i = 1
-        while (i < mLocalPaths.size()) {
-            val x = mLocalPaths.keyAt(i)
-            val y = mLocalPaths.valueAt(i)
+        while (i < localPaths.size()) {
+            val x = localPaths.keyAt(i)
+            val y = localPaths.valueAt(i)
             if (y == PATH_DELIM) {
-                if (++i < mLocalPaths.size()) {
-                    mPath.moveTo(mLocalPaths.keyAt(i).toFloat(), mLocalPaths.valueAt(i).toFloat())
+                if (++i < localPaths.size()) {
+                    mPath.moveTo(localPaths.keyAt(i).toFloat(), localPaths.valueAt(i).toFloat())
                 }
             } else {
                 mPath.lineTo(x.toFloat(), y.toFloat())
             }
             i++
         }
-        canvas.drawPath(mPath, mLinePaint)
+        canvas.drawPath(mPath, paint)
     }
 
-    private fun drawFilledPath(canvas: Canvas) {
+    private fun drawFilledPath(canvas: Canvas, localPaths: SparseIntArray, paint: Paint) {
         mPath.reset()
-        var lastStartX = mLocalPaths.keyAt(0).toFloat()
-        mPath.moveTo(mLocalPaths.keyAt(0).toFloat(), mLocalPaths.valueAt(0).toFloat())
+        var lastStartX = localPaths.keyAt(0).toFloat()
+        mPath.moveTo(localPaths.keyAt(0).toFloat(), localPaths.valueAt(0).toFloat())
         var i = 1
-        while (i < mLocalPaths.size()) {
-            val x = mLocalPaths.keyAt(i)
-            val y = mLocalPaths.valueAt(i)
+        while (i < localPaths.size()) {
+            val x = localPaths.keyAt(i)
+            val y = localPaths.valueAt(i)
             if (y == PATH_DELIM) {
-                mPath.lineTo(mLocalPaths.keyAt(i - 1).toFloat(), height.toFloat())
+                mPath.lineTo(localPaths.keyAt(i - 1).toFloat(), height.toFloat())
                 mPath.lineTo(lastStartX, height.toFloat())
                 mPath.close()
-                if (++i < mLocalPaths.size()) {
-                    lastStartX = mLocalPaths.keyAt(i).toFloat()
-                    mPath.moveTo(mLocalPaths.keyAt(i).toFloat(), mLocalPaths.valueAt(i).toFloat())
+                if (++i < localPaths.size()) {
+                    lastStartX = localPaths.keyAt(i).toFloat()
+                    mPath.moveTo(localPaths.keyAt(i).toFloat(), localPaths.valueAt(i).toFloat())
                 }
             } else {
                 mPath.lineTo(x.toFloat(), y.toFloat())
             }
             i++
         }
-        canvas.drawPath(mPath, mFillPaint)
+        canvas.drawPath(mPath, paint)
     }
 
     private fun drawDivider(y: Int, canvas: Canvas, tintColor: Int) {
@@ -267,7 +280,6 @@ class UsageGraph(context: Context, attrs: AttributeSet?) : View(context, attrs) 
     }
 
     companion object {
-
         private val PATH_DELIM = -1
     }
 }

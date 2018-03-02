@@ -55,7 +55,7 @@
 
         </LinearLayout>
 
-        <com.android.settingslib.graph.UsageGraph
+        <com.android.settings.graph.UsageGraph
             android:id="@+id/usage_graph"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

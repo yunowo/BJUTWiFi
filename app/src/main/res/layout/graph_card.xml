@@ -17,7 +17,7 @@
         android:layout_marginBottom="16dp"
         android:textSize="16sp"/>
 
-    <com.android.settingslib.graph.UsageView
+    <com.android.settings.graph.UsageView
         android:id="@+id/chart"
         android:layout_width="match_parent"
         android:layout_height="250dp"
@@ -26,5 +26,5 @@
         settings:sideLabels="@array/graph_side_labels"
         settings:textColor="?android:attr/textColorSecondary">
 
-    </com.android.settingslib.graph.UsageView>
+    </com.android.settings.graph.UsageView>
 </LinearLayout>
