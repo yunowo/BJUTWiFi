@@ -95,7 +95,7 @@ class StatusCard(private val cv: FrameLayout, private val graphCard: GraphCard?,
         cv.progress_ring.progressValue = percent
         startSpringAnimation(cv.progress_ring)
 
-        if (stats.isOnline) {
+        if (stats.isOnline && stats.flow != 0 && !app.prefs.getBoolean("debug", false)) {
             app.appDatabase.flowDao().insert(Flow(0, System.currentTimeMillis() / 1000L, stats.flow))
             graphCard?.show()
 

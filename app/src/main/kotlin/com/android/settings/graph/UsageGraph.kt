@@ -120,11 +120,8 @@ class UsageGraph(context: Context, attrs: AttributeSet?) : View(context, attrs) 
 
     private fun addPathAndUpdate(points: SparseIntArray, paths: SparseIntArray,
                                  localPaths: SparseIntArray) {
-        var i = 0
-        val size = points.size()
-        while (i < size) {
+        for (i in 0 until points.size()) {
             paths.put(points.keyAt(i), points.valueAt(i))
-            i++
         }
         // Add a delimiting value immediately after the last point.
         paths.put(points.keyAt(points.size() - 1) + 1, PATH_DELIM)
@@ -185,26 +182,19 @@ class UsageGraph(context: Context, attrs: AttributeSet?) : View(context, attrs) 
         }
     }
 
-    private fun hasDiff(x1: Int, x2: Int): Boolean {
-        return Math.abs(x2 - x1) >= mCornerRadius
-    }
+    private fun hasDiff(x1: Int, x2: Int) = Math.abs(x2 - x1) >= mCornerRadius
 
-    private fun getX(x: Float): Int {
-        return (x / mMaxX * width).toInt()
-    }
+    private fun getX(x: Float) = (x / mMaxX * width).toInt()
 
-    private fun getY(y: Float): Int {
-        return (height * (1 - y / mMaxY)).toInt()
-    }
+    private fun getY(y: Float) = (height * (1 - y / mMaxY)).toInt()
 
     private fun updateGradient() {
         mFillPaint.shader = LinearGradient(0f, 0f, 0f, height.toFloat(),
                 getColor(mAccentColor, .2f), 0, TileMode.CLAMP)
     }
 
-    private fun getColor(color: Int, alphaScale: Float): Int {
-        return color and ((0xff * alphaScale).toInt() shl 24 or 0xffffff)
-    }
+    private fun getColor(color: Int, alphaScale: Float) =
+            color and ((0xff * alphaScale).toInt() shl 24 or 0xffffff)
 
     override fun onDraw(canvas: Canvas) {
         // Draw lines across the top, middle, and bottom.
@@ -280,6 +270,6 @@ class UsageGraph(context: Context, attrs: AttributeSet?) : View(context, attrs) 
     }
 
     companion object {
-        private val PATH_DELIM = -1
+        private const val PATH_DELIM = -1
     }
 }
