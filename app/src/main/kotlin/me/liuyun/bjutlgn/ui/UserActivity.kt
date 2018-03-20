@@ -16,6 +16,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
+import androidx.content.edit
 import kotlinx.android.synthetic.main.activity_users.*
 import kotlinx.android.synthetic.main.app_bar.*
 import kotlinx.android.synthetic.main.item_user.view.*
@@ -113,12 +114,12 @@ class UserActivity : AppCompatActivity() {
             val user = users[holder.adapterPosition]
 
             holder.itemView.setOnClickListener {
-                prefs.edit()
-                        .putString("account", user.account)
-                        .putString("password", user.password)
-                        .putInt("current_package", user.pack)
-                        .putInt("current_user", user.id)
-                        .apply()
+                prefs.edit {
+                    putString("account", user.account)
+                    putString("password", user.password)
+                    putInt("current_package", user.pack)
+                    putInt("current_user", user.id)
+                }
                 this@UserActivity.finish()
             }
 

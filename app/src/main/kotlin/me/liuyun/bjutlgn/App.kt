@@ -15,6 +15,6 @@ class App : Application() {
         super.onCreate()
         prefs = PreferenceManager.getDefaultSharedPreferences(this)
         appDatabase = Room.databaseBuilder(this, AppDatabase::class.java, "bjutwifi.db").allowMainThreadQueries().build()
-        ThemeHelper.init(this, prefs.getInt("theme", R.style.ThemeBlue))
+        ThemeHelper.init(this, ThemeHelper.getTheme(this))
     }
 }

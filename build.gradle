@@ -3,15 +3,15 @@
 buildscript {
     ext.kotlin_version = '1.2.30'
     ext.anko_version = '0.10.4'
-    ext.support_lib_version = '27.0.2'
+    ext.support_lib_version = '27.1.0'
     ext.lifecycle_version = '1.1.0'
-    ext.room_version = '1.1.0-alpha2'
+    ext.room_version = '1.1.0-alpha3'
     repositories {
         jcenter()
         google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.1.0-rc02'
+        classpath 'com.android.tools.build:gradle:3.1.0-rc03'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }

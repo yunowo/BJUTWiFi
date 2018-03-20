@@ -10,6 +10,7 @@ import android.os.Bundle
 import android.preference.PreferenceManager
 import android.support.annotation.StyleRes
 import android.util.TypedValue
+import androidx.content.edit
 import me.liuyun.bjutlgn.R
 import me.liuyun.bjutlgn.ui.EasterEggActivity
 import me.liuyun.bjutlgn.ui.StatusLockedActivity
@@ -26,9 +27,20 @@ object ThemeHelper : Application.ActivityLifecycleCallbacks {
         this.currentStyle = styleRes
     }
 
+    @StyleRes
+    fun getTheme(context: Context): Int {
+        val prefs = PreferenceManager.getDefaultSharedPreferences(context)
+        val theme = prefs.getInt("theme", R.style.ThemeBlue)
+        if (theme !in ThemeRes.values().map { it.style }) {
+            prefs.edit { putInt("theme", R.style.ThemeBlue) }
+            return R.style.ThemeBlue
+        }
+        return theme
+    }
+
     fun setTheme(activity: Activity, @StyleRes styleRes: Int) {
         currentStyle = styleRes
-        PreferenceManager.getDefaultSharedPreferences(activity).edit().putInt("theme", currentStyle).apply()
+        PreferenceManager.getDefaultSharedPreferences(activity).edit { putInt("theme", currentStyle) }
         activityList.filter { it !== activity }.forEach { it.recreate() }
         val intent = Intent(activity, activity.javaClass)
         activity.startActivity(intent)
