@@ -3,6 +3,7 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'org.jetbrains.kotlin.android.extensions'
     id 'org.jetbrains.kotlin.kapt'
+    id 'com.github.triplet.play'
 }
 
 def gitCommitCount = "git rev-list HEAD --count".execute().text.trim()
@@ -19,17 +20,26 @@ android {
             keyPassword System.getenv("KEY_PASSWORD")
         }
     }
+    playAccountConfigs {
+        defaultAccountConfig {
+            jsonFile = file('../play.json')
+        }
+    }
     defaultConfig {
         applicationId "me.liuyun.bjutlgn"
-        minSdkVersion 27
+        minSdkVersion 25
         targetSdkVersion 27
-        versionCode 9
-        versionName "9.0.0"
+        versionCode gitCommitCount.toInteger()
+        versionName "10.0.0"
         versionNameSuffix = " (${gitCommitCount})"
         resConfigs "en", "zh-rCN"
+        manifestPlaceholders = [app_name: "@string/app_name"]
+        playAccountConfig = playAccountConfigs.defaultAccountConfig
     }
     buildTypes {
         debug {
+            applicationIdSuffix ".debug"
+            manifestPlaceholders = [app_name: "@string/app_name_debug"]
             signingConfig signingConfigs.release
         }
         release {
@@ -43,10 +53,17 @@ android {
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.github
+            play {
+                track = 'beta'
+                userFraction = 1.0
+                untrackOld = true
+            }
         }
     }
-    dataBinding {
-        // enabled = true
+    packagingOptions {
+        exclude 'kotlin/**'
+        exclude 'META-INF/*.kotlin_module'
+        exclude 'META-INF/*.version'
     }
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'

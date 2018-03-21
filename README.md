@@ -9,10 +9,12 @@ BJUT Wi-Fi client for Android.
 
 **Warning:** This is an experimental app.
 
+<a href="https://play.google.com/store/apps/details?id=me.liuyun.bjutlgn"><img src="https://play.google.com/intl/en_us/badges/images/generic/en-play-badge.png" height="48"></a>
+
 ## Install
 See [Releases](https://github.com/yunv/BJUTWiFi/releases). 
 
-Only Android 8.1 and later is supported. If you are using older versions, go to [BJUTLoginApp](https://github.com/ZeroGoYoosee/BJUTLoginApp/).
+Only Android 7.1 and later is supported. If you are using older versions, go to [BJUTLoginApp](https://github.com/ZeroGoYoosee/BJUTLoginApp/).
 
 ## Screenshot
 <img src="https://github.com/yunv/BJUTWiFi/blob/master/art/0.png" width="540px">
