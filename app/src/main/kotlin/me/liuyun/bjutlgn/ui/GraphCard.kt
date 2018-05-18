@@ -2,7 +2,7 @@ package me.liuyun.bjutlgn.ui
 
 import android.util.SparseIntArray
 import android.widget.LinearLayout
-import androidx.content.edit
+import androidx.core.content.edit
 import com.android.settings.graph.UsageView
 import kotlinx.android.synthetic.main.graph_card.view.*
 import me.liuyun.bjutlgn.App

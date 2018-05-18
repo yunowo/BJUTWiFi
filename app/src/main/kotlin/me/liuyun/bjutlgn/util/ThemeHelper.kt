@@ -10,7 +10,7 @@ import android.os.Bundle
 import android.preference.PreferenceManager
 import android.support.annotation.StyleRes
 import android.util.TypedValue
-import androidx.content.edit
+import androidx.core.content.edit
 import me.liuyun.bjutlgn.R
 import me.liuyun.bjutlgn.ui.EasterEggActivity
 import me.liuyun.bjutlgn.ui.StatusLockedActivity

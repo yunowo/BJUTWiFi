@@ -1,17 +1,17 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
-    ext.kotlin_version = '1.2.30'
+    ext.kotlin_version = '1.2.41'
     ext.anko_version = '0.10.4'
-    ext.support_lib_version = '27.1.0'
-    ext.lifecycle_version = '1.1.0'
-    ext.room_version = '1.1.0-alpha3'
+    ext.support_lib_version = '27.1.1'
+    ext.lifecycle_version = '1.1.1'
+    ext.room_version = '1.1.1-rc1'
     repositories {
         jcenter()
         google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.1.0-rc03'
+        classpath 'com.android.tools.build:gradle:3.2.0-alpha15'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath 'com.github.triplet.gradle:play-publisher:1.2.0'
     }

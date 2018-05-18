@@ -16,7 +16,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
-import androidx.content.edit
+import androidx.core.content.edit
 import kotlinx.android.synthetic.main.activity_users.*
 import kotlinx.android.synthetic.main.app_bar.*
 import kotlinx.android.synthetic.main.item_user.view.*
