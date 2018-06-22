@@ -3,11 +3,11 @@ package me.liuyun.bjutlgn.ui
 import android.app.Activity
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_theme.*
 import kotlinx.android.synthetic.main.app_bar.*
 import kotlinx.android.synthetic.main.item_theme.view.*

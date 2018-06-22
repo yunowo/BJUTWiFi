@@ -1,7 +1,7 @@
 package me.liuyun.bjutlgn
 
 import android.app.Application
-import android.arch.persistence.room.Room
+import androidx.room.Room
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
 import me.liuyun.bjutlgn.db.AppDatabase

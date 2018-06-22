@@ -1,13 +1,13 @@
 package me.liuyun.bjutlgn.ui
 
 import android.net.CaptivePortal
-import android.support.animation.SpringAnimation
-import android.support.animation.SpringForce
-import android.support.design.widget.Snackbar
 import android.text.TextUtils
 import android.text.format.Formatter
 import android.view.View
 import android.widget.FrameLayout
+import androidx.dynamicanimation.animation.SpringAnimation
+import androidx.dynamicanimation.animation.SpringForce
+import com.google.android.material.snackbar.Snackbar
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.status_view.view.*

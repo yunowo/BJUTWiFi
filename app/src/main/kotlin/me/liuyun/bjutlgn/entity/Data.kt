@@ -1,7 +1,7 @@
 package me.liuyun.bjutlgn.entity
 
-import android.arch.persistence.room.Entity
-import android.arch.persistence.room.PrimaryKey
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
 data class Stats(var flow: Int = 0, var time: Int = 0, var fee: Int = 0, var isOnline: Boolean = true)
 

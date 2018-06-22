@@ -2,7 +2,7 @@ package me.liuyun.bjutlgn.ui
 
 import android.os.Bundle
 import android.preference.PreferenceFragment
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.app_bar.*
 import me.liuyun.bjutlgn.BuildConfig
 import me.liuyun.bjutlgn.R

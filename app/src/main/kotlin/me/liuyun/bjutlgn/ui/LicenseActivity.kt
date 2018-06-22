@@ -2,7 +2,7 @@ package me.liuyun.bjutlgn.ui
 
 import android.graphics.Color
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import com.artitk.licensefragment.RecyclerViewLicenseFragment
 import com.artitk.licensefragment.model.CustomUI
 import com.artitk.licensefragment.model.License

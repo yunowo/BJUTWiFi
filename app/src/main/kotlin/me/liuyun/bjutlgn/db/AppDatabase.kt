@@ -1,7 +1,7 @@
 package me.liuyun.bjutlgn.db
 
-import android.arch.persistence.room.Database
-import android.arch.persistence.room.RoomDatabase
+import androidx.room.Database
+import androidx.room.RoomDatabase
 import me.liuyun.bjutlgn.entity.Flow
 import me.liuyun.bjutlgn.entity.User
 

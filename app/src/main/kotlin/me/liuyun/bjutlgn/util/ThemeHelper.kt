@@ -8,7 +8,7 @@ import android.content.Intent
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.preference.PreferenceManager
-import android.support.annotation.StyleRes
+import androidx.annotation.StyleRes
 import android.util.TypedValue
 import androidx.core.content.edit
 import me.liuyun.bjutlgn.R
