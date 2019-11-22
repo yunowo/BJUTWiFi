@@ -1,6 +1,6 @@
 name: CI
 
-on: push
+on: [push, pull_request]
 
 jobs:
   android:
@@ -22,12 +22,20 @@ jobs:
         KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
         STORE_FILE: ${{ secrets.STORE_FILE }}
         STORE_PASSWORD: ${{ secrets.STORE_PASSWORD }}
+    - name: Create Release
+      uses: actions/create-release@v1
+      if: github.event_name == 'create'
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: Release ${{ github.ref }}
     - name: Publish to fir.im
       if: github.ref == 'refs/heads/master'
       run: |
         gem install fir-cli
         fir login $fir_token
-        fir p app/build/outputs/apk/release/app-releaseGitHub.apk -c "$GITHUB_SHA"
+        fir p app/build/outputs/apk/release/app-releaseGitHub.apk -c "${{ github.sha }}"
       env:
         fir_token: ${{ secrets.fir_token }}
       continue-on-error: true
