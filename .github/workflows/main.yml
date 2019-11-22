@@ -23,6 +23,7 @@ jobs:
         STORE_FILE: ${{ secrets.STORE_FILE }}
         STORE_PASSWORD: ${{ secrets.STORE_PASSWORD }}
     - name: Create Release
+      id: create_release
       uses: actions/create-release@v1
       if: github.event_name == 'create'
       env:
@@ -30,12 +31,21 @@ jobs:
       with:
         tag_name: ${{ github.ref }}
         release_name: Release ${{ github.ref }}
+    - name: Upload Release Asset
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./app/build/outputs/apk/releaseGitHub/app-releaseGitHub.apk
+        asset_name: app-release.apk
+        asset_content_type: application/vnd.android.package-archive
     - name: Publish to fir.im
       if: github.ref == 'refs/heads/master'
       run: |
         gem install fir-cli
         fir login $fir_token
-        fir p app/build/outputs/apk/release/app-releaseGitHub.apk -c "${{ github.sha }}"
+        fir p app/build/outputs/apk/releaseGitHub/app-releaseGitHub.apk -c "${{ github.sha }}"
       env:
         fir_token: ${{ secrets.fir_token }}
       continue-on-error: true
