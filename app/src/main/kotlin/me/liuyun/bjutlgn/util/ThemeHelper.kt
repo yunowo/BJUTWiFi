@@ -5,12 +5,11 @@ import android.app.ActivityManager.TaskDescription
 import android.app.Application
 import android.content.Context
 import android.content.Intent
-import android.graphics.BitmapFactory
 import android.os.Bundle
-import android.preference.PreferenceManager
-import androidx.annotation.StyleRes
 import android.util.TypedValue
+import androidx.annotation.StyleRes
 import androidx.core.content.edit
+import androidx.preference.PreferenceManager
 import me.liuyun.bjutlgn.R
 import me.liuyun.bjutlgn.ui.EasterEggActivity
 import me.liuyun.bjutlgn.ui.StatusLockedActivity
@@ -68,8 +67,7 @@ object ThemeHelper : Application.ActivityLifecycleCallbacks {
 
     private fun setTaskDescription(activity: Activity) {
         val taskDescription = TaskDescription(activity.getString(R.string.app_name),
-                BitmapFactory.decodeResource(activity.resources, R.mipmap.ic_launcher),
-                getThemePrimaryColor(activity))
+                R.mipmap.ic_launcher, getThemePrimaryColor(activity))
         activity.setTaskDescription(taskDescription)
     }
 

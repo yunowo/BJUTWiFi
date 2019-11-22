@@ -1,8 +1,9 @@
 package me.liuyun.bjutlgn.ui
 
 import android.os.Bundle
-import android.preference.PreferenceFragment
 import androidx.appcompat.app.AppCompatActivity
+import androidx.preference.Preference
+import androidx.preference.PreferenceFragmentCompat
 import kotlinx.android.synthetic.main.app_bar.*
 import me.liuyun.bjutlgn.BuildConfig
 import me.liuyun.bjutlgn.R
@@ -15,33 +16,32 @@ class SettingsActivity : AppCompatActivity() {
         setContentView(R.layout.activity_prefs)
         setSupportActionBar(toolbar)
         toolbar.setNavigationOnClickListener { onBackPressed() }
-        fragmentManager.beginTransaction().replace(R.id.content, SettingsFragment()).commit()
+        supportFragmentManager.beginTransaction().replace(R.id.content, SettingsFragment()).commit()
     }
 
-    class SettingsFragment : PreferenceFragment() {
+    class SettingsFragment : PreferenceFragmentCompat() {
         private var tapCount = 0
 
-        override fun onCreate(savedInstanceState: Bundle?) {
-            super.onCreate(savedInstanceState)
+        override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             addPreferencesFromResource(R.xml.settings)
-            findPreference("theme").setOnPreferenceClickListener {
-                startActivity<ThemeActivity>()
+            findPreference<Preference>("theme")?.setOnPreferenceClickListener {
+                context?.startActivity<ThemeActivity>()
                 true
             }
-            findPreference("version").summary = BuildConfig.VERSION_NAME
-            findPreference("version").setOnPreferenceClickListener {
+            findPreference<Preference>("version")?.summary = BuildConfig.VERSION_NAME
+            findPreference<Preference>("version")?.setOnPreferenceClickListener {
                 tapCount++
                 if (tapCount < 5) return@setOnPreferenceClickListener false
-                startActivity<EasterEggActivity>()
+                context?.startActivity<EasterEggActivity>()
                 tapCount = 0
                 true
             }
-            findPreference("licenses").setOnPreferenceClickListener {
-                startActivity<LicenseActivity>()
+            findPreference<Preference>("licenses")?.setOnPreferenceClickListener {
+                context?.startActivity<LicenseActivity>()
                 true
             }
-            findPreference("source").setOnPreferenceClickListener {
-                browse(resources.getString(R.string.source_code_url))
+            findPreference<Preference>("source")?.setOnPreferenceClickListener {
+                context?.browse(resources.getString(R.string.source_code_url))
                 true
             }
         }

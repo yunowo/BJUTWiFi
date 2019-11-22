@@ -35,7 +35,7 @@
     <string name="status_not_logged_in">Not logged in</string>
     <string name="status_logged_in" translatable="false">%.3f MB / %d%%</string>
     <string name="status_unavailable">Unavailable</string>
-    <string name="source_code_url" translatable="false">https://github.com/yunv/BJUTWiFi</string>
+    <string name="source_code_url" translatable="false">https://github.com/yunowo/BJUTWiFi</string>
     <string name="theme_tick" translatable="false">✓</string>
     <string name="theme_title">Theme</string>
     <string name="theme_using">Using</string>

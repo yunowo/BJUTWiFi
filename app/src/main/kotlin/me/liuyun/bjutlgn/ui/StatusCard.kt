@@ -11,9 +11,9 @@ import com.google.android.material.snackbar.Snackbar
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.status_view.view.*
-import kotlinx.coroutines.experimental.CommonPool
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.async
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
 import me.liuyun.bjutlgn.App
 import me.liuyun.bjutlgn.R
 import me.liuyun.bjutlgn.api.BjutRetrofit
@@ -44,13 +44,13 @@ class StatusCard(private val cv: FrameLayout, private val graphCard: GraphCard?,
         when (state) {
             STATE_NO_NETWORK -> cv.non_bjut.text = res.getString(R.string.status_no_network)
             STATE_MOBILE -> cv.non_bjut.text = res.getString(R.string.status_mobile_network)
-            STATE_BJUT_WIFI -> refreshStatus()
+            STATE_BJUT_WIFI -> refreshStatusAsync()
             STATE_OTHER_WIFI -> cv.non_bjut.text = res.getString(R.string.status_other_wifi).format(NetworkUtils.getWifiSSID(app))
         }
     }
 
-    private fun refreshStatus() = async(UI) {
-        val job = async(CommonPool) {
+    private fun refreshStatusAsync() = GlobalScope.async(Dispatchers.Main) {
+        val job = GlobalScope.async(Dispatchers.IO) {
             BjutRetrofit.evictAll()
         }
         job.await()
@@ -120,14 +120,14 @@ class StatusCard(private val cv: FrameLayout, private val graphCard: GraphCard?,
     }
 
     private fun onLogin() {
-        val account = app.prefs.getString("account", "")
-        val password = app.prefs.getString("password", "")
+        val account = app.prefs.getString("account", "") ?: ""
+        val password = app.prefs.getString("password", "") ?: ""
 
         if (!TextUtils.isEmpty(account) && !TextUtils.isEmpty(password)) {
             BjutRetrofit.bjutService.login(account, password, "1", "123")
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe({ refreshStatus() },
+                    .subscribe({ refreshStatusAsync() },
                             { Snackbar.make(cv, R.string.stats_login_failed, Snackbar.LENGTH_SHORT).show() })
         }
     }
