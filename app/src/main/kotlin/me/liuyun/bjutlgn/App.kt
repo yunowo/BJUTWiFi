@@ -3,7 +3,7 @@ package me.liuyun.bjutlgn
 import android.app.Application
 import androidx.room.Room
 import android.content.SharedPreferences
-import android.preference.PreferenceManager
+import androidx.preference.PreferenceManager
 import me.liuyun.bjutlgn.db.AppDatabase
 import me.liuyun.bjutlgn.util.ThemeHelper
 

@@ -25,11 +25,11 @@ object BjutRetrofit {
                 private val cookieStore = HashMap<String, List<Cookie>>()
 
                 override fun saveFromResponse(url: HttpUrl, cookies: List<Cookie>) {
-                    cookieStore[url.host()] = cookies
+                    cookieStore[url.host] = cookies
                 }
 
                 override fun loadForRequest(url: HttpUrl): List<Cookie> {
-                    return cookieStore[url.host()] ?: ArrayList<Cookie>()
+                    return cookieStore[url.host] ?: ArrayList<Cookie>()
                 }
             }).build()
     val bjutService: BjutService by lazy {
@@ -42,6 +42,6 @@ object BjutRetrofit {
     }
 
     fun evictAll() {
-        client.connectionPool().evictAll()
+        client.connectionPool.evictAll()
     }
 }

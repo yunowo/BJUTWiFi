@@ -82,8 +82,8 @@ class UsageGraph(context: Context, attrs: AttributeSet?) : View(context, attrs) 
 
         val v = TypedValue()
         context.theme.resolveAttribute(android.R.attr.listDivider, v, true)
-        mDivider = context.getDrawable(v.resourceId)
-        mTintedDivider = context.getDrawable(v.resourceId)
+        mDivider = context.getDrawable(v.resourceId)!!
+        mTintedDivider = context.getDrawable(v.resourceId)!!
         mDividerSize = resources.getDimensionPixelSize(R.dimen.usage_graph_divider_size)
     }
 
