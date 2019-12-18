@@ -72,7 +72,7 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-common-java8:2.2.0-rc03'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0-rc03'
     implementation "androidx.preference:preference:1.1.0"
-    implementation 'androidx.room:room-runtime:2.2.2'
+    implementation 'androidx.room:room-runtime:2.2.3'
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0-alpha03'
     kapt 'androidx.room:room-compiler:2.2.2'
 
