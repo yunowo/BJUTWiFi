@@ -1,18 +1,17 @@
 package me.liuyun.bjutlgn.ui
 
 import android.util.SparseIntArray
-import android.widget.LinearLayout
 import androidx.core.content.edit
 import com.android.settings.graph.UsageView
-import kotlinx.android.synthetic.main.graph_card.view.*
 import me.liuyun.bjutlgn.App
+import me.liuyun.bjutlgn.databinding.GraphCardBinding
 import me.liuyun.bjutlgn.entity.Flow
 import me.liuyun.bjutlgn.util.StatsUtils
 import java.text.DateFormat
 import java.util.*
 
-class GraphCard(cardView: LinearLayout, private val app: App) {
-    val chart: UsageView = cardView.chart
+class GraphCard(cardView: GraphCardBinding, private val app: App) {
+    private val chart = cardView.chart
 
     fun show() {
         val month = Calendar.getInstance().get(Calendar.MONTH)

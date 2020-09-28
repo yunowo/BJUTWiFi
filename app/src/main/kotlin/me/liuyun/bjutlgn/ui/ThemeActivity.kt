@@ -1,28 +1,28 @@
 package me.liuyun.bjutlgn.ui
 
-import android.app.Activity
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.activity_theme.*
-import kotlinx.android.synthetic.main.app_bar.*
-import kotlinx.android.synthetic.main.item_theme.view.*
 import me.liuyun.bjutlgn.R
+import me.liuyun.bjutlgn.databinding.ActivityThemeBinding
+import me.liuyun.bjutlgn.databinding.ItemThemeBinding
 import me.liuyun.bjutlgn.util.ThemeHelper
 import me.liuyun.bjutlgn.util.ThemeRes
 
 class ThemeActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityThemeBinding
+
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_theme)
-        setSupportActionBar(toolbar)
-        toolbar.setNavigationOnClickListener { onBackPressed() }
+        binding = ActivityThemeBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        setSupportActionBar(binding.appBar.toolbar)
+        binding.appBar.toolbar.setNavigationOnClickListener { onBackPressed() }
 
-        recycler.adapter = ThemeAdapter()
+        binding.recycler.adapter = ThemeAdapter()
     }
 
     internal inner class ThemeAdapter : RecyclerView.Adapter<ThemeAdapter.ThemeItemHolder>() {
@@ -30,34 +30,34 @@ class ThemeActivity : AppCompatActivity() {
         var grey = resources.getColor(android.R.color.darker_gray, theme)
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-                ThemeItemHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_theme, parent, false))
+                ThemeItemHolder(ItemThemeBinding.inflate(LayoutInflater.from(parent.context), parent, false))
 
         override fun onBindViewHolder(holder: ThemeItemHolder, position: Int) {
             val res = ThemeRes.values()[position]
             val themeColor = resources.getColor(res.color, theme)
             holder.themeId = res.style
-            holder.v.tv_title.setText(res.themeName)
-            holder.v.tv_title.setTextColor(themeColor)
-            holder.v.btn_choose.setOnClickListener { ThemeHelper.setTheme(holder.v.context as Activity, holder.themeId) }
+            holder.binding.tvTitle.setText(res.themeName)
+            holder.binding.tvTitle.setTextColor(themeColor)
+            holder.binding.btnChoose.setOnClickListener { ThemeHelper.setTheme(this@ThemeActivity, holder.themeId) }
             if (ThemeHelper.currentStyle == res.style) {
-                holder.v.btn_choose.isChecked = true
-                holder.v.btn_choose.setTextColor(themeColor)
-                holder.v.btn_choose.setText(R.string.theme_using)
-                holder.v.color_dot.setTextColor(white)
+                holder.binding.btnChoose.isChecked = true
+                holder.binding.btnChoose.setTextColor(themeColor)
+                holder.binding.btnChoose.setText(R.string.theme_using)
+                holder.binding.colorDot.setTextColor(white)
             } else {
-                holder.v.btn_choose.isChecked = false
-                holder.v.btn_choose.setTextColor(grey)
-                holder.v.btn_choose.setText(R.string.theme_use)
-                holder.v.color_dot.setTextColor(themeColor)
+                holder.binding.btnChoose.isChecked = false
+                holder.binding.btnChoose.setTextColor(grey)
+                holder.binding.btnChoose.setText(R.string.theme_use)
+                holder.binding.colorDot.setTextColor(themeColor)
             }
             val gradientDrawable = GradientDrawable()
             gradientDrawable.setColor(themeColor)
             gradientDrawable.cornerRadius = 40f
-            holder.v.color_dot.background = gradientDrawable
+            holder.binding.colorDot.background = gradientDrawable
         }
 
         override fun getItemCount() = ThemeRes.values().size
 
-        internal inner class ThemeItemHolder(val v: View, var themeId: Int = 0) : RecyclerView.ViewHolder(v)
+        internal inner class ThemeItemHolder(val binding: ItemThemeBinding, var themeId: Int = 0) : RecyclerView.ViewHolder(binding.root)
     }
 }

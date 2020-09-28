@@ -4,18 +4,22 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
-import kotlinx.android.synthetic.main.app_bar.*
 import me.liuyun.bjutlgn.BuildConfig
 import me.liuyun.bjutlgn.R
+import me.liuyun.bjutlgn.databinding.ActivityLicenseBinding
+import me.liuyun.bjutlgn.databinding.ActivityPrefsBinding
 import me.liuyun.bjutlgn.util.browse
 import me.liuyun.bjutlgn.util.startActivity
 
 class SettingsActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityPrefsBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_prefs)
-        setSupportActionBar(toolbar)
-        toolbar.setNavigationOnClickListener { onBackPressed() }
+        binding = ActivityPrefsBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        setSupportActionBar(binding.appBar.toolbar)
+        binding.appBar.toolbar.setNavigationOnClickListener { onBackPressed() }
         supportFragmentManager.beginTransaction().replace(R.id.content, SettingsFragment()).commit()
     }
 

@@ -8,37 +8,36 @@ import android.net.ConnectivityManager
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.FrameLayout
-import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.status_card.view.*
 import me.liuyun.bjutlgn.App
 import me.liuyun.bjutlgn.R
+import me.liuyun.bjutlgn.databinding.ActivityMainBinding
 import me.liuyun.bjutlgn.util.ThemeHelper
 import me.liuyun.bjutlgn.util.startActivity
 
 class MainActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityMainBinding
     lateinit var statusCard: StatusCard
     lateinit var graphCard: GraphCard
     private var receiver: BroadcastReceiver? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        setSupportActionBar(toolbar)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        setSupportActionBar(binding.toolbar)
 
-        graphCard = GraphCard(graph_card_view as LinearLayout, application as App)
-        statusCard = StatusCard(status_card_view.status_view as FrameLayout, graphCard, application as App, null)
+        graphCard = GraphCard(binding.graphCardView, application as App)
+        statusCard = StatusCard(binding.statusCardView.statusView, graphCard, application as App, null)
 
         receiver = object : BroadcastReceiver() {
             override fun onReceive(context: Context, intent: Intent) = statusCard.onRefresh()
         }
 
-        swipe_refresh.setColorSchemeColors(ThemeHelper.getThemeAccentColor(this))
-        swipe_refresh.setOnRefreshListener {
+        binding.swipeRefresh.setColorSchemeColors(ThemeHelper.getThemeAccentColor(this))
+        binding.swipeRefresh.setOnRefreshListener {
             statusCard.onRefresh()
-            swipe_refresh.isRefreshing = false
+            binding.swipeRefresh.isRefreshing = false
         }
     }
 

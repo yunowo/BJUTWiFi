@@ -4,19 +4,18 @@ import android.net.CaptivePortal
 import android.text.TextUtils
 import android.text.format.Formatter
 import android.view.View
-import android.widget.FrameLayout
 import androidx.dynamicanimation.animation.SpringAnimation
 import androidx.dynamicanimation.animation.SpringForce
 import com.google.android.material.snackbar.Snackbar
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
-import kotlinx.android.synthetic.main.status_view.view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import me.liuyun.bjutlgn.App
 import me.liuyun.bjutlgn.R
 import me.liuyun.bjutlgn.api.BjutRetrofit
+import me.liuyun.bjutlgn.databinding.StatusViewBinding
 import me.liuyun.bjutlgn.entity.Flow
 import me.liuyun.bjutlgn.entity.Stats
 import me.liuyun.bjutlgn.util.NetworkUtils
@@ -24,28 +23,28 @@ import me.liuyun.bjutlgn.util.NetworkUtils.NetworkState.*
 import me.liuyun.bjutlgn.util.StatsUtils
 import me.liuyun.bjutlgn.util.ThemeHelper
 
-class StatusCard(private val cv: FrameLayout, private val graphCard: GraphCard?, private val app: App, private val captivePortal: CaptivePortal?) {
+class StatusCard(private val sv: StatusViewBinding, private val graphCard: GraphCard?, private val app: App, private val captivePortal: CaptivePortal?) {
     private val res = app.resources
 
     init {
-        cv.sign_in_button.setOnClickListener { onLogin() }
-        cv.sign_out_button.setOnClickListener { onLogout() }
+        sv.signInButton.setOnClickListener { onLogin() }
+        sv.signOutButton.setOnClickListener { onLogout() }
     }
 
     fun onRefresh() {
         val state = if (app.prefs.getBoolean("debug", false)) STATE_BJUT_WIFI else NetworkUtils.getNetworkState(app)
         if (state == STATE_BJUT_WIFI) {
-            arrayOf(cv.user, cv.progress_ring, cv.info_layout, cv.buttons_layout).forEach { it.visibility = View.VISIBLE }
-            cv.non_bjut.visibility = View.GONE
+            arrayOf(sv.user, sv.progressRing, sv.infoLayout, sv.buttonsLayout).forEach { it.visibility = View.VISIBLE }
+            sv.nonBjut.visibility = View.GONE
         } else {
-            arrayOf(cv.user, cv.progress_ring, cv.info_layout, cv.buttons_layout).forEach { it.visibility = View.GONE }
-            cv.non_bjut.visibility = View.VISIBLE
+            arrayOf(sv.user, sv.progressRing, sv.infoLayout, sv.buttonsLayout).forEach { it.visibility = View.GONE }
+            sv.nonBjut.visibility = View.VISIBLE
         }
         when (state) {
-            STATE_NO_NETWORK -> cv.non_bjut.text = res.getString(R.string.status_no_network)
-            STATE_MOBILE -> cv.non_bjut.text = res.getString(R.string.status_mobile_network)
+            STATE_NO_NETWORK -> sv.nonBjut.text = res.getString(R.string.status_no_network)
+            STATE_MOBILE -> sv.nonBjut.text = res.getString(R.string.status_mobile_network)
             STATE_BJUT_WIFI -> refreshStatusAsync()
-            STATE_OTHER_WIFI -> cv.non_bjut.text = res.getString(R.string.status_other_wifi).format(NetworkUtils.getWifiSSID(app))
+            STATE_OTHER_WIFI -> sv.nonBjut.text = res.getString(R.string.status_other_wifi).format(NetworkUtils.getWifiSSID(app))
         }
     }
 
@@ -55,7 +54,7 @@ class StatusCard(private val cv: FrameLayout, private val graphCard: GraphCard?,
         }
         job.await()
 
-        cv.user.text = app.prefs.getString("account", "")
+        sv.user.text = app.prefs.getString("account", "")
 
         if (app.prefs.getBoolean("debug", false)) {
             statsSuccess(Stats(4000000, 100, 1000, true))
@@ -66,34 +65,34 @@ class StatusCard(private val cv: FrameLayout, private val graphCard: GraphCard?,
                 .map(StatsUtils::parseStats)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ statsSuccess(it) }, { Snackbar.make(cv, R.string.stats_refresh_failed, Snackbar.LENGTH_SHORT).show() })
+                .subscribe({ statsSuccess(it) }, { Snackbar.make(sv.root, R.string.stats_refresh_failed, Snackbar.LENGTH_SHORT).show() })
     }
 
     private fun statsSuccess(stats: Stats) {
-        cv.fee.text = res.getString(R.string.stats_fee).format(stats.fee / 10000f)
-        cv.time.text = res.getString(R.string.stats_time).format(stats.time)
+        sv.fee.text = res.getString(R.string.stats_fee).format(stats.fee / 10000f)
+        sv.time.text = res.getString(R.string.stats_time).format(stats.time)
 
         val percent = StatsUtils.getPercent(stats, app)
-        cv.progress_ring.centerTitle = "$percent %"
-        cv.progress_ring.bottomTitle = Formatter.formatFileSize(app, stats.flow * 1024L)
+        sv.progressRing.centerTitle = "$percent %"
+        sv.progressRing.bottomTitle = Formatter.formatFileSize(app, stats.flow * 1024L)
         val w = res.getColor(android.R.color.white, app.theme)
-        val a = ThemeHelper.getThemeAccentColor(cv.context)
+        val a = ThemeHelper.getThemeAccentColor(sv.root.context)
         if (percent > 50) {
-            cv.progress_ring.centerTitleColor = w
-            cv.progress_ring.setCenterTitleStrokeColor(a)
+            sv.progressRing.centerTitleColor = w
+            sv.progressRing.setCenterTitleStrokeColor(a)
         } else {
-            cv.progress_ring.centerTitleColor = a
-            cv.progress_ring.setCenterTitleStrokeColor(w)
+            sv.progressRing.centerTitleColor = a
+            sv.progressRing.setCenterTitleStrokeColor(w)
         }
         if (percent > 20) {
-            cv.progress_ring.bottomTitleColor = w
-            cv.progress_ring.setBottomTitleStrokeColor(a)
+            sv.progressRing.bottomTitleColor = w
+            sv.progressRing.setBottomTitleStrokeColor(a)
         } else {
-            cv.progress_ring.bottomTitleColor = a
-            cv.progress_ring.setBottomTitleStrokeColor(w)
+            sv.progressRing.bottomTitleColor = a
+            sv.progressRing.setBottomTitleStrokeColor(w)
         }
-        cv.progress_ring.progressValue = percent
-        startSpringAnimation(cv.progress_ring)
+        sv.progressRing.progressValue = percent
+        startSpringAnimation(sv.progressRing)
 
         if (stats.isOnline && stats.flow != 0 && !app.prefs.getBoolean("debug", false)) {
             app.appDatabase.flowDao().insert(Flow(0, System.currentTimeMillis() / 1000L, stats.flow))
@@ -128,7 +127,7 @@ class StatusCard(private val cv: FrameLayout, private val graphCard: GraphCard?,
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe({ refreshStatusAsync() },
-                            { Snackbar.make(cv, R.string.stats_login_failed, Snackbar.LENGTH_SHORT).show() })
+                            { Snackbar.make(sv.root, R.string.stats_login_failed, Snackbar.LENGTH_SHORT).show() })
         }
     }
 
@@ -136,7 +135,7 @@ class StatusCard(private val cv: FrameLayout, private val graphCard: GraphCard?,
         BjutRetrofit.bjutService.logout()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ Snackbar.make(cv, R.string.stats_logout_ok, Snackbar.LENGTH_SHORT).show() },
-                        { Snackbar.make(cv, R.string.stats_logout_failed, Snackbar.LENGTH_SHORT).show() })
+                .subscribe({ Snackbar.make(sv.root, R.string.stats_logout_ok, Snackbar.LENGTH_SHORT).show() },
+                        { Snackbar.make(sv.root, R.string.stats_logout_failed, Snackbar.LENGTH_SHORT).show() })
     }
 }

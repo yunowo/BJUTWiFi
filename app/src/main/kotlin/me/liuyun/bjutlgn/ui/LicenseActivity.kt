@@ -8,18 +8,19 @@ import com.artitk.licensefragment.model.CustomUI
 import com.artitk.licensefragment.model.License
 import com.artitk.licensefragment.model.LicenseID
 import com.artitk.licensefragment.model.LicenseType
-import kotlinx.android.synthetic.main.app_bar.*
 import me.liuyun.bjutlgn.R
+import me.liuyun.bjutlgn.databinding.ActivityLicenseBinding
 import me.liuyun.bjutlgn.util.ThemeHelper
 
 class LicenseActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityLicenseBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_license)
-
-        setSupportActionBar(toolbar)
-        toolbar.setNavigationOnClickListener { onBackPressed() }
+        binding = ActivityLicenseBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        setSupportActionBar(binding.appBar.toolbar)
+        binding.appBar.toolbar.setNavigationOnClickListener { onBackPressed() }
 
         val licenses = arrayListOf(
                 License(this, "Android Support Library", LicenseType.APACHE_LICENSE_20, "2005-2013", "The Android Open Source Project"),
