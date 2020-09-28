@@ -1,5 +1,6 @@
 package me.liuyun.bjutlgn.ui
 
+import android.content.DialogInterface
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.SpannableStringBuilder
@@ -9,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.edit
 import androidx.lifecycle.Observer
@@ -25,7 +27,6 @@ import me.liuyun.bjutlgn.App
 import me.liuyun.bjutlgn.R
 import me.liuyun.bjutlgn.db.UserDao
 import me.liuyun.bjutlgn.entity.User
-import org.jetbrains.anko.alert
 
 class UserActivity : AppCompatActivity() {
     private lateinit var adapter: UserAdapter
@@ -86,9 +87,9 @@ class UserActivity : AppCompatActivity() {
 
             override fun onNothingSelected(parent: AdapterView<*>) {}
         }
-        alert(R.string.pref_user) {
-            customView = view
-            positiveButton(R.string.button_ok) { _ ->
+        with(AlertDialog.Builder(this)) {
+            setView(view)
+            setPositiveButton(R.string.button_ok) { _, _ ->
                 user.account = view.account.text.toString()
                 user.password = view.password.text.toString()
                 if (!newUser) {
@@ -99,8 +100,9 @@ class UserActivity : AppCompatActivity() {
                     userDao.insert(user)
                 }
             }
-            negativeButton(R.string.button_cancel) {}
-        }.show()
+            setNegativeButton(R.string.button_cancel) { _, _ -> Unit }
+            show()
+        }
     }
 
     internal inner class UserAdapter(var users: MutableList<User> = mutableListOf()) : RecyclerView.Adapter<UserAdapter.UserViewHolder>() {

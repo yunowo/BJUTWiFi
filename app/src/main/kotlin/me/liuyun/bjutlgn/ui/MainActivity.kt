@@ -16,7 +16,7 @@ import kotlinx.android.synthetic.main.status_card.view.*
 import me.liuyun.bjutlgn.App
 import me.liuyun.bjutlgn.R
 import me.liuyun.bjutlgn.util.ThemeHelper
-import org.jetbrains.anko.startActivity
+import me.liuyun.bjutlgn.util.startActivity
 
 class MainActivity : AppCompatActivity() {
     lateinit var statusCard: StatusCard

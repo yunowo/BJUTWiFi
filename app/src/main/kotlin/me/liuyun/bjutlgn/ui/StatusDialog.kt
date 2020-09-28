@@ -8,7 +8,7 @@ import android.view.LayoutInflater
 import android.widget.FrameLayout
 import me.liuyun.bjutlgn.App
 import me.liuyun.bjutlgn.R
-import org.jetbrains.anko.startActivity
+import me.liuyun.bjutlgn.util.startActivity
 
 object StatusDialog {
 

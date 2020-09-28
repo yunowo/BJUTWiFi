@@ -7,8 +7,8 @@ import androidx.preference.PreferenceFragmentCompat
 import kotlinx.android.synthetic.main.app_bar.*
 import me.liuyun.bjutlgn.BuildConfig
 import me.liuyun.bjutlgn.R
-import org.jetbrains.anko.browse
-import org.jetbrains.anko.startActivity
+import me.liuyun.bjutlgn.util.browse
+import me.liuyun.bjutlgn.util.startActivity
 
 class SettingsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

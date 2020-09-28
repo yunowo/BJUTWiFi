@@ -21,7 +21,7 @@ object NetworkUtils {
         for (network in manager.allNetworks) {
             val info = manager.getNetworkInfo(network)
             Log.d("networkInfo", info.toString())
-            when (info.type) {
+            when (info?.type) {
                 ConnectivityManager.TYPE_MOBILE -> {
                     isMobile = true
                 }

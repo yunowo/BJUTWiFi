@@ -17,6 +17,7 @@ import java.util.*
 
 object ThemeHelper : Application.ActivityLifecycleCallbacks {
     private val activityList = ArrayList<Activity>()
+
     @StyleRes
     var currentStyle: Int = 0
         private set
@@ -85,7 +86,7 @@ object ThemeHelper : Application.ActivityLifecycleCallbacks {
     override fun onActivityResumed(activity: Activity) = Unit
     override fun onActivityPaused(activity: Activity) = Unit
     override fun onActivityStopped(activity: Activity) = Unit
-    override fun onActivitySaveInstanceState(activity: Activity, bundle: Bundle?) = Unit
+    override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) = Unit
 
     override fun onActivityDestroyed(activity: Activity) {
         activityList.remove(activity)

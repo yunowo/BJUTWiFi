@@ -2,7 +2,7 @@ package me.liuyun.bjutlgn.api
 
 import okhttp3.*
 import retrofit2.Retrofit
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
+import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -36,9 +36,9 @@ object BjutRetrofit {
         Retrofit.Builder()
                 .baseUrl(server)
                 .client(client)
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
                 .addConverterFactory(ScalarsConverterFactory.create())
-                .build().create<BjutService>(BjutService::class.java)
+                .build().create(BjutService::class.java)
     }
 
     fun evictAll() {
