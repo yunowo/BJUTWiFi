@@ -28,7 +28,7 @@
     <RadioButton
         android:id="@+id/btn_choose"
         android:layout_width="60dp"
-        android:layout_height="wrap_content"
+        android:layout_height="32dp"
         android:layout_margin="15dp"
         android:background="@drawable/button_border"
         android:button="@null"

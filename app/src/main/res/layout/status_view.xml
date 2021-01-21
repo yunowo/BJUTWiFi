@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
@@ -14,9 +13,9 @@
             android:id="@+id/progress_ring"
             android:layout_width="140dp"
             android:layout_height="140dp"
-            android:layout_marginBottom="24dp"
-            android:layout_marginEnd="32dp"
             android:layout_marginTop="16dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginBottom="24dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -31,18 +30,19 @@
             app:wlv_titleCenterSize="26sp"
             app:wlv_titleCenterStrokeWidth="2dp"
             app:wlv_waveAmplitude="30"
-            app:wlv_waveColor="?android:attr/colorAccent"/>
+            app:wlv_waveColor="?android:attr/colorAccent" />
 
         <TextView
             android:id="@+id/non_bjut"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
-            android:textSize="20sp"
             android:paddingTop="8dp"
             android:paddingBottom="16dp"
+            android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/user"
@@ -53,33 +53,32 @@
             android:textSize="20sp"
             app:layout_constraintEnd_toStartOf="@id/guideline"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/time"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
             android:layout_marginStart="48dp"
             android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
             app:layout_constraintEnd_toStartOf="@id/guideline"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/user"/>
+            app:layout_constraintTop_toBottomOf="@id/user" />
 
         <TextView
             android:id="@+id/fee"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
             android:layout_marginStart="48dp"
             android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
             app:layout_constraintEnd_toStartOf="@id/guideline"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/time"/>
+            app:layout_constraintTop_toBottomOf="@id/time" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/sign_in_button"
-            style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:minWidth="60dp"
@@ -89,11 +88,10 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/fee"/>
+            app:layout_constraintTop_toBottomOf="@id/fee" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/sign_out_button"
-            style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
@@ -103,26 +101,26 @@
             app:layout_constraintEnd_toStartOf="@id/guideline"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/sign_in_button"
-            app:layout_constraintTop_toBottomOf="@id/fee"/>
+            app:layout_constraintTop_toBottomOf="@id/fee" />
 
         <androidx.constraintlayout.widget.Group
             android:id="@+id/info_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:constraint_referenced_ids="fee,time"/>
+            app:constraint_referenced_ids="fee,time" />
 
         <androidx.constraintlayout.widget.Group
             android:id="@+id/buttons_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:constraint_referenced_ids="sign_out_button,sign_in_button"/>
+            app:constraint_referenced_ids="sign_out_button,sign_in_button" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.5"/>
+            app:layout_constraintGuide_percent="0.5" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

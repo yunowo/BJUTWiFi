@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/user_dialog"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="24dp" >
+    android:padding="24dp">
 
     <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -18,10 +18,15 @@
             android:hint="@string/pref_account"
             android:imeOptions="actionNext"
             android:inputType="textNoSuggestions|textVisiblePassword"
-            android:maxLines="1"/>
+            android:maxLines="1" />
     </com.google.android.material.textfield.TextInputLayout>
 
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="16dp" />
+
     <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -32,25 +37,25 @@
             android:hint="@string/pref_password"
             android:imeOptions="actionDone"
             android:inputType="textNoSuggestions|textVisiblePassword"
-            android:maxLines="1"/>
+            android:maxLines="1" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <TextView
+    <Space
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="4dp"
-        android:layout_weight="1"
-        android:text="@string/pref_packages"
-        android:textSize="12sp"/>
+        android:layout_height="16dp" />
 
-    <Spinner
-        android:id="@+id/spinner_pack"
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:layout_weight="1"
-        android:entries="@array/packages"/>
+        android:layout_height="wrap_content">
 
+        <AutoCompleteTextView
+            android:id="@+id/spinner_pack"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/pref_packages"
+            android:inputType="none" />
+    </com.google.android.material.textfield.TextInputLayout>
 </LinearLayout>
 

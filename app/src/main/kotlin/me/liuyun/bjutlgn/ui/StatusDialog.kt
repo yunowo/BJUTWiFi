@@ -1,10 +1,10 @@
 package me.liuyun.bjutlgn.ui
 
-import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
 import android.net.CaptivePortal
 import android.view.LayoutInflater
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import me.liuyun.bjutlgn.App
 import me.liuyun.bjutlgn.R
 import me.liuyun.bjutlgn.databinding.StatusViewBinding
@@ -16,7 +16,7 @@ object StatusDialog {
         context.setTheme(R.style.AppTheme_Dialog)
         val binding = StatusViewBinding.inflate(LayoutInflater.from(context), null, false)
         StatusCard(binding, null, context.applicationContext as App, captivePortal).onRefresh()
-        return AlertDialog.Builder(context, R.style.AppTheme_Dialog)
+        return MaterialAlertDialogBuilder(context, R.style.AppTheme_Dialog)
                 .setTitle(R.string.app_name)
                 .setView(binding.root)
                 .setPositiveButton(R.string.button_ok, null)

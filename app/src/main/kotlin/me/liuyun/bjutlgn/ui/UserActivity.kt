@@ -6,10 +6,8 @@ import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.style.TextAppearanceSpan
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import androidx.appcompat.app.AlertDialog
+import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.edit
 import androidx.lifecycle.Observer
@@ -18,6 +16,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import me.liuyun.bjutlgn.App
 import me.liuyun.bjutlgn.R
 import me.liuyun.bjutlgn.databinding.ActivityUsersBinding
@@ -73,20 +72,22 @@ class UserActivity : AppCompatActivity() {
 
     internal fun openUserDialog(newUser: Boolean, user: User) {
         val binding = UserDialogBinding.inflate(layoutInflater, null, false)
-        binding.account.setText(user.account)
-        binding.account.setSelection(user.account.length)
-        binding.password.setText(user.password)
-        if (!newUser) {
-            binding.spinnerPack.setSelection(user.pack)
-        }
-        binding.spinnerPack.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
+        with(binding) {
+            account.setText(user.account)
+            account.setSelection(user.account.length)
+            password.setText(user.password)
+
+            val items = resources.getStringArray(R.array.packages)
+            val adapter = ArrayAdapter(this@UserActivity, R.layout.item_package, items)
+            spinnerPack.setAdapter(adapter)
+            if (!newUser) {
+                spinnerPack.setText(items[user.pack], false)
+            }
+            spinnerPack.setOnItemClickListener { _, _, position, _ ->
                 currentPackage = position
             }
-
-            override fun onNothingSelected(parent: AdapterView<*>) {}
         }
-        with(AlertDialog.Builder(this)) {
+        with(MaterialAlertDialogBuilder(this)) {
             setView(binding.root)
             setPositiveButton(R.string.button_ok) { _, _ ->
                 user.account = binding.account.text.toString()
