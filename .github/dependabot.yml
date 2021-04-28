@@ -1,0 +1,15 @@
+version: 2
+updates:
+- package-ecosystem: gradle
+  directory: "/"
+  schedule:
+    interval: monthly
+    time: "21:00"
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: org.jetbrains.kotlin:kotlin-gradle-plugin
+    versions:
+    - 1.4.21-2
+  - dependency-name: com.android.tools.build:gradle
+    versions:
+    - 7.0.0-alpha05
