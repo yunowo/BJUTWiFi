@@ -17,7 +17,8 @@
         tools:replace="android:label">
         <activity
             android:name=".ui.MainActivity"
-            android:label="${app_name}">
+            android:label="${app_name}"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.service.quicksettings.action.QS_TILE_PREFERENCES" />
@@ -45,7 +46,8 @@
             android:name=".ui.StatusLockedActivity"
             android:excludeFromRecents="true"
             android:showOnLockScreen="true"
-            android:theme="@style/AppTheme.Dialog">
+            android:theme="@style/AppTheme.Dialog"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.net.conn.CAPTIVE_PORTAL" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -60,7 +62,8 @@
             android:name=".tile.BjutTileService"
             android:icon="@drawable/ic_cloud"
             android:label="@string/tile_icon_label"
-            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE"
+            android:exported="false">
             <intent-filter>
                 <action android:name="android.service.quicksettings.action.QS_TILE" />
             </intent-filter>

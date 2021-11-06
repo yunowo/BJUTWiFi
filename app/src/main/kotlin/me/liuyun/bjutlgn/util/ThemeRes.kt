@@ -7,6 +7,7 @@ import me.liuyun.bjutlgn.R
 
 enum class ThemeRes (val themeName: Int, @param:StyleRes val style: Int, @param:ColorRes val color: Int) {
     GREEN_YUN(R.string.theme_green_yun, R.style.ThemeGreenYun, R.color.greenYun),
+    PURPLE_ZEROGO(R.string.theme_purple_zerogo, R.style.ThemePurpleZeroGo, R.color.purpleZeroGo),
     BLUE(R.string.theme_blue, R.style.ThemeBlue, R.color.blue),
     RED(R.string.theme_red, R.style.ThemeRed, R.color.red),
     PURPLE(R.string.theme_purple, R.style.ThemePurple, R.color.purple),

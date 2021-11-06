@@ -39,6 +39,7 @@
     <string name="theme_red">红</string>
     <string name="theme_teal">青</string>
     <string name="theme_green_yun">Yun 绿</string>
+    <string name="theme_purple_zerogo">ZeroGo 紫</string>
     <string name="button_open_app">打开应用</string>
     <string name="theme_title">主题</string>
     <string name="stats_login_failed">登录失败。</string>

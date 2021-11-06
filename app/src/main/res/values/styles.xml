@@ -1,6 +1,6 @@
 <resources>
 
-    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+    <style name="AppTheme" parent="Theme.Material3.Light.NoActionBar">
         <item name="colorPrimary">@color/blue</item>
         <item name="colorPrimaryVariant">@color/grey_dark</item>
         <item name="colorSecondary">@color/blue</item>
@@ -11,7 +11,7 @@
         <item name="toolbarStyle">@style/Widget.App.Toolbar</item>
     </style>
 
-    <style name="Widget.App.Toolbar" parent="Widget.MaterialComponents.Toolbar.Primary">
+    <style name="Widget.App.Toolbar" parent="Widget.Material3.Toolbar">
         <item name="materialThemeOverlay">@style/ThemeOverlay.App.Toolbar</item>
     </style>
 
@@ -22,12 +22,18 @@
         <item name="colorControlNormal">?attr/colorSecondary</item>
     </style>
 
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.MaterialComponents.Light" />
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.Material3.Light" />
 
     <style name="ThemeGreenYun" parent="AppTheme">
         <item name="colorPrimary">@color/greenYun</item>
         <item name="colorSecondary">@color/greenYun</item>
         <item name="colorPrimaryVariant">@color/greenYunLight</item>
+    </style>
+
+    <style name="ThemePurpleZeroGo" parent="AppTheme">
+        <item name="colorPrimary">@color/purpleZeroGo</item>
+        <item name="colorSecondary">@color/purpleZeroGo</item>
+        <item name="colorPrimaryVariant">@color/purpleZeroGo</item>
     </style>
 
     <style name="ThemeBlue" parent="AppTheme">
@@ -84,7 +90,7 @@
         <item name="colorPrimaryVariant">@color/blackLight</item>
     </style>
 
-    <style name="AppTheme.Dialog" parent="Theme.MaterialComponents.Light.Dialog.Alert">
+    <style name="AppTheme.Dialog" parent="Theme.Material3.Light.Dialog.Alert">
         <item name="colorPrimary">@color/blue</item>
         <item name="colorSecondary">@color/blue</item>
     </style>

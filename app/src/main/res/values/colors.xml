@@ -3,9 +3,10 @@
     <color name="grey">#FFEEEEEE</color>
     <color name="grey_dark">#FFE0E0E0</color>
 
-    <color name="greenYun">#00cc69</color>
+    <color name="greenYun">#47c229</color>
     <color name="greenYunDark">#00ad48</color>
     <color name="greenYunLight">#00e676</color>
+    <color name="purpleZeroGo">#9974ef</color>
     <color name="blue">#2196f3</color>
     <color name="blueDark">#1E88E5</color>
     <color name="blueLight">#4fc3f7</color>

@@ -50,6 +50,7 @@
     <string name="theme_indigo">Indigo</string>
     <string name="theme_black">Black</string>
     <string name="theme_green_yun">Yun Green</string>
+    <string name="theme_purple_zerogo">ZeroGo Purple</string>
     <string name="license_title">Open Source Licenses</string>
     <string name="graph_header">Data usage of this month</string>
 </resources>
